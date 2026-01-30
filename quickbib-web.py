@@ -71,6 +71,16 @@ if doi_input:
                 st.write(error_msg)
 
 st.markdown(
+    """
+    If you find this helpful, please add a star on GitHub &nbsp;
+    <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank">
+    <img src="https://img.shields.io/github/stars/archisman-panigrahi/QuickBib?style=social" alt="Star on GitHub">
+    </a>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown(
     "For an even faster DOI-to-BibTeX workflow, switch to the "
     "[native desktop app](https://archisman-panigrahi.github.io/QuickBib/)."
 )
