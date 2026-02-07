@@ -12,7 +12,8 @@ def get_bibtex_for_doi(doi: str):
         return False, "", str(e)
 
 # --- Streamlit UI Layout ---
-icon_url = "https://github.com/archisman-panigrahi/QuickBib/blob/main/assets/icon/64x64/io.github.archisman_panigrahi.QuickBib.png?raw=true"
+icon_url = "https://github.com/archisman-panigrahi/QuickBib/blob/main/assets/icon/128x128/io.github.archisman_panigrahi.QuickBib.png?raw=true"
+ICON_SIZE = 128
 st.set_page_config(page_title="DOI to BibTeX", page_icon=icon_url)
 
 # Trim top padding for a tighter layout
@@ -31,7 +32,7 @@ title_icon_col, title_text_col = st.columns([0.12, 0.82])
 with title_icon_col:
     st.markdown(
         f"<div style='padding-top:30px; text-align:left;'>"
-        f"<img src='{icon_url}' width='64'/></div>",
+        f"<img src='{icon_url}' width='{ICON_SIZE}'/></div>",
         unsafe_allow_html=True,
     )
 with title_text_col:
