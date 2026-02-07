@@ -285,6 +285,7 @@ main{position:relative;z-index:1;padding-top:88px}
     position:static;
     display:flex !important;
     flex-direction:row;
+    flex-wrap:wrap;
     gap:12px;
     background:transparent;
     padding:0;
@@ -303,6 +304,11 @@ main{position:relative;z-index:1;padding-top:88px}
 @media (max-width:520px){
   .badges{gap:8px}
   .badges img{height:52px}
+}
+
+@media (max-width:420px){
+  .nav{gap:8px}
+  .nav a{font-size:13px}
 }
 
 @media (max-width:380px){
