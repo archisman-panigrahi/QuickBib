@@ -120,16 +120,16 @@ pre code{background:transparent;padding:0;color:inherit}
 }
 .header-inner{display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-.brand-icon{width:56px;height:56px;border-radius:2px;display:block;object-fit:contain;
+.brand-icon{width:64px;height:64px;border-radius:2px;display:block;object-fit:contain;
   /* subtle colorful backing that shows through transparent SVGs */
-  background:
+  /* background:
     radial-gradient(circle at 25% 25%, rgba(124, 92, 255, 0.55), transparent 45%),
     radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.45), transparent 50%),
     /* radial-gradient(circle at 70% 85%, rgba(6, 214, 160, 0.45), transparent 48%), */
-    linear-gradient(160deg, rgba(18, 102, 241, 0.55), rgba(124, 92, 255, 0.35) 45%, rgba(255, 209, 102, 0.35));
+    /* linear-gradient(160deg, rgba(18, 102, 241, 0.55), rgba(124, 92, 255, 0.35) 45%, rgba(255, 209, 102, 0.35)); */ */
   padding:2px;box-shadow: 0 3px 9px rgba(18,32,54,0.06);transition:transform 240ms ease, box-shadow 240ms ease}
 .brand:hover .brand-icon{transform:translateY(-3px);box-shadow:0 12px 30px rgba(18,32,54,0.09)}
-.brand-text{font-weight:700;font-size:18px}
+.brand-text{font-weight:700;font-size:18px;color:var(--link-visited)}
 #nav-toggle{display:none;background:none;border:0;color:var(--text);font-size:20px}
 .nav{display:flex;gap:18px}
 .nav a{color:var(--muted);text-decoration:none;padding:8px;border-radius:10px;transition:background-color 220ms ease,color 220ms ease,transform 180ms ease}
