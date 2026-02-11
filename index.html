@@ -149,7 +149,7 @@
         <h2>Quick examples</h2>
         <p class="muted">QuickBib accepts common identifiers and links — DOIs, DOI URLs, arXiv IDs/URLs, journal article URLs as well as their titles. Below are examples of supported inputs and how you might use them programmatically.</p>
         <div class="grid">
-          <div class="card">
+          <div class="card" style="grid-column: 1 / -1;">
             <h3>Input examples</h3>
             <p class="muted">It can work with all the following:</p>
             <ul class="example-list">
@@ -162,18 +162,9 @@
               <li>Title of article, e.g. <code>Projected Topological Branes</code> (supports fuzzy search!)</li>
             </ul>
           </div>
-          <div id="programmatic" class="card">
-            <h3>Programmatic (python)</h3>
-            <pre><code>from doi2bib3 import fetch_bibtex
-
-bib = fetch_bibtex('https://doi.org/10.1073/pnas.2305943120')
-
-print(bib)</code></pre>
-            <p class="muted">For details on the programmatic API and options, see the <a href="https://github.com/archisman-panigrahi/doi2bib3" target="_blank" rel="noopener">doi2bib3 README</a>.</p>
-          </div>
         </div>
 
-        <p class="muted" style="margin-top:12px">The command-line backend <code><a href="https://github.com/archisman-panigrahi/doi2bib3" target="_blank" rel="noopener">doi2bib3</a></code> supports the same input types and is useful for scripting and automation.</p>
+        <p class="muted" style="margin-top:12px">The command-line backend <code><a href="https://github.com/archisman-panigrahi/doi2bib3" target="_blank" rel="noopener">doi2bib3</a></code> supports the same input types and is useful for <a href="https://github.com/archisman-panigrahi/doi2bib3?tab=readme-ov-file#programmatic-usage">programmatic usage and automation</a>.</p>
       </section>
 
       <section id="faq" class="container faq">
