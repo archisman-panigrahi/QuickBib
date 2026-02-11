@@ -35,9 +35,9 @@
             <h1>Get BibTeX from a DOI — fast.</h1>
             <p class="lede">QuickBib is a cross-platform utility that uses <code><a href="https://github.com/archisman-panigrahi/doi2bib3" target="_blank" rel="noopener">doi2bib3</a></code> to fetch BibTeX for DOIs, arXiv identifiers as well as article titles. Works as a GUI app and also as a CLI. Perfect for research workflows, manuscripts and automation.</p>
             <p class="cta-row">
-              <a class="btn primary" href="#install">Install on GNU/Linux</a>
+              <a class="btn primary" href="#linux">Install on GNU/Linux</a>
               <a class="btn primary" href="https://apps.microsoft.com/detail/9pk4hvx04jdq?referrer=appbadge&mode=full" target="_blank" rel="noopener">Download for Windows</a>
-              <a class="btn primary" href="#macOS">Run on macOS (from source)</a>
+              <a class="btn primary" href="#install">Run on macOS (from source)</a>
               <a class="btn primary" href="https://quickbib.streamlit.app/" target="_blank" rel="noopener">Open Web App</a>
             </p>
           </div>
@@ -53,19 +53,19 @@
         <div class="grid">
           <article class="card">
             <h3>Quickly obtain BibTeX</h3>
-            <p>Uses <code><a href="https://github.com/archisman-panigrahi/doi2bib3" target="_blank" rel="noopener">doi2bib3</a></code> strategies (content negotiation, Crossref, arXiv resolution) to return high-quality BibTeX entries.</p>
-          </article>
-          <article class="card">
-            <h3>arXiv and Journal aware</h3>
             <p>Paste arXiv IDs, arXiv URLs, Journal links or titles — QuickBib detects them and resolves the DOI automatically. See <a href="#examples">examples</a>.</p>
           </article>
           <article class="card">
-            <h3>GUI + CLI</h3>
-            <p>Use the GUI app for quick lookups or integrate into scripts via the CLI and <a href="#programmatic">programmatic API</a>.</p>
+            <h3>Free and Open Source</h3>
+            <p>QuickBib is free and open source software (FOSS) licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank" rel="noopener">GPLv3</a>.</p>
           </article>
           <article class="card">
-            <h3>Free software + Cross platform</h3>
-            <p>QuickBib is free and open source software (FOSS) licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank" rel="noopener">GPLv3</a>. It runs on GNU/Linux, Windows and macOS — install from packages or download prebuilt releases (see below).</p>
+            <h3>GUI + CLI</h3>
+            <p>Use the GUI app for quick lookups or integrate into scripts via the CLI and <a href="https://github.com/archisman-panigrahi/doi2bib3?tab=readme-ov-file#programmatic-usage">programmatic API</a>.</p>
+          </article>
+          <article class="card">
+            <h3>Cross platform</h3>
+            <p>Use QuickBib on GNU/Linux, Windows, macOS or mobile devices — install from packages, grab a release or try the <a href="https://quickbib.streamlit.app/" target="_blank" rel="noopener">web app</a>.</p>
           </article>
         </div>
       </section>
@@ -74,7 +74,10 @@
         <h2>How to install</h2>
         <p class="muted">Choose the option that fits your platform.</p>
 
-        <h3>GNU/Linux</h3>
+          <section class="install-item" id="linux">
+            <input class="install-toggle" type="checkbox" id="linux-toggle" />
+            <label class="install-summary" for="linux-toggle">GNU/Linux</label>
+            <div class="panel">
         <p class="muted">You can install QuickBib from Flathub or the Snap Store on any distro:</p>
         <p class="badges">
           <a href="https://flathub.org/en/apps/io.github.archisman_panigrahi.QuickBib" target="_blank" rel="noopener">
@@ -108,42 +111,47 @@
             <p>Follow the instructions in the <a href="https://github.com/archisman-panigrahi/QuickBib/blob/main/README.md#how-to-run-from-source-works-in-gnulinux-or-macos-and-perhaps-also-windows-with-a-little-bit-of-tweaking">"Run from source"</a> section below to clone the repository and run QuickBib from source. You can also use <a href="https://github.com/archisman-panigrahi/quickbib?tab=readme-ov-file#install-from-source-with-meson">meson to install</a> it.</p>
           </div>
         </div>
+            </div>
+          </section>
 
-  <h3>Windows</h3>
+  <section class="install-item" id="windows">
+    <input class="install-toggle" type="checkbox" id="windows-toggle" />
+    <label class="install-summary" for="windows-toggle">Windows</label>
+    <div class="panel">
+    <p>QuickBib is available on Microsoft Store.</p>
 
-  <p>QuickBib is available on Microsoft Store.</p>
+    <p class="badges">
+      <a href="https://apps.microsoft.com/detail/9pk4hvx04jdq?referrer=appbadge&mode=full" target="_blank" rel="noopener noreferrer">
+        <img src="images/en-us-dark.svg" height="70" alt="Get it from Microsoft Store" referrerpolicy="no-referrer" />
+      </a>
+    </p>
 
-  <p class="badges">
-  <a href="https://apps.microsoft.com/detail/9pk4hvx04jdq?referrer=appbadge&mode=full" target="_blank" rel="noopener noreferrer">
-    <img src="images/en-us-dark.svg" height="70" alt="Get it from Microsoft Store" referrerpolicy="no-referrer" />
-  </a>
-  </p>
+    <p>Also, prebuilt installers for Windows are available on the Releases page. Download the Windows installer here: <a class="btn primary" href="https://github.com/archisman-panigrahi/QuickBib/releases/latest" target="_blank" rel="noopener">GitHub Releases</a></p>
+    </div>
+  </section>
 
+  <section class="install-item" id="macOS">
+    <input class="install-toggle" type="checkbox" id="macOS-toggle" />
+    <label class="install-summary" for="macOS-toggle">macOS</label>
+    <div class="panel">
+    <p>It is recommended to use the <a href="https://quickbib.streamlit.app/">Web App</a> on macOS. Continue reading to learn why.</p>
+    <p>No prebuilt macOS installers: Distributing an app that users can graphically install and run seems to require paying Apple perpetually (US$99/year) to sign and notarize the app even if the app is free — that’s plain extortion — so we ship the source instead. You can run QuickBib from source or build a macOS app using the packaging scripts on <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank" rel="noopener">GitHub</a>. Pull requests and heroic ideas for a user friendly installer are very welcome.</p>
+    <p><a href="https://github.com/archisman-panigrahi/QuickBib/blob/main/README.md#how-to-run-from-source-works-in-gnulinux-or-macos-and-perhaps-also-windows-with-a-little-bit-of-tweaking">Here</a> is how to run from source (on macOS as well as GNU/Linux)</p>
 
-  <p>Also, prebuilt installers for Windows are available on the Releases page. Download the Windows installer here: <a class="btn primary" href="https://github.com/archisman-panigrahi/QuickBib/releases/latest" target="_blank" rel="noopener">GitHub Releases</a></p>
+    <!-- Optional: keep the run-from-source example commented out for now -->
+    <!-- <article class="card"> ... </article> -->
+    </div>
+  </section>
 
-  <h3 id="macOS">macOS</h3>
+  <section class="install-item" id="mobile">
+    <input class="install-toggle" type="checkbox" id="mobile-toggle" />
+    <label class="install-summary" for="mobile-toggle">Mobile Devices</label>
+    <div class="panel">
+    <p>QuickBib is accessible on mobile devices via the web app — open it in a browser on your phone or tablet: <a href="https://quickbib.streamlit.app/" target="_blank" rel="noopener">QuickBib Web App</a>.</p>
+    </div>
+  </section>
 
-      <p>It is recommended to use the <a href="https://quickbib.streamlit.app/">Web App</a> on macOS. Continue reading to learn why.</p>
-      <p>No prebuilt macOS installers: Distributing an app that users can graphically install and run seems to require paying Apple perpetually (US$99/year) to sign and notarize the app even if the app is free — that’s plain extortion — so we ship the source instead. You can run QuickBib from source or build a macOS app using the packaging scripts on <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank" rel="noopener">GitHub</a>. Pull requests and heroic ideas for a user friendly installer are very welcome.</p>
-      <p><a href="https://github.com/archisman-panigrahi/QuickBib/blob/main/README.md#how-to-run-from-source-works-in-gnulinux-or-macos-and-perhaps-also-windows-with-a-little-bit-of-tweaking">Here</a> is how to run from source (on macOS as well as GNU/Linux)</p>
-  <!-- <h4 id="run-from-source">Here is how to run from source (on macOS as well as GNU/Linux)</h4> -->
-    <!-- <article class="card">
-      Run the following commands in a terminal:
-      First, clone the repository:
-        <pre><code>git clone https://github.com/archisman-panigrahi/quickbib.git</code></pre>
-        Change to the source directory:
-        <pre><code>cd quickbib</code></pre>
-        Create a virtual environment:
-        <pre><code>python3 -m venv .venv</code></pre>
-        Activate the virtual environment:
-        <pre><code>source .venv/bin/activate</code></pre>
-        Install the dependencies:
-        <pre><code>pip install -r requirements.txt</code></pre>
-        Run QuickBib:
-        <pre><code>python3 -m quickbib</code></pre>
-    </article> -->
-        </section>
+      </section>
 
       <section id="examples" class="container examples">
         <h2>Quick examples</h2>
