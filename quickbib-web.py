@@ -42,7 +42,7 @@ with title_text_col:
 # Input Field with enlarged label
 st.markdown(
     "<div style='font-size:1.2rem; font-weight:400;'>"
-    "Enter DOI or arXiv number or a link to the paper to generate the BibTeX entry <a href=\"https://github.com/archisman-panigrahi/QuickBib/blob/main/assets/screenshots/examples.png?raw=true\">(examples)</a>"
+    "Enter DOI or arXiv number or a link to the paper to generate the BibTeX entry <a href="https://archisman-panigrahi.github.io/QuickBib/#examples">(examples)</a>"
     "</div>",
     unsafe_allow_html=True,
 )
