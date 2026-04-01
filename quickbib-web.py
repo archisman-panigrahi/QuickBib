@@ -73,6 +73,12 @@ if doi_input:
 
 st.markdown(
     """
+    Please report bugs and suggest feature requests on <a href="GitHub">https://github.com/archisman-panigrahi/QuickBib/issues</a>.
+    """,
+    unsafe_allow_html=True,
+)
+st.markdown(
+    """
     If you find this helpful, please add a star on GitHub &nbsp;
     <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank">
     <img src="https://img.shields.io/github/stars/archisman-panigrahi/QuickBib?style=social" alt="Star on GitHub">
