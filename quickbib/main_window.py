@@ -101,6 +101,7 @@ class QuickBibWindow(QMainWindow):
         self.mobile_menu_btn.setText("☰")
         self.mobile_menu_btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
         self.mobile_menu_btn.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
+        self.mobile_menu_btn.setStyleSheet("QToolButton::menu-indicator { width: 0px; image: none; }")
 
         mobile_menu = QMenu(self.mobile_menu_btn)
         mobile_menu.addAction(copy_action)
