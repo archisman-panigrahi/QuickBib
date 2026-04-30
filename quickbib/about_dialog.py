@@ -21,6 +21,8 @@ class AboutDialog(QDialog):
         super().__init__(parent)
         self.setWindowTitle(tr("about.window_title"))
         self.resize(600, 420)
+        # Match minimum width to the main app minimum (320)
+        self.setMinimumWidth(320)
 
         # Main layout
         vbox = QVBoxLayout()

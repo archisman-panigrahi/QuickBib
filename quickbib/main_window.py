@@ -5,15 +5,17 @@ from PyQt6.QtWidgets import (
     QWidget,
     QTabWidget,
     QTextBrowser,
+    QBoxLayout,
     QVBoxLayout,
     QHBoxLayout,
     QLabel,
     QLineEdit,
     QPushButton,
+    QToolButton,
+    QMenu,
     QTextEdit,
     QMessageBox,
-    QFrame,
-    QStyle,
+    QSizePolicy,
 )
 from PyQt6.QtGui import QAction, QPixmap, QFont, QIcon, QDesktopServices
 from PyQt6.QtCore import QObject, pyqtSignal, Qt, QUrl
@@ -44,7 +46,9 @@ class QuickBibWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle(tr("window.title"))
-        self.resize(500, 380)
+        self.setMinimumSize(320, 360)
+        self._compact_breakpoint = 460
+        self._is_compact_layout = None
 
         # Set up emoji font support
         self._emoji_font = self._setup_emoji_font()
@@ -93,10 +97,31 @@ class QuickBibWindow(QMainWindow):
         feedback_action.triggered.connect(lambda: self._open_url(ISSUES_URL))
         help_menu.addAction(feedback_action)
 
+        self.mobile_menu_btn = QToolButton()
+        self.mobile_menu_btn.setText("☰")
+        self.mobile_menu_btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+        self.mobile_menu_btn.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
+
+        mobile_menu = QMenu(self.mobile_menu_btn)
+        mobile_menu.addAction(copy_action)
+        mobile_menu.addSeparator()
+        mobile_menu.addAction(about_action)
+        mobile_menu.addAction(howto_action)
+        mobile_menu.addSeparator()
+        mobile_menu.addAction(webapp_action)
+        mobile_menu.addAction(feedback_action)
+        mobile_menu.addSeparator()
+        mobile_menu.addAction(quit_action)
+        self.mobile_menu_btn.setMenu(mobile_menu)
+
         # Quick links
+        self.quick_links_widget = QWidget()
         quick_links = QHBoxLayout()
         quick_links.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        vbox.addLayout(quick_links)
+        quick_links.setContentsMargins(0, 0, 0, 0)
+        quick_links.setSpacing(6)
+        self.quick_links_widget.setLayout(quick_links)
+        vbox.addWidget(self.quick_links_widget)
 
         webapp_btn = QPushButton(tr("button.webapp"))
         webapp_btn.setFont(self._emoji_font)
@@ -116,47 +141,102 @@ class QuickBibWindow(QMainWindow):
         vbox.addSpacing(8)
 
         # DOI entry
-        entry_box = QHBoxLayout()
-        vbox.addLayout(entry_box)
+        self.entry_box = QHBoxLayout()
+        vbox.addLayout(self.entry_box)
 
-        label = QLabel(tr("label.doi"))
-        entry_box.addWidget(label)
+        self.doi_header_row = QWidget()
+        self.doi_header_layout = QHBoxLayout()
+        self.doi_header_layout.setContentsMargins(0, 0, 0, 0)
+        self.doi_header_row.setLayout(self.doi_header_layout)
+        self.entry_box.addWidget(self.doi_header_row)
+
+        self.doi_label = QLabel(tr("label.doi"))
+        self.doi_header_layout.addWidget(self.doi_label)
+        self.doi_header_layout.addStretch(1)
+        self.doi_header_layout.addWidget(self.mobile_menu_btn)
 
         self.doi_entry = QLineEdit()
         self.doi_entry.setPlaceholderText(tr("placeholder.query"))
-        entry_box.addWidget(self.doi_entry)
+        self.entry_box.addWidget(self.doi_entry)
         # Trigger fetch when user presses Enter in the DOI entry
         self.doi_entry.returnPressed.connect(self.fetch_bibtex)
 
-        fetch_btn = QPushButton(tr("button.fetch"))
-        fetch_btn.clicked.connect(self.fetch_bibtex)
-        entry_box.addWidget(fetch_btn)
+        self.fetch_btn = QPushButton(tr("button.fetch"))
+        self.fetch_btn.clicked.connect(self.fetch_bibtex)
+        self.entry_box.addWidget(self.fetch_btn)
 
         # Status label
         self.status = QLabel("")
         self.status.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.status.setTextFormat(Qt.TextFormat.RichText)
+        self.status.setWordWrap(True)
         vbox.addWidget(self.status)
 
         # Text view
         self.textview = QTextEdit()
         self.textview.setReadOnly(True)
         self.textview.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
-        self.textview.setMinimumHeight(250)
-        vbox.addWidget(self.textview)
+        self.textview.setMinimumHeight(180)
+        vbox.addWidget(self.textview, 1)
 
-        # Buttons
+        # Buttons (fixed-height bar so it won't overlap the output area on short windows)
+        self.btn_widget = QWidget()
         btn_box = QHBoxLayout()
         btn_box.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        vbox.addLayout(btn_box)
+        btn_box.setContentsMargins(0, 0, 0, 0)
+        btn_box.setSpacing(8)
+        self.btn_widget.setLayout(btn_box)
+        self.btn_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        # Slightly smaller fixed height to reduce vertical margin
+        self.btn_widget.setFixedHeight(24)
+        vbox.addWidget(self.btn_widget)
 
-        copy_btn = QPushButton(tr("button.copy_clipboard"))
-        copy_btn.setFont(self._emoji_font)
-        copy_btn.clicked.connect(self.copy_to_clipboard)
-        btn_box.addWidget(copy_btn)
+        self.copy_btn = QPushButton(tr("button.copy_clipboard"))
+        self.copy_btn.setFont(self._emoji_font)
+        self.copy_btn.clicked.connect(self.copy_to_clipboard)
+        btn_box.addWidget(self.copy_btn)
+
+        self._apply_responsive_layout(self.width())
+        self.resize(500, 400)
 
         # Keep references to worker/thread so they don't get GC'd
         self._worker_thread = None
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._apply_responsive_layout(event.size().width())
+
+    def _apply_responsive_layout(self, width: int) -> None:
+        compact = width < self._compact_breakpoint
+        if compact == self._is_compact_layout:
+            return
+
+        self._is_compact_layout = compact
+
+        self.entry_box.setDirection(
+            QBoxLayout.Direction.TopToBottom
+            if compact
+            else QBoxLayout.Direction.LeftToRight
+        )
+
+        if compact:
+            self.menuBar().setVisible(False)
+            self.mobile_menu_btn.setVisible(True)
+            self.quick_links_widget.setVisible(False)
+            self.doi_header_row.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            self.doi_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            self.fetch_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            self.copy_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            self.doi_entry.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        else:
+            self.menuBar().setVisible(True)
+            self.mobile_menu_btn.setVisible(False)
+            self.quick_links_widget.setVisible(True)
+            self.doi_header_row.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
+            self.doi_label.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+            self.fetch_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+            self.copy_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+            self.doi_entry.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
 
     def _setup_emoji_font(self):
         """Set up a font with good emoji support across different desktop environments."""
