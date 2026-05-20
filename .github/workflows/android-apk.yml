@@ -40,6 +40,15 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Cache pip downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-android-pyside${{ env.PYSIDE_VERSION }}-${{ hashFiles('requirements-android.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-android-pyside${{ env.PYSIDE_VERSION }}-
+            ${{ runner.os }}-pip-android-
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
@@ -76,18 +85,54 @@ jobs:
           python -m pip install "PySide6==$PYSIDE_VERSION" buildozer cython
           python -m pip install -r "$(python -c 'from pathlib import Path; import PySide6; print(Path(PySide6.__file__).resolve().parent / "scripts" / "requirements-android.txt")')"
 
+      - name: Cache Android SDK and NDK
+        id: android-sdk-ndk-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.pyside6_android_deploy
+          key: ${{ runner.os }}-pyside-android-sdk-ndk-pyside${{ env.PYSIDE_VERSION }}-python${{ env.ANDROID_PYTHON_VERSION }}-ndk-r27c
+          restore-keys: |
+            ${{ runner.os }}-pyside-android-sdk-ndk-pyside${{ env.PYSIDE_VERSION }}-python${{ env.ANDROID_PYTHON_VERSION }}-
+            ${{ runner.os }}-pyside-android-sdk-ndk-
+
       - name: Download Android SDK and NDK
+        if: steps.android-sdk-ndk-cache.outputs.cache-hit != 'true'
         run: |
           git clone --depth 1 --branch "$PYSIDE_VERSION" https://code.qt.io/pyside/pyside-setup.git /tmp/pyside-setup
           python -m pip install -r /tmp/pyside-setup/requirements.txt
           python -m pip install -r /tmp/pyside-setup/tools/cross_compile_android/requirements.txt
           python /tmp/pyside-setup/tools/cross_compile_android/main.py --download-only --auto-accept-license
 
+      - name: Validate Android SDK and NDK
+        run: |
+          test -d "$HOME/.pyside6_android_deploy/android-sdk"
+          test -d "$HOME/.pyside6_android_deploy/android-ndk/android-ndk-r27c"
+
       - name: Reject incomplete wheel URL inputs
         if: ${{ (env.PYSIDE_WHEEL_URL == '') != (env.SHIBOKEN_WHEEL_URL == '') }}
         run: |
           echo "Provide both pyside_wheel_url and shiboken_wheel_url, or leave both empty."
           exit 1
+
+      - name: Set PySide6 Android wheel paths
+        if: ${{ env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' }}
+        run: |
+          mkdir -p /tmp/pyside-android-wheels
+          PYSIDE_ANDROID_WHEEL="/tmp/pyside-android-wheels/PySide6-$PYSIDE_VERSION-$PYSIDE_VERSION-cp311-cp311-android_$TARGET_ARCH.whl"
+          SHIBOKEN_ANDROID_WHEEL="/tmp/pyside-android-wheels/shiboken6-$PYSIDE_VERSION-$PYSIDE_VERSION-cp311-cp311-android_$TARGET_ARCH.whl"
+          echo "PYSIDE_ANDROID_WHEEL=$PYSIDE_ANDROID_WHEEL" >> "$GITHUB_ENV"
+          echo "SHIBOKEN_ANDROID_WHEEL=$SHIBOKEN_ANDROID_WHEEL" >> "$GITHUB_ENV"
+
+      - name: Cache PySide6 Android wheels
+        if: ${{ env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' }}
+        id: pyside-android-wheel-cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/pyside-android-wheels
+          key: ${{ runner.os }}-pyside-android-wheels-pyside${{ env.PYSIDE_VERSION }}-${{ env.TARGET_ARCH }}-python${{ env.ANDROID_PYTHON_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-pyside-android-wheels-pyside${{ env.PYSIDE_VERSION }}-${{ env.TARGET_ARCH }}-
+            ${{ runner.os }}-pyside-android-wheels-
 
       - name: Download PySide6 Android wheels from URLs
         if: ${{ env.PYSIDE_WHEEL_URL != '' && env.SHIBOKEN_WHEEL_URL != '' }}
@@ -99,23 +144,32 @@ jobs:
           echo "SHIBOKEN_ANDROID_WHEEL=/tmp/pyside-android-wheels/shiboken6-android.whl" >> "$GITHUB_ENV"
 
       - name: Download PySide6 Android wheels from Qt releases
-        if: ${{ env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' }}
+        if: ${{ env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' && steps.pyside-android-wheel-cache.outputs.cache-hit != 'true' }}
         run: |
-          mkdir -p /tmp/pyside-android-wheels
-          PYSIDE_ANDROID_WHEEL="/tmp/pyside-android-wheels/PySide6-$PYSIDE_VERSION-$PYSIDE_VERSION-cp311-cp311-android_$TARGET_ARCH.whl"
-          SHIBOKEN_ANDROID_WHEEL="/tmp/pyside-android-wheels/shiboken6-$PYSIDE_VERSION-$PYSIDE_VERSION-cp311-cp311-android_$TARGET_ARCH.whl"
           curl -fL "https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-$PYSIDE_VERSION-$PYSIDE_VERSION-cp311-cp311-android_$TARGET_ARCH.whl" -o "$PYSIDE_ANDROID_WHEEL"
           curl -fL "https://download.qt.io/official_releases/QtForPython/shiboken6/shiboken6-$PYSIDE_VERSION-$PYSIDE_VERSION-cp311-cp311-android_$TARGET_ARCH.whl" -o "$SHIBOKEN_ANDROID_WHEEL"
-          echo "PYSIDE_ANDROID_WHEEL=$PYSIDE_ANDROID_WHEEL" >> "$GITHUB_ENV"
-          echo "SHIBOKEN_ANDROID_WHEEL=$SHIBOKEN_ANDROID_WHEEL" >> "$GITHUB_ENV"
 
       - name: Validate Android wheel inputs
         run: |
           test -n "$PYSIDE_ANDROID_WHEEL"
           test -n "$SHIBOKEN_ANDROID_WHEEL"
+          test -f "$PYSIDE_ANDROID_WHEEL"
+          test -f "$SHIBOKEN_ANDROID_WHEEL"
 
       - name: Patch deployer for Android permissions
         run: python tools/patch_pyside_android_deploy.py
+
+      - name: Cache Buildozer and Gradle downloads
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.buildozer
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-buildozer-gradle-android-pyside${{ env.PYSIDE_VERSION }}-python${{ env.ANDROID_PYTHON_VERSION }}-${{ hashFiles('quickbib.pyproject', 'requirements-android.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-buildozer-gradle-android-pyside${{ env.PYSIDE_VERSION }}-python${{ env.ANDROID_PYTHON_VERSION }}-
+            ${{ runner.os }}-buildozer-gradle-android-
 
       - name: Build APK
         env:
