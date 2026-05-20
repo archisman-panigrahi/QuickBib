@@ -61,6 +61,7 @@ jobs:
             clang \
             cmake \
             git \
+            libdouble-conversion3 \
             libssl-dev \
             llvm \
             unzip \
