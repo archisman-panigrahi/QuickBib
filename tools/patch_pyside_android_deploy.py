@@ -83,6 +83,7 @@ PATCH_LINES = [
     '        ("version", "0.8.0"),',
     '        ("icon.filename", "assets/icon/192x192/io.github.archisman_panigrahi.QuickBib.png"),',
     '        ("orientation", "portrait"),',
+    '        ("source.include_exts", "py,json,png,txt"),',
     '        ("android.archs", _quickbib_buildozer_arch),',
     '        ("android.permissions", "INTERNET"),',
     "    ):",
@@ -115,6 +116,16 @@ def main() -> None:
     deploy_py = Path(PySide6.__file__).resolve().parent / "scripts" / "android_deploy.py"
     text = deploy_py.read_text(encoding="utf-8")
     if MARKER in text:
+        if '"source.include_exts"' not in text:
+            text = text.replace(
+                '        ("orientation", "portrait"),\n',
+                '        ("orientation", "portrait"),\n'
+                '        ("source.include_exts", "py,json,png,txt"),\n',
+                1,
+            )
+            deploy_py.write_text(text, encoding="utf-8")
+            print(f"Updated existing QuickBib patch in {deploy_py}")
+            return
         print(f"{deploy_py} is already patched")
         return
     match = TARGET_RE.search(text)

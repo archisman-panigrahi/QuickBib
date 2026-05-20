@@ -9,8 +9,34 @@ from .app_info import APP_NAME, APP_VERSION, HOMEPAGE, REPO_URL, LICENSE_PATH
 from .main_window import QuickBibWindow
 
 
+def _is_android() -> bool:
+    return sys.platform == "android"
+
+
+def _android_stylesheet() -> str:
+    return """
+        QWidget {
+            font-size: 16px;
+        }
+        QPushButton, QToolButton {
+            min-height: 40px;
+            padding: 6px 12px;
+        }
+        QLineEdit {
+            min-height: 36px;
+            padding: 4px 8px;
+        }
+        QTextEdit {
+            font-family: monospace;
+            font-size: 15px;
+        }
+    """
+
+
 def main(argv):
     app = QApplication(argv)
+    if _is_android():
+        app.setStyleSheet(_android_stylesheet())
     # Only set desktop/WM hints on Linux. Windows and macOS do not use
     # desktop files and may behave differently; restrict the change to
     # avoid affecting those platforms.

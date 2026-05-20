@@ -1,4 +1,5 @@
 import threading
+import sys
 from .qt import (
     QAction,
     QBoxLayout,
@@ -31,6 +32,10 @@ from .app_info import LICENSE_PATH, WEBAPP_URL, ISSUES_URL
 from .i18n import tr
 
 
+def _is_android() -> bool:
+    return sys.platform == "android"
+
+
 class FetchWorker(QObject):
     finished = Signal(bool, str, object)  # found, bibtex, error
 
@@ -51,7 +56,7 @@ class QuickBibWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle(tr("window.title"))
         self.setMinimumSize(320, 360)
-        self._compact_breakpoint = 460
+        self._compact_breakpoint = 720 if _is_android() else 460
         self._is_compact_layout = None
 
         # Set up emoji font support
@@ -61,6 +66,8 @@ class QuickBibWindow(QMainWindow):
         self.setCentralWidget(central)
 
         vbox = QVBoxLayout()
+        vbox.setContentsMargins(10, 10, 10, 10)
+        vbox.setSpacing(8)
         central.setLayout(vbox)
 
         # Menu bar
@@ -162,11 +169,13 @@ class QuickBibWindow(QMainWindow):
 
         self.doi_entry = QLineEdit()
         self.doi_entry.setPlaceholderText(tr("placeholder.query"))
+        self.doi_entry.setMinimumHeight(36 if _is_android() else 0)
         self.entry_box.addWidget(self.doi_entry)
         # Trigger fetch when user presses Enter in the DOI entry
         self.doi_entry.returnPressed.connect(self.fetch_bibtex)
 
         self.fetch_btn = QPushButton(tr("button.fetch"))
+        self.fetch_btn.setMinimumHeight(40 if _is_android() else 0)
         self.fetch_btn.clicked.connect(self.fetch_bibtex)
         self.entry_box.addWidget(self.fetch_btn)
 
@@ -193,16 +202,18 @@ class QuickBibWindow(QMainWindow):
         self.btn_widget.setLayout(btn_box)
         self.btn_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         # Slightly smaller fixed height to reduce vertical margin
-        self.btn_widget.setFixedHeight(24)
+        self.btn_widget.setFixedHeight(48 if _is_android() else 28)
         vbox.addWidget(self.btn_widget)
 
         self.copy_btn = QPushButton(tr("button.copy_clipboard"))
         self.copy_btn.setFont(self._emoji_font)
+        self.copy_btn.setMinimumHeight(40 if _is_android() else 0)
         self.copy_btn.clicked.connect(self.copy_to_clipboard)
         btn_box.addWidget(self.copy_btn)
 
         self._apply_responsive_layout(self.width())
-        self.resize(500, 400)
+        if not _is_android():
+            self.resize(500, 400)
 
         # Keep references to worker/thread so they don't get GC'd
         self._worker_thread = None
@@ -212,7 +223,7 @@ class QuickBibWindow(QMainWindow):
         self._apply_responsive_layout(event.size().width())
 
     def _apply_responsive_layout(self, width: int) -> None:
-        compact = width < self._compact_breakpoint
+        compact = _is_android() or width < self._compact_breakpoint
         if compact == self._is_compact_layout:
             return
 
@@ -233,6 +244,7 @@ class QuickBibWindow(QMainWindow):
             self.fetch_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
             self.copy_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
             self.doi_entry.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            self.copy_btn.setMinimumWidth(0)
         else:
             self.menuBar().setVisible(True)
             self.mobile_menu_btn.setVisible(False)
@@ -242,6 +254,7 @@ class QuickBibWindow(QMainWindow):
             self.fetch_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
             self.copy_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
             self.doi_entry.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            self.copy_btn.setMinimumWidth(0)
 
     def _setup_emoji_font(self):
         """Set up a font with good emoji support across different desktop environments."""
@@ -258,11 +271,13 @@ class QuickBibWindow(QMainWindow):
         default_font = QFont()
         font_size = default_font.pointSize()
         
-        font = QFont()
+        font = QFont(default_font)
         font.setPointSize(font_size)
         
         # Try to set the font family with fallbacks
-        font.setFamilies(emoji_fonts)
+        families = [default_font.family()] if default_font.family() else []
+        families.extend(emoji_fonts)
+        font.setFamilies(families)
         return font
 
     def _format_status_with_emoji(self, text: str) -> str:

@@ -1,5 +1,6 @@
 import json
 import os
+from importlib import resources
 from pathlib import Path
 
 from .qt import QLocale
@@ -15,13 +16,17 @@ def _load_locale(locale_code: str) -> dict[str, str]:
     if normalized in _cache:
         return _cache[normalized]
 
-    path = _LOCALES_DIR / f"{normalized}.json"
-    if not path.exists():
-        _cache[normalized] = {}
-        return _cache[normalized]
-
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        path = _LOCALES_DIR / f"{normalized}.json"
+        if path.exists():
+            raw = path.read_text(encoding="utf-8")
+        else:
+            raw = (
+                resources.files("quickbib.locales")
+                .joinpath(f"{normalized}.json")
+                .read_text(encoding="utf-8")
+            )
+        data = json.loads(raw)
     except Exception:
         data = {}
 
