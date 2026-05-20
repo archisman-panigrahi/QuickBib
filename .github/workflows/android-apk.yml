@@ -35,10 +35,10 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
+      - name: Set up Python 3.11.9
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ env.ANDROID_PYTHON_VERSION }}
 
       - name: Set up Java
         uses: actions/setup-java@v4

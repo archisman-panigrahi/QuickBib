@@ -69,6 +69,11 @@ PATCH_LINES = [
     '        "python3",',
     '        f"python3=={_quickbib_python_version}",',
     "    )",
+    "    _quickbib_text = _quickbib_pin_requirement(",
+    "        _quickbib_text,",
+    '        "hostpython3",',
+    '        f"hostpython3=={_quickbib_python_version}",',
+    "    )",
     '    _quickbib_spec.write_text(_quickbib_text, encoding="utf-8")',
 ]
 
