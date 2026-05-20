@@ -59,6 +59,12 @@
     <display_length compare="ge">320</display_length>
   </requires>
   <releases>
+    <release version="0.8.1" date="2026-05-20">
+      <description>
+        <p>better arXiv link handling via doi2bib3 v0.9.1</p>
+      </description>
+      <url type="details">https://github.com/archisman-panigrahi/QuickBib/releases/tag/v0.8.1</url>
+    </release>
     <release version="0.8.0" date="2026-04-30">
       <description>
         <p>mobile friendly responsive interface</p>
