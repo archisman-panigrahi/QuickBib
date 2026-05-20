@@ -70,7 +70,7 @@ jobs:
       - name: Install Python build tools
         run: |
           python -m pip install --upgrade pip
-          python -m pip install "PySide6==6.9.3" buildozer cython
+          python -m pip install "PySide6==6.9.3" buildozer cython qtpip
 
       - name: Download Android SDK and NDK
         run: |
@@ -78,6 +78,18 @@ jobs:
           python -m pip install -r /tmp/pyside-setup/requirements.txt
           python -m pip install -r /tmp/pyside-setup/tools/cross_compile_android/requirements.txt
           python /tmp/pyside-setup/tools/cross_compile_android/main.py --download-only --auto-accept-license
+
+      - name: Reject incomplete wheel URL inputs
+        if: ${{ (env.PYSIDE_WHEEL_URL == '') != (env.SHIBOKEN_WHEEL_URL == '') }}
+        run: |
+          echo "Provide both pyside_wheel_url and shiboken_wheel_url, or leave both empty."
+          exit 1
+
+      - name: Reject armv7a without wheel URLs
+        if: ${{ env.TARGET_ARCH == 'armv7a' && env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' }}
+        run: |
+          echo "armv7a requires custom PySide6 and shiboken6 Android wheel URLs."
+          exit 1
 
       - name: Download PySide6 Android wheels from URLs
         if: ${{ env.PYSIDE_WHEEL_URL != '' && env.SHIBOKEN_WHEEL_URL != '' }}
@@ -89,23 +101,13 @@ jobs:
           echo "SHIBOKEN_ANDROID_WHEEL=/tmp/pyside-android-wheels/shiboken6-android.whl" >> "$GITHUB_ENV"
 
       - name: Download PySide6 Android wheels with qtpip
-        if: ${{ env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' }}
+        if: ${{ env.TARGET_ARCH != 'armv7a' && env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' }}
         run: |
-          if [ "$TARGET_ARCH" = "armv7a" ]; then
-            echo "armv7a requires custom PySide6 and shiboken6 Android wheel URLs."
-            exit 1
-          fi
           mkdir -p /tmp/pyside-android-wheels
           cd /tmp/pyside-android-wheels
           qtpip download PySide6 --android --arch "$TARGET_ARCH"
           echo "PYSIDE_ANDROID_WHEEL=$(find /tmp/pyside-android-wheels -name 'PySide6-*.whl' -type f -print -quit)" >> "$GITHUB_ENV"
           echo "SHIBOKEN_ANDROID_WHEEL=$(find /tmp/pyside-android-wheels -name 'shiboken6-*.whl' -type f -print -quit)" >> "$GITHUB_ENV"
-
-      - name: Reject incomplete wheel URL inputs
-        if: ${{ (env.PYSIDE_WHEEL_URL == '') != (env.SHIBOKEN_WHEEL_URL == '') }}
-        run: |
-          echo "Provide both pyside_wheel_url and shiboken_wheel_url, or leave both empty."
-          exit 1
 
       - name: Validate Android wheel inputs
         run: |
