@@ -6,15 +6,6 @@ on:
       - "**"
   workflow_dispatch:
     inputs:
-      arch:
-        description: "Target Android architecture"
-        required: true
-        default: "aarch64"
-        type: choice
-        options:
-          - aarch64
-          - armv7a
-          - x86_64
       pyside_wheel_url:
         description: "Optional URL to a PySide6 Android wheel; leave empty to use the official Qt release wheel"
         required: false
@@ -33,8 +24,9 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     env:
-      TARGET_ARCH: ${{ github.event.inputs.arch || 'aarch64' }}
+      TARGET_ARCH: "aarch64"
       PYSIDE_VERSION: "6.9.3"
+      ANDROID_PYTHON_VERSION: "3.11.9"
       PYSIDE_WHEEL_URL: ${{ github.event.inputs.pyside_wheel_url || '' }}
       SHIBOKEN_WHEEL_URL: ${{ github.event.inputs.shiboken_wheel_url || '' }}
       APK_ARTIFACT_NAME: ${{ github.event.inputs.artifact_name || 'quickbib-android-apk' }}
@@ -97,12 +89,6 @@ jobs:
           echo "Provide both pyside_wheel_url and shiboken_wheel_url, or leave both empty."
           exit 1
 
-      - name: Reject armv7a without wheel URLs
-        if: ${{ env.TARGET_ARCH == 'armv7a' && env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' }}
-        run: |
-          echo "armv7a requires custom PySide6 and shiboken6 Android wheel URLs."
-          exit 1
-
       - name: Download PySide6 Android wheels from URLs
         if: ${{ env.PYSIDE_WHEEL_URL != '' && env.SHIBOKEN_WHEEL_URL != '' }}
         run: |
@@ -113,7 +99,7 @@ jobs:
           echo "SHIBOKEN_ANDROID_WHEEL=/tmp/pyside-android-wheels/shiboken6-android.whl" >> "$GITHUB_ENV"
 
       - name: Download PySide6 Android wheels from Qt releases
-        if: ${{ env.TARGET_ARCH != 'armv7a' && env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' }}
+        if: ${{ env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' }}
         run: |
           mkdir -p /tmp/pyside-android-wheels
           PYSIDE_ANDROID_WHEEL="/tmp/pyside-android-wheels/PySide6-$PYSIDE_VERSION-$PYSIDE_VERSION-cp311-cp311-android_$TARGET_ARCH.whl"
