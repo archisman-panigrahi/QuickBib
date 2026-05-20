@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quickbib-mcp"
+version = "0.1.0"
+description = "MCP server that verifies BibTeX references against CrossRef and arXiv and reads Overleaf projects."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "GPL-3.0-or-later" }
+dependencies = [
+    "mcp>=1.2.0",
+]
+
+[project.scripts]
+quickbib-mcp = "quickbib_mcp.server:main"
+
+[tool.setuptools]
+packages = ["quickbib_mcp"]

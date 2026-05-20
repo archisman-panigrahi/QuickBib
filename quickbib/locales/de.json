@@ -56,5 +56,8 @@
   "examples.label.old_arxiv_id": "Alte arXiv-ID",
   "examples.label.journal_url": "Journal-URL (funktioniert mit APS, AMS, ACS, PNAS, Nature...)",
   "examples.label.title_fuzzy": "Titel (unscharfe Suche)",
-  "button.copy": "Kopieren"
+  "button.copy": "Kopieren",
+  "menu.tools": "&Tools",
+  "action.verify": "✅ &Verify References",
+  "button.verify": "✅ Verify References"
 }

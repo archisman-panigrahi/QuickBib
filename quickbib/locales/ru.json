@@ -56,5 +56,8 @@
   "examples.label.old_arxiv_id": "Старый ID arXiv",
   "examples.label.journal_url": "URL журнала (работает с APS, AMS, ACS, PNAS, Nature...)",
   "examples.label.title_fuzzy": "Название (нечёткий поиск)",
-  "button.copy": "Копировать"
+  "button.copy": "Копировать",
+  "menu.tools": "&Tools",
+  "action.verify": "✅ &Verify References",
+  "button.verify": "✅ Verify References"
 }

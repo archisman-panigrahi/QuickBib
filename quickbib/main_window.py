@@ -23,6 +23,7 @@ from PyQt6.QtCore import QObject, pyqtSignal, Qt, QUrl
 from .helpers import get_bibtex_for_doi, copy_to_clipboard
 from .about_dialog import AboutDialog
 from .how_to_use_dialog import HowToUseDialog
+from .verify_dialog import VerifyDialog
 from .app_info import LICENSE_PATH, WEBAPP_URL, ISSUES_URL
 from .i18n import tr
 
@@ -74,6 +75,12 @@ class QuickBibWindow(QMainWindow):
         copy_action.triggered.connect(self.copy_to_clipboard)
         edit_menu.addAction(copy_action)
 
+        tools_menu = menubar.addMenu(tr("menu.tools"))
+        verify_action = QAction(tr("action.verify"), self)
+        verify_action.setFont(self._emoji_font)
+        verify_action.triggered.connect(self.show_verify_dialog)
+        tools_menu.addAction(verify_action)
+
         help_menu = menubar.addMenu(tr("menu.help"))
         about_action = QAction(tr("action.about"), self)
         about_action.setFont(self._emoji_font)
@@ -105,6 +112,7 @@ class QuickBibWindow(QMainWindow):
 
         mobile_menu = QMenu(self.mobile_menu_btn)
         mobile_menu.addAction(copy_action)
+        mobile_menu.addAction(verify_action)
         mobile_menu.addSeparator()
         mobile_menu.addAction(about_action)
         mobile_menu.addAction(howto_action)
@@ -133,6 +141,11 @@ class QuickBibWindow(QMainWindow):
         howto_btn.setFont(self._emoji_font)
         howto_btn.clicked.connect(self.show_how_to_use)
         quick_links.addWidget(howto_btn)
+
+        verify_btn = QPushButton(tr("button.verify"))
+        verify_btn.setFont(self._emoji_font)
+        verify_btn.clicked.connect(self.show_verify_dialog)
+        quick_links.addWidget(verify_btn)
 
         feedback_btn = QPushButton(tr("button.feedback"))
         feedback_btn.setFont(self._emoji_font)
@@ -289,6 +302,10 @@ class QuickBibWindow(QMainWindow):
 
     def show_how_to_use(self):
         dlg = HowToUseDialog(self)
+        dlg.exec()
+
+    def show_verify_dialog(self):
+        dlg = VerifyDialog(self)
         dlg.exec()
 
     def fetch_bibtex(self):

@@ -56,5 +56,8 @@
   "examples.label.old_arxiv_id": "旧版 arXiv ID",
   "examples.label.journal_url": "期刊链接 (适用于 APS, AMS, ACS, PNAS, Nature 等)",
   "examples.label.title_fuzzy": "标题 (模糊搜索)",
-  "button.copy": "复制"
+  "button.copy": "复制",
+  "menu.tools": "&Tools",
+  "action.verify": "✅ &Verify References",
+  "button.verify": "✅ Verify References"
 }

@@ -56,5 +56,8 @@
   "examples.label.old_arxiv_id": "পুরনো arXiv ID",
   "examples.label.journal_url": "জার্নাল URL (APS, AMS, ACS, PNAS, Nature ইত্যাদি কাজ করে)",
   "examples.label.title_fuzzy": "শিরোনাম (আনুমানিক অনুসন্ধান)",
-  "button.copy": "কপি"
+  "button.copy": "কপি",
+  "menu.tools": "&Tools",
+  "action.verify": "✅ &Verify References",
+  "button.verify": "✅ Verify References"
 }

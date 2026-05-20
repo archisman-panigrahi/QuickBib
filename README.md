@@ -1,6 +1,8 @@
 # <img src="assets/icon/scalable/io.github.archisman_panigrahi.QuickBib.svg" align="left" width="90" height="90">  <br> QuickBib
 
 This is a cross platform app that enables you to get the bibtex entry from a DOI number, arXiv ID, article url (supports Nature journals, APS journals, PNAS, and more) or article title. It uses [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3) as its backend. Written in Python, QuickBib is licensed under GPLv3.
+
+QuickBib can also **verify** that the BibTeX references in a paper are authentic and not hallucinated — see [Verify references](#verify-references).
  
 ![screenshot](assets/screenshots/quickbib-animated.gif)
 
@@ -121,6 +123,39 @@ Or run the convenience script in `bin/quickbib`:
 ```
 ./bin/quickbib
 ```
+
+## Verify references
+
+Large language models frequently invent realistic-looking citations — fabricated DOIs, papers that were never written, or DOIs that point to a completely different article. QuickBib can check every BibTeX reference against authoritative databases (CrossRef and arXiv) and tell you which ones are genuine.
+
+Verification is **deterministic**: QuickBib fetches the real record for each entry and compares the metadata in code. No AI service, API key, or subscription is involved. Each reference is reported as one of:
+
+- **verified** — the DOI/arXiv ID resolves and the metadata matches, or the title was found in CrossRef;
+- **mismatch** — a record exists but the title does not match (e.g. the DOI belongs to a different paper);
+- **not found** — the DOI/arXiv ID does not resolve, or no matching publication exists — likely fabricated;
+- **unverified** — the entry had nothing to check against, or a database was unreachable.
+
+There are three ways to use it.
+
+### 1. In the desktop app
+
+Open QuickBib and choose **Tools → Verify References** (or the **Verify References** quick-link button). Point it at a local `.bib` file, or connect directly to an Overleaf project using your Overleaf project ID and Git token. Results appear in a colour-coded table with the full finding for each reference.
+
+### 2. From the command line
+
+No GUI required:
+
+```
+python3 -m quickbib.verify references.bib
+python3 -m quickbib.verify ./paper-folder --email you@example.com
+python3 -m quickbib.verify --overleaf <PROJECT_ID> --token <GIT_TOKEN>
+```
+
+Add `--json` for machine-readable output. When `.tex` files are present, it also reports `\cite` keys that are not defined in any `.bib` file (a common sign of an invented citation key). Supplying `--email` opts in to CrossRef's faster "polite pool".
+
+### 3. As an MCP server (optional — for Claude Desktop, Cursor, …)
+
+The [`quickbib_mcp/`](quickbib_mcp/) folder is an optional [Model Context Protocol](https://modelcontextprotocol.io) server that exposes the same verification engine to AI assistants — so you can ask Claude to "check the references in my Overleaf project" while you write. See [`quickbib_mcp/README.md`](quickbib_mcp/README.md) for setup. The desktop app and CLI above work entirely on their own; the MCP server is just an extra front-end.
 
 ## Translations
 
