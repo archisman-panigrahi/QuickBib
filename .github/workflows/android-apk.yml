@@ -31,7 +31,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     env:
       TARGET_ARCH: ${{ github.event.inputs.arch || 'aarch64' }}
       PYSIDE_VERSION: "6.9.3"
@@ -59,13 +59,23 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             build-essential \
+            autoconf \
+            automake \
             clang \
             cmake \
             git \
+            libffi-dev \
+            libtool \
+            libtool-bin \
+            libncurses5-dev \
+            libncursesw5-dev \
             libssl-dev \
+            libtinfo6 \
             llvm \
+            pkg-config \
             unzip \
             wget \
+            zlib1g-dev \
             zip
 
       - name: Install Python build tools
