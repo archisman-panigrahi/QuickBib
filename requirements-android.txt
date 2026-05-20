@@ -1,2 +1,1 @@
 doi2bib3>=0.9.0
-charset-normalizer==2.1.1
