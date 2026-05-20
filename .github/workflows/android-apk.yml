@@ -106,8 +106,13 @@ jobs:
           mkdir -p /tmp/pyside-android-wheels
           cd /tmp/pyside-android-wheels
           qtpip download PySide6 --android --arch "$TARGET_ARCH"
-          echo "PYSIDE_ANDROID_WHEEL=$(find /tmp/pyside-android-wheels -name 'PySide6-*.whl' -type f -print -quit)" >> "$GITHUB_ENV"
-          echo "SHIBOKEN_ANDROID_WHEEL=$(find /tmp/pyside-android-wheels -name 'shiboken6-*.whl' -type f -print -quit)" >> "$GITHUB_ENV"
+          find /tmp/pyside-android-wheels -name '*.whl' -type f -print
+          PYSIDE_ANDROID_WHEEL="$(find /tmp/pyside-android-wheels -iname 'pyside6-*.whl' -type f -print -quit)"
+          SHIBOKEN_ANDROID_WHEEL="$(find /tmp/pyside-android-wheels -iname 'shiboken6-*.whl' -type f -print -quit)"
+          test -n "$PYSIDE_ANDROID_WHEEL"
+          test -n "$SHIBOKEN_ANDROID_WHEEL"
+          echo "PYSIDE_ANDROID_WHEEL=$PYSIDE_ANDROID_WHEEL" >> "$GITHUB_ENV"
+          echo "SHIBOKEN_ANDROID_WHEEL=$SHIBOKEN_ANDROID_WHEEL" >> "$GITHUB_ENV"
 
       - name: Validate Android wheel inputs
         run: |
