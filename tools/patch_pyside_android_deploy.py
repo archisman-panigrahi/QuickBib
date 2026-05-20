@@ -29,6 +29,7 @@ PATCH_LINES = [
     '    _quickbib_text = _quickbib_spec.read_text(encoding="utf-8")',
     '    _quickbib_arch = _quickbib_os.environ.get("TARGET_ARCH", "aarch64")',
     "    _quickbib_buildozer_arch = {",
+    '        "aarch64": "arm64-v8a",',
     '        "armv7a": "armeabi-v7a",',
     "    }.get(_quickbib_arch, _quickbib_arch)",
     "    for _quickbib_key, _quickbib_value in (",
