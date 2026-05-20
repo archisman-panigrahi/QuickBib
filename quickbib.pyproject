@@ -1,0 +1,28 @@
+{
+    "files": [
+        "main.py",
+        "quickbib/__init__.py",
+        "quickbib/__main__.py",
+        "quickbib/about_dialog.py",
+        "quickbib/app_info.py",
+        "quickbib/helpers.py",
+        "quickbib/how_to_use_dialog.py",
+        "quickbib/i18n.py",
+        "quickbib/main_window.py",
+        "quickbib/qt.py",
+        "quickbib/quickbib.py",
+        "requirements-android.txt",
+        "quickbib/locales/bn.json",
+        "quickbib/locales/de.json",
+        "quickbib/locales/en.json",
+        "quickbib/locales/es.json",
+        "quickbib/locales/fr.json",
+        "quickbib/locales/it.json",
+        "quickbib/locales/pl.json",
+        "quickbib/locales/pt_br.json",
+        "quickbib/locales/ru.json",
+        "quickbib/locales/zh_cn.json",
+        "assets/icon/192x192/io.github.archisman_panigrahi.QuickBib.png",
+        "LICENSE"
+    ]
+}

@@ -108,6 +108,15 @@ python3 -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+The desktop app defaults to PyQt6. To exercise the PySide6 path used by the
+Android build, install the alternate requirements and set the Qt binding
+explicitly:
+
+```
+pip install -r requirements-pyside.txt
+QUICKBIB_QT_API=pyside6 python3 -m quickbib
+```
+
 4. Run QuickBib from source
 
 You can run the package module directly:
@@ -121,6 +130,30 @@ Or run the convenience script in `bin/quickbib`:
 ```
 ./bin/quickbib
 ```
+
+## Android
+
+QuickBib keeps a single codebase for desktop and Android. The app imports Qt
+through `quickbib/qt.py`: PyQt6 remains the default desktop binding, while
+Android sets `QUICKBIB_QT_API=pyside6` and uses PySide6.
+
+The Android entry point is the repository-root `main.py`, and
+`quickbib.pyproject` lists the files that `pyside6-android-deploy` should
+bundle. Android package metadata is set by the GitHub Actions workflow and
+`tools/patch_pyside_android_deploy.py`:
+
+- App title: `QuickBib`
+- Package id: `io.github.archisman_panigrahi.quickbib`
+- Version: `0.8.0`
+- Icon: `assets/icon/192x192/io.github.archisman_panigrahi.QuickBib.png`
+- Orientation: `portrait`
+- Permission: `INTERNET`
+
+To build an APK without installing Android Studio locally, run the
+`Android APK` workflow from GitHub Actions. It runs on pushes to any branch and
+can also be run manually for any branch once the workflow exists on the default
+branch. Supported architecture choices are `aarch64`, `x86_64`, and `armv7a`;
+`armv7a` is 32-bit ARM and needs custom PySide6/shiboken6 Android wheel URLs.
 
 ## Translations
 

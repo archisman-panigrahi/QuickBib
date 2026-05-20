@@ -12,7 +12,7 @@ def get_bibtex_for_doi(doi: str):
 
 def copy_to_clipboard(text: str) -> bool:
     try:
-        from PyQt6.QtGui import QGuiApplication
+        from .qt import QGuiApplication
 
         app = QGuiApplication.instance()
         if app is None:

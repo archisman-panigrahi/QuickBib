@@ -1,0 +1,140 @@
+name: Android APK
+
+on:
+  push:
+    branches:
+      - "**"
+  workflow_dispatch:
+    inputs:
+      arch:
+        description: "Target Android architecture"
+        required: true
+        default: "aarch64"
+        type: choice
+        options:
+          - aarch64
+          - armv7a
+          - x86_64
+      pyside_wheel_url:
+        description: "Optional URL to a PySide6 Android wheel; leave empty to use qtpip"
+        required: false
+        type: string
+      shiboken_wheel_url:
+        description: "Optional URL to the matching shiboken6 Android wheel; leave empty to use qtpip"
+        required: false
+        type: string
+      artifact_name:
+        description: "GitHub artifact name"
+        required: false
+        default: "quickbib-android-apk"
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    env:
+      TARGET_ARCH: ${{ github.event.inputs.arch || 'aarch64' }}
+      PYSIDE_WHEEL_URL: ${{ github.event.inputs.pyside_wheel_url || '' }}
+      SHIBOKEN_WHEEL_URL: ${{ github.event.inputs.shiboken_wheel_url || '' }}
+      APK_ARTIFACT_NAME: ${{ github.event.inputs.artifact_name || 'quickbib-android-apk' }}
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            clang \
+            cmake \
+            git \
+            libssl-dev \
+            llvm \
+            unzip \
+            wget \
+            zip
+
+      - name: Install Python build tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "PySide6==6.9.3" buildozer cython
+
+      - name: Download Android SDK and NDK
+        run: |
+          git clone --depth 1 --branch 6.9.3 https://code.qt.io/pyside/pyside-setup.git /tmp/pyside-setup
+          python -m pip install -r /tmp/pyside-setup/requirements.txt
+          python -m pip install -r /tmp/pyside-setup/tools/cross_compile_android/requirements.txt
+          python /tmp/pyside-setup/tools/cross_compile_android/main.py --download-only --auto-accept-license
+
+      - name: Download PySide6 Android wheels from URLs
+        if: ${{ env.PYSIDE_WHEEL_URL != '' && env.SHIBOKEN_WHEEL_URL != '' }}
+        run: |
+          mkdir -p /tmp/pyside-android-wheels
+          curl -L "$PYSIDE_WHEEL_URL" -o /tmp/pyside-android-wheels/pyside6-android.whl
+          curl -L "$SHIBOKEN_WHEEL_URL" -o /tmp/pyside-android-wheels/shiboken6-android.whl
+          echo "PYSIDE_ANDROID_WHEEL=/tmp/pyside-android-wheels/pyside6-android.whl" >> "$GITHUB_ENV"
+          echo "SHIBOKEN_ANDROID_WHEEL=/tmp/pyside-android-wheels/shiboken6-android.whl" >> "$GITHUB_ENV"
+
+      - name: Download PySide6 Android wheels with qtpip
+        if: ${{ env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' }}
+        run: |
+          if [ "$TARGET_ARCH" = "armv7a" ]; then
+            echo "armv7a requires custom PySide6 and shiboken6 Android wheel URLs."
+            exit 1
+          fi
+          mkdir -p /tmp/pyside-android-wheels
+          cd /tmp/pyside-android-wheels
+          qtpip download PySide6 --android --arch "$TARGET_ARCH"
+          echo "PYSIDE_ANDROID_WHEEL=$(find /tmp/pyside-android-wheels -name 'PySide6-*.whl' -type f -print -quit)" >> "$GITHUB_ENV"
+          echo "SHIBOKEN_ANDROID_WHEEL=$(find /tmp/pyside-android-wheels -name 'shiboken6-*.whl' -type f -print -quit)" >> "$GITHUB_ENV"
+
+      - name: Reject incomplete wheel URL inputs
+        if: ${{ (env.PYSIDE_WHEEL_URL == '') != (env.SHIBOKEN_WHEEL_URL == '') }}
+        run: |
+          echo "Provide both pyside_wheel_url and shiboken_wheel_url, or leave both empty."
+          exit 1
+
+      - name: Validate Android wheel inputs
+        run: |
+          test -n "$PYSIDE_ANDROID_WHEEL"
+          test -n "$SHIBOKEN_ANDROID_WHEEL"
+
+      - name: Patch deployer for Android permissions
+        run: python tools/patch_pyside_android_deploy.py
+
+      - name: Build APK
+        env:
+          QUICKBIB_QT_API: pyside6
+        run: |
+          cp requirements-android.txt requirements.txt
+          pyside6-android-deploy \
+            --wheel-pyside="$PYSIDE_ANDROID_WHEEL" \
+            --wheel-shiboken="$SHIBOKEN_ANDROID_WHEEL" \
+            --name=QuickBib \
+            --ndk-path="$HOME/.pyside6_android_deploy/android-ndk/android-ndk-r27c" \
+            --sdk-path="$HOME/.pyside6_android_deploy/android-sdk"
+
+      - name: Collect APK
+        run: |
+          mkdir -p dist/android
+          find . -name "*.apk" -type f -exec cp {} dist/android/ \;
+          test -n "$(find dist/android -name '*.apk' -type f -print -quit)"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APK_ARTIFACT_NAME }}
+          path: dist/android/*.apk

@@ -1,13 +1,14 @@
-from PyQt6.QtWidgets import (
+from .qt import (
         QDialog,
         QVBoxLayout,
         QHBoxLayout,
         QPushButton,
         QLabel,
         QLineEdit,
+        QFont,
+        QFontDatabase,
+        Qt,
 )
-from PyQt6.QtGui import QFont, QFontDatabase
-from PyQt6.QtCore import Qt
 
 from .helpers import copy_to_clipboard
 from .i18n import tr

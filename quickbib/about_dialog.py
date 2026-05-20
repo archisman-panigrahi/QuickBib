@@ -1,5 +1,5 @@
 from pathlib import Path
-from PyQt6.QtWidgets import (
+from .qt import (
     QDialog,
     QTabWidget,
     QTextBrowser,
@@ -8,9 +8,11 @@ from PyQt6.QtWidgets import (
     QLabel,
     QPushButton,
     QFrame,
+    QPixmap,
+    QFont,
+    QIcon,
+    Qt,
 )
-from PyQt6.QtGui import QPixmap, QFont, QIcon
-from PyQt6.QtCore import Qt
 
 from .app_info import APP_NAME, APP_VERSION, HOMEPAGE, REPO_URL, LICENSE_PATH, LICENSE_PATH_FALLBACK, WEBAPP_URL, ISSUES_URL
 from .i18n import tr

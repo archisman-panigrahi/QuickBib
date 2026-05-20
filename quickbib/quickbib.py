@@ -3,8 +3,7 @@
 import sys
 from pathlib import Path
 import signal
-from PyQt6.QtWidgets import QApplication
-from PyQt6.QtGui import QIcon
+from .qt import QApplication, QIcon
 
 from .app_info import APP_NAME, APP_VERSION, HOMEPAGE, REPO_URL, LICENSE_PATH
 from .main_window import QuickBibWindow

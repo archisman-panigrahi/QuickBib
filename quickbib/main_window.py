@@ -1,24 +1,28 @@
 import threading
-from pathlib import Path
-from PyQt6.QtWidgets import (
-    QMainWindow,
-    QWidget,
-    QTabWidget,
-    QTextBrowser,
+from .qt import (
+    QAction,
     QBoxLayout,
-    QVBoxLayout,
-    QHBoxLayout,
+    QDesktopServices,
+    QFont,
+    QIcon,
     QLabel,
     QLineEdit,
-    QPushButton,
-    QToolButton,
+    QMainWindow,
+    QHBoxLayout,
     QMenu,
-    QTextEdit,
     QMessageBox,
+    QObject,
+    QPixmap,
+    QPushButton,
     QSizePolicy,
+    Qt,
+    QTextEdit,
+    QToolButton,
+    QUrl,
+    QVBoxLayout,
+    QWidget,
+    Signal,
 )
-from PyQt6.QtGui import QAction, QPixmap, QFont, QIcon, QDesktopServices
-from PyQt6.QtCore import QObject, pyqtSignal, Qt, QUrl
 
 from .helpers import get_bibtex_for_doi, copy_to_clipboard
 from .about_dialog import AboutDialog
@@ -28,7 +32,7 @@ from .i18n import tr
 
 
 class FetchWorker(QObject):
-    finished = pyqtSignal(bool, str, object)  # found, bibtex, error
+    finished = Signal(bool, str, object)  # found, bibtex, error
 
     def __init__(self, doi: str):
         super().__init__()

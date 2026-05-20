@@ -2,7 +2,7 @@ import json
 import os
 from pathlib import Path
 
-from PyQt6.QtCore import QLocale
+from .qt import QLocale
 
 
 _LOCALES_DIR = Path(__file__).resolve().parent / "locales"
