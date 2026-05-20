@@ -152,8 +152,10 @@ bundle. Android package metadata is set by the GitHub Actions workflow and
 To build an APK without installing Android Studio locally, run the
 `Android APK` workflow from GitHub Actions. It runs on pushes to any branch and
 can also be run manually for any branch once the workflow exists on the default
-branch. Supported architecture choices are `aarch64`, `x86_64`, and `armv7a`;
-`armv7a` is 32-bit ARM and needs custom PySide6/shiboken6 Android wheel URLs.
+branch. Supported architecture choices are `aarch64`, `x86_64`, and `armv7a`.
+For `aarch64` and `x86_64`, the workflow downloads the matching PySide6 and
+shiboken6 Android wheels from Qt's official release archive. `armv7a` is 32-bit
+ARM and needs custom PySide6/shiboken6 Android wheel URLs.
 
 ## Translations
 

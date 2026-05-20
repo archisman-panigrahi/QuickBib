@@ -16,11 +16,11 @@ on:
           - armv7a
           - x86_64
       pyside_wheel_url:
-        description: "Optional URL to a PySide6 Android wheel; leave empty to use qtpip"
+        description: "Optional URL to a PySide6 Android wheel; leave empty to use the official Qt release wheel"
         required: false
         type: string
       shiboken_wheel_url:
-        description: "Optional URL to the matching shiboken6 Android wheel; leave empty to use qtpip"
+        description: "Optional URL to the matching shiboken6 Android wheel; leave empty to use the official Qt release wheel"
         required: false
         type: string
       artifact_name:
@@ -34,6 +34,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       TARGET_ARCH: ${{ github.event.inputs.arch || 'aarch64' }}
+      PYSIDE_VERSION: "6.9.3"
       PYSIDE_WHEEL_URL: ${{ github.event.inputs.pyside_wheel_url || '' }}
       SHIBOKEN_WHEEL_URL: ${{ github.event.inputs.shiboken_wheel_url || '' }}
       APK_ARTIFACT_NAME: ${{ github.event.inputs.artifact_name || 'quickbib-android-apk' }}
@@ -61,7 +62,6 @@ jobs:
             clang \
             cmake \
             git \
-            libdouble-conversion3 \
             libssl-dev \
             llvm \
             unzip \
@@ -71,11 +71,11 @@ jobs:
       - name: Install Python build tools
         run: |
           python -m pip install --upgrade pip
-          python -m pip install "PySide6==6.9.3" buildozer cython qtpip
+          python -m pip install "PySide6==$PYSIDE_VERSION" buildozer cython
 
       - name: Download Android SDK and NDK
         run: |
-          git clone --depth 1 --branch 6.9.3 https://code.qt.io/pyside/pyside-setup.git /tmp/pyside-setup
+          git clone --depth 1 --branch "$PYSIDE_VERSION" https://code.qt.io/pyside/pyside-setup.git /tmp/pyside-setup
           python -m pip install -r /tmp/pyside-setup/requirements.txt
           python -m pip install -r /tmp/pyside-setup/tools/cross_compile_android/requirements.txt
           python /tmp/pyside-setup/tools/cross_compile_android/main.py --download-only --auto-accept-license
@@ -101,17 +101,14 @@ jobs:
           echo "PYSIDE_ANDROID_WHEEL=/tmp/pyside-android-wheels/pyside6-android.whl" >> "$GITHUB_ENV"
           echo "SHIBOKEN_ANDROID_WHEEL=/tmp/pyside-android-wheels/shiboken6-android.whl" >> "$GITHUB_ENV"
 
-      - name: Download PySide6 Android wheels with qtpip
+      - name: Download PySide6 Android wheels from Qt releases
         if: ${{ env.TARGET_ARCH != 'armv7a' && env.PYSIDE_WHEEL_URL == '' && env.SHIBOKEN_WHEEL_URL == '' }}
         run: |
           mkdir -p /tmp/pyside-android-wheels
-          cd /tmp/pyside-android-wheels
-          qtpip download PySide6 --android --arch "$TARGET_ARCH"
-          find /tmp/pyside-android-wheels -name '*.whl' -type f -print
-          PYSIDE_ANDROID_WHEEL="$(find /tmp/pyside-android-wheels -iname 'pyside6-*.whl' -type f -print -quit)"
-          SHIBOKEN_ANDROID_WHEEL="$(find /tmp/pyside-android-wheels -iname 'shiboken6-*.whl' -type f -print -quit)"
-          test -n "$PYSIDE_ANDROID_WHEEL"
-          test -n "$SHIBOKEN_ANDROID_WHEEL"
+          PYSIDE_ANDROID_WHEEL="/tmp/pyside-android-wheels/PySide6-$PYSIDE_VERSION-$PYSIDE_VERSION-cp311-cp311-android_$TARGET_ARCH.whl"
+          SHIBOKEN_ANDROID_WHEEL="/tmp/pyside-android-wheels/shiboken6-$PYSIDE_VERSION-$PYSIDE_VERSION-cp311-cp311-android_$TARGET_ARCH.whl"
+          curl -fL "https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-$PYSIDE_VERSION-$PYSIDE_VERSION-cp311-cp311-android_$TARGET_ARCH.whl" -o "$PYSIDE_ANDROID_WHEEL"
+          curl -fL "https://download.qt.io/official_releases/QtForPython/shiboken6/shiboken6-$PYSIDE_VERSION-$PYSIDE_VERSION-cp311-cp311-android_$TARGET_ARCH.whl" -o "$SHIBOKEN_ANDROID_WHEEL"
           echo "PYSIDE_ANDROID_WHEEL=$PYSIDE_ANDROID_WHEEL" >> "$GITHUB_ENV"
           echo "SHIBOKEN_ANDROID_WHEEL=$SHIBOKEN_ANDROID_WHEEL" >> "$GITHUB_ENV"
 
