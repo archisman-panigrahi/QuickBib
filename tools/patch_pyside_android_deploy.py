@@ -11,42 +11,43 @@ import PySide6
 
 MARKER = "# QuickBib CI buildozer.spec patch"
 TARGET = 'logging.info("[DEPLOY] Running buildozer deployment")'
-PATCH = f'''
-    {MARKER}
-    import os as _quickbib_os
-    from pathlib import Path as _QuickBibPath
-    import re as _quickbib_re
-
-    def _quickbib_set_buildozer_key(text, key, value):
-        pattern = rf"^#?{{_quickbib_re.escape(key)}}\\s*=.*$"
-        replacement = f"{{key}} = {{value}}"
-        if _quickbib_re.search(pattern, text, flags=_quickbib_re.MULTILINE):
-            return _quickbib_re.sub(pattern, replacement, text, count=1, flags=_quickbib_re.MULTILINE)
-        return text.rstrip() + f"\\n{{replacement}}\\n"
-
-    for _quickbib_spec in _QuickBibPath.cwd().rglob("buildozer.spec"):
-        _quickbib_text = _quickbib_spec.read_text(encoding="utf-8")
-        _quickbib_arch = _quickbib_os.environ.get("TARGET_ARCH", "aarch64")
-        _quickbib_buildozer_arch = {{
-            "armv7a": "armeabi-v7a",
-        }}.get(_quickbib_arch, _quickbib_arch)
-        for _quickbib_key, _quickbib_value in (
-            ("title", "QuickBib"),
-            ("package.name", "quickbib"),
-            ("package.domain", "io.github.archisman_panigrahi"),
-            ("version", "0.8.0"),
-            ("icon.filename", "assets/icon/192x192/io.github.archisman_panigrahi.QuickBib.png"),
-            ("orientation", "portrait"),
-            ("android.archs", _quickbib_buildozer_arch),
-            ("android.permissions", "INTERNET"),
-        ):
-            _quickbib_text = _quickbib_set_buildozer_key(
-                _quickbib_text,
-                _quickbib_key,
-                _quickbib_value,
-            )
-        _quickbib_spec.write_text(_quickbib_text, encoding="utf-8")
-'''
+TARGET_RE = re.compile(rf"^(?P<indent>\s*){re.escape(TARGET)}$", re.MULTILINE)
+PATCH_LINES = [
+    MARKER,
+    "import os as _quickbib_os",
+    "from pathlib import Path as _QuickBibPath",
+    "import re as _quickbib_re",
+    "",
+    "def _quickbib_set_buildozer_key(text, key, value):",
+    '    pattern = rf"^#?{_quickbib_re.escape(key)}\\s*=.*$"',
+    '    replacement = f"{key} = {value}"',
+    "    if _quickbib_re.search(pattern, text, flags=_quickbib_re.MULTILINE):",
+    "        return _quickbib_re.sub(pattern, replacement, text, count=1, flags=_quickbib_re.MULTILINE)",
+    '    return text.rstrip() + f"\\n{replacement}\\n"',
+    "",
+    'for _quickbib_spec in _QuickBibPath.cwd().rglob("buildozer.spec"):',
+    '    _quickbib_text = _quickbib_spec.read_text(encoding="utf-8")',
+    '    _quickbib_arch = _quickbib_os.environ.get("TARGET_ARCH", "aarch64")',
+    "    _quickbib_buildozer_arch = {",
+    '        "armv7a": "armeabi-v7a",',
+    "    }.get(_quickbib_arch, _quickbib_arch)",
+    "    for _quickbib_key, _quickbib_value in (",
+    '        ("title", "QuickBib"),',
+    '        ("package.name", "quickbib"),',
+    '        ("package.domain", "io.github.archisman_panigrahi"),',
+    '        ("version", "0.8.0"),',
+    '        ("icon.filename", "assets/icon/192x192/io.github.archisman_panigrahi.QuickBib.png"),',
+    '        ("orientation", "portrait"),',
+    '        ("android.archs", _quickbib_buildozer_arch),',
+    '        ("android.permissions", "INTERNET"),',
+    "    ):",
+    "        _quickbib_text = _quickbib_set_buildozer_key(",
+    "            _quickbib_text,",
+    "            _quickbib_key,",
+    "            _quickbib_value,",
+    "        )",
+    '    _quickbib_spec.write_text(_quickbib_text, encoding="utf-8")',
+]
 
 
 def main() -> None:
@@ -55,9 +56,16 @@ def main() -> None:
     if MARKER in text:
         print(f"{deploy_py} is already patched")
         return
-    if TARGET not in text:
+    match = TARGET_RE.search(text)
+    if not match:
         raise SystemExit(f"Could not find patch target in {deploy_py}")
-    deploy_py.write_text(text.replace(TARGET, PATCH + "\n" + TARGET, 1), encoding="utf-8")
+    indent = match.group("indent")
+    patch = "\n".join(indent + line if line else "" for line in PATCH_LINES)
+    replacement = f"{patch}\n{match.group(0)}"
+    deploy_py.write_text(
+        text[: match.start()] + replacement + text[match.end() :],
+        encoding="utf-8",
+    )
     print(f"Patched {deploy_py}")
 
 
