@@ -127,6 +127,7 @@ jobs:
         run: |
           cp requirements-android.txt requirements.txt
           pyside6-android-deploy \
+            --force \
             --wheel-pyside="$PYSIDE_ANDROID_WHEEL" \
             --wheel-shiboken="$SHIBOKEN_ANDROID_WHEEL" \
             --name=QuickBib \
