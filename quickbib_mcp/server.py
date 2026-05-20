@@ -53,21 +53,18 @@ _ARXIV_RE = re.compile(
 # --------------------------------------------------------------------------
 
 @mcp.tool()
-def verify_overleaf_project(
-    project_id: str = "", git_token: str = "", email: str = ""
-) -> dict:
+def verify_overleaf_project(project_id: str = "", git_token: str = "") -> dict:
     """Verify every BibTeX reference in an Overleaf project.
 
     Clones the project through Overleaf's Git bridge, checks all .bib entries
     against CrossRef and arXiv, and cross-checks the \\cite keys used in the
-    .tex files. Use this to catch fabricated DOIs, invented papers, and
-    citation keys that were never defined.
+    .tex files. Use this to catch DOIs that do not resolve, references whose
+    metadata does not match, and citation keys that were never defined.
 
     Args:
         project_id: Overleaf project ID (from the project URL). Falls back to
             the OVERLEAF_PROJECT_ID environment variable.
         git_token: Overleaf Git token. Falls back to OVERLEAF_GIT_TOKEN.
-        email: Optional contact email for CrossRef's faster polite pool.
     """
     project_id = project_id or os.environ.get("OVERLEAF_PROJECT_ID", "")
     git_token = git_token or os.environ.get("OVERLEAF_GIT_TOKEN", "")
@@ -83,7 +80,7 @@ def verify_overleaf_project(
         return {"error": "No .bib entries were found in the Overleaf project."}
 
     tex_sources = [_read(t) for t in find_tex_files(repo)]
-    results = verify_entries(entries, email=_pick_email(email))
+    results = verify_entries(entries)
     cite = None
     if tex_sources:
         cite = check_cite_keys(tex_sources, {e.key for e in entries if e.key})
@@ -91,12 +88,11 @@ def verify_overleaf_project(
 
 
 @mcp.tool()
-def verify_bib_file(path: str, email: str = "") -> dict:
+def verify_bib_file(path: str) -> dict:
     """Verify every BibTeX entry in a local .bib file.
 
     Args:
         path: Absolute path to a .bib file.
-        email: Optional contact email for CrossRef's faster polite pool.
     """
     bib = Path(path)
     if not bib.is_file():
@@ -104,36 +100,34 @@ def verify_bib_file(path: str, email: str = "") -> dict:
     entries = parse_bibtex(_read(bib))
     if not entries:
         return {"error": "No BibTeX entries found in the file."}
-    results = verify_entries(entries, email=_pick_email(email))
+    results = verify_entries(entries)
     return _payload(results, str(bib))
 
 
 @mcp.tool()
-def verify_bibtex_text(bibtex: str, email: str = "") -> dict:
+def verify_bibtex_text(bibtex: str) -> dict:
     """Verify BibTeX entries supplied directly as text.
 
     Useful for spot-checking entries pasted into the conversation.
 
     Args:
         bibtex: Raw BibTeX source containing one or more @entries.
-        email: Optional contact email for CrossRef's faster polite pool.
     """
     entries = parse_bibtex(bibtex)
     if not entries:
         return {"error": "No BibTeX entries could be parsed from the input."}
-    results = verify_entries(entries, email=_pick_email(email))
+    results = verify_entries(entries)
     return _payload(results, "pasted BibTeX")
 
 
 @mcp.tool()
-def verify_reference(query: str, email: str = "") -> dict:
+def verify_reference(query: str) -> dict:
     """Verify a single reference given a DOI, arXiv ID, or article title.
 
     Args:
         query: A DOI, an arXiv identifier, or an article title.
-        email: Optional contact email for CrossRef's faster polite pool.
     """
-    result = verify_entry(_entry_from_query(query), email=_pick_email(email))
+    result = verify_entry(_entry_from_query(query))
     return result.to_dict()
 
 
@@ -143,10 +137,6 @@ def verify_reference(query: str, email: str = "") -> dict:
 
 def _read(path) -> str:
     return Path(path).read_text(encoding="utf-8", errors="replace")
-
-
-def _pick_email(arg: str) -> str | None:
-    return (arg or os.environ.get("CROSSREF_EMAIL") or "").strip() or None
 
 
 def _entry_from_query(query: str) -> BibEntry:
@@ -168,7 +158,7 @@ def _payload(results, label: str, cite=None) -> dict:
     payload = {
         "source": label,
         "summary": summary(results),
-        "flagged": [r.to_dict() for r in results if r.suspicious],
+        "flagged": [r.to_dict() for r in results if r.needs_attention],
         "results": [r.to_dict() for r in results],
         "report": _report_text(results, label, cite),
     }
@@ -184,7 +174,8 @@ def _report_text(results, label: str, cite) -> str:
         f"Reference check - {label}",
         (
             f"{counts['total']} references: {counts['verified']} verified, "
-            f"{counts['mismatch']} mismatch, {counts['not_found']} not found, "
+            f"{counts['review']} review, {counts['mismatch']} mismatch, "
+            f"{counts['not_found']} unresolved, "
             f"{counts['unverified'] + counts['error']} unverified."
         ),
     ]

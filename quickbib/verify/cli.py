@@ -3,7 +3,7 @@
 Runs entirely offline of any AI service. Examples::
 
     python -m quickbib.verify references.bib
-    python -m quickbib.verify ./paper-folder --email you@example.com
+    python -m quickbib.verify ./paper-folder
     python -m quickbib.verify --overleaf 65xxxxxxxxxxxxxxxxxxxxxx --token olp_xxx
 """
 
@@ -43,7 +43,6 @@ def main(argv: list[str] | None = None) -> int:
     results = verify_entries(
         entries,
         timeout=args.timeout,
-        email=args.email or os.environ.get("CROSSREF_EMAIL"),
         max_workers=args.workers,
         progress=_progress if show_progress else None,
     )
@@ -59,7 +58,7 @@ def main(argv: list[str] | None = None) -> int:
     else:
         _print_report(label, results, cite)
 
-    flagged = any(r.suspicious for r in results)
+    flagged = any(r.needs_attention for r in results)
     bad_keys = bool(cite and cite.undefined)
     return 1 if (flagged or bad_keys) else 0
 
@@ -82,10 +81,6 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--token",
         help="Overleaf Git token (or set the OVERLEAF_GIT_TOKEN env var).",
-    )
-    parser.add_argument(
-        "--email",
-        help="Contact email for CrossRef's faster 'polite pool' (optional).",
     )
     parser.add_argument(
         "--workers", type=int, default=4, help="Concurrent lookups (default: 4)."
@@ -149,8 +144,8 @@ def _print_report(label: str, results: list, cite) -> None:
     print(f"Source: {label}")
     print(
         f"Checked {counts['total']} references - "
-        f"{counts['verified']} OK, {counts['mismatch']} mismatch, "
-        f"{counts['not_found']} not found, "
+        f"{counts['verified']} verified, {counts['review']} review, "
+        f"{counts['mismatch']} mismatch, {counts['not_found']} unresolved, "
         f"{counts['unverified'] + counts['error']} unverified"
     )
     print()

@@ -126,14 +126,15 @@ Or run the convenience script in `bin/quickbib`:
 
 ## Verify references
 
-Large language models frequently invent realistic-looking citations — fabricated DOIs, papers that were never written, or DOIs that point to a completely different article. QuickBib can check every BibTeX reference against authoritative databases (CrossRef and arXiv) and tell you which ones are genuine.
+Large language models often invent realistic-looking citations — DOIs that do not resolve, papers that were never written, or DOIs that point to a completely different article. QuickBib can check every BibTeX reference against authoritative databases (CrossRef, arXiv, and the DOI registry) and tell you which ones hold up.
 
-Verification is **deterministic**: QuickBib fetches the real record for each entry and compares the metadata in code. No AI service, API key, or subscription is involved. Each reference is reported as one of:
+Verification is **deterministic**: QuickBib fetches the real record for each entry and corroborates the title, authors, and year in code — no AI service, API key, or subscription is involved. Each reference is reported as one of:
 
-- **verified** — the DOI/arXiv ID resolves and the metadata matches, or the title was found in CrossRef;
-- **mismatch** — a record exists but the title does not match (e.g. the DOI belongs to a different paper);
-- **not found** — the DOI/arXiv ID does not resolve, or no matching publication exists — likely fabricated;
-- **unverified** — the entry had nothing to check against, or a database was unreachable.
+- **verified** — an identifier resolves and the metadata is corroborated, or the title and authors were matched in CrossRef;
+- **review** — the work exists, but its registered metadata could not be matched to the entry with confidence — worth a quick look;
+- **mismatch** — the DOI/arXiv ID resolves, but to a record with a different title *and* different authors;
+- **unresolved** — the DOI/arXiv ID does not resolve in CrossRef or the DOI registry;
+- **unverified** — the entry had no identifier and no confident match, or a database was unreachable.
 
 There are three ways to use it.
 
@@ -147,11 +148,11 @@ No GUI required:
 
 ```
 python3 -m quickbib.verify references.bib
-python3 -m quickbib.verify ./paper-folder --email you@example.com
+python3 -m quickbib.verify ./paper-folder
 python3 -m quickbib.verify --overleaf <PROJECT_ID> --token <GIT_TOKEN>
 ```
 
-Add `--json` for machine-readable output. When `.tex` files are present, it also reports `\cite` keys that are not defined in any `.bib` file (a common sign of an invented citation key). Supplying `--email` opts in to CrossRef's faster "polite pool".
+Add `--json` for machine-readable output. When `.tex` files are present, it also reports `\cite` keys that are not defined in any `.bib` file (a common sign of an invented citation key).
 
 ### 3. As an MCP server (optional — for Claude Desktop, Cursor, …)
 

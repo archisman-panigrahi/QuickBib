@@ -65,8 +65,7 @@ path** to your checkout):
       "args": ["C:\\Users\\you\\QuickBib\\quickbib_mcp\\server.py"],
       "env": {
         "OVERLEAF_PROJECT_ID": "your_overleaf_project_id",
-        "OVERLEAF_GIT_TOKEN": "olp_xxxxxxxxxxxxxxxx",
-        "CROSSREF_EMAIL": "you@example.com"
+        "OVERLEAF_GIT_TOKEN": "olp_xxxxxxxxxxxxxxxx"
       }
     }
   }
@@ -78,12 +77,9 @@ On macOS / Linux use a forward-slash path, e.g.
 
 Restart Claude Desktop. The `quickbib-verifier` tools appear in the 🔧 menu.
 
-The whole `env` block is **optional**:
-
-- `OVERLEAF_PROJECT_ID` / `OVERLEAF_GIT_TOKEN` — default credentials for
-  `verify_overleaf_project`. You can also pass them as tool arguments instead
-  of putting them here.
-- `CROSSREF_EMAIL` — opts in to CrossRef's faster "polite pool".
+The `env` block is **optional**: `OVERLEAF_PROJECT_ID` / `OVERLEAF_GIT_TOKEN`
+are default credentials for `verify_overleaf_project`. You can also pass them
+as tool arguments instead of putting them here.
 
 ## Add it to Claude Code
 

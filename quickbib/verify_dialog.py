@@ -1,9 +1,9 @@
 """The "Verify References" dialog for the QuickBib desktop app.
 
 Lets the user check a local ``.bib`` file or a live Overleaf project for
-hallucinated / fabricated references. The actual checking is done by the
-deterministic engine in :mod:`quickbib.verify` on a background thread; this
-module is only the PyQt6 front-end.
+references that may be incorrect or do not exist. The actual checking is done
+by the deterministic engine in :mod:`quickbib.verify` on a background thread;
+this module is only the PyQt6 front-end.
 """
 
 import threading
@@ -34,6 +34,7 @@ from .verify import (
     ERROR,
     MISMATCH,
     NOT_FOUND,
+    REVIEW,
     STATUS_ICON,
     UNVERIFIED,
     VERIFIED,
@@ -52,6 +53,7 @@ from .verify.overleaf import (
 # Light row tints; paired with dark text so they stay legible in any theme.
 _ROW_BG = {
     VERIFIED: QColor(216, 243, 220),
+    REVIEW: QColor(208, 228, 248),
     MISMATCH: QColor(255, 236, 199),
     NOT_FOUND: QColor(250, 211, 211),
     UNVERIFIED: QColor(228, 228, 228),
@@ -67,13 +69,12 @@ class VerifyWorker(QObject):
     finished = pyqtSignal(object, object, str)  # results, cite-result|None, label
     failed = pyqtSignal(str)
 
-    def __init__(self, mode, *, bib_path="", project_id="", token="", email=""):
+    def __init__(self, mode, *, bib_path="", project_id="", token=""):
         super().__init__()
         self.mode = mode
         self.bib_path = bib_path
         self.project_id = project_id
         self.token = token
-        self.email = email or None
 
     def run(self):
         try:
@@ -83,7 +84,6 @@ class VerifyWorker(QObject):
                 return
             results = verify_entries(
                 entries,
-                email=self.email,
                 progress=lambda d, t: self.progress.emit(d, t),
             )
             cite = None
@@ -129,22 +129,13 @@ class VerifyDialog(QDialog):
 
         intro = QLabel(
             "Check every BibTeX reference against CrossRef and arXiv to catch "
-            "fabricated DOIs, invented papers, and DOIs that point to the "
-            "wrong article."
+            "DOIs that do not resolve, papers that cannot be found, and DOIs "
+            "that point to the wrong article."
         )
         intro.setWordWrap(True)
         layout.addWidget(intro)
 
         layout.addWidget(self._build_source_tabs())
-
-        email_row = QHBoxLayout()
-        email_row.addWidget(QLabel("Contact email (optional):"))
-        self.email_edit = QLineEdit()
-        self.email_edit.setPlaceholderText(
-            "you@example.com - speeds up CrossRef lookups"
-        )
-        email_row.addWidget(self.email_edit, 1)
-        layout.addLayout(email_row)
 
         action_row = QHBoxLayout()
         self.verify_btn = QPushButton("Verify References")
@@ -261,9 +252,7 @@ class VerifyDialog(QDialog):
             if not bib_path or not Path(bib_path).is_file():
                 self._set_summary("Please choose an existing .bib file.", error=True)
                 return
-            worker = VerifyWorker(
-                "file", bib_path=bib_path, email=self.email_edit.text().strip()
-            )
+            worker = VerifyWorker("file", bib_path=bib_path)
         else:
             project_id = self.project_edit.text().strip()
             token = self.token_edit.text().strip()
@@ -277,7 +266,6 @@ class VerifyDialog(QDialog):
                 "overleaf",
                 project_id=project_id,
                 token=token,
-                email=self.email_edit.text().strip(),
             )
 
         self.verify_btn.setEnabled(False)
@@ -367,15 +355,21 @@ class VerifyDialog(QDialog):
 
     def _summary_html(self, results, cite, label) -> str:
         counts = summary(results)
-        flagged = counts[MISMATCH] + counts[NOT_FOUND]
-        head_color = "#b00020" if flagged else "#1a7f37"
+        hard = counts[MISMATCH] + counts[NOT_FOUND]
+        if hard:
+            head_color = "#b00020"
+        elif counts[REVIEW] or counts[UNVERIFIED] or counts[ERROR]:
+            head_color = "#9a6700"
+        else:
+            head_color = "#1a7f37"
         lines = [
             f'<span style="color:{head_color};"><b>{escape(label)}</b></span>',
             (
                 f"Checked {counts['total']} references: "
                 f"<b>{counts[VERIFIED]}</b> verified, "
+                f"<b>{counts[REVIEW]}</b> review, "
                 f'<b style="color:#b00020;">{counts[MISMATCH]}</b> mismatch, '
-                f'<b style="color:#b00020;">{counts[NOT_FOUND]}</b> not found, '
+                f'<b style="color:#b00020;">{counts[NOT_FOUND]}</b> unresolved, '
                 f"{counts[UNVERIFIED] + counts[ERROR]} unverified."
             ),
         ]

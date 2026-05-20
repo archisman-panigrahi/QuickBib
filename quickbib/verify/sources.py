@@ -1,9 +1,8 @@
-"""Authoritative-record lookups against CrossRef and arXiv.
+"""Authoritative-record lookups against CrossRef, arXiv and the DOI registry.
 
 This is the part that makes verification *deterministic*: a BibTeX entry is
-checked against what these public databases actually return, not against any
-model's opinion. No API key is required; supplying a contact email opts in to
-CrossRef's faster "polite pool".
+checked against what these public services actually return, not against any
+model's opinion. No API key is required.
 """
 
 import json
@@ -14,6 +13,8 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 
+from .matching import clean
+
 try:
     from ..app_info import APP_VERSION
 except Exception:  # pragma: no cover - allows standalone use
@@ -21,12 +22,14 @@ except Exception:  # pragma: no cover - allows standalone use
 
 CROSSREF_API = "https://api.crossref.org/works"
 ARXIV_API = "http://export.arxiv.org/api/query"
+DOI_HANDLE_API = "https://doi.org/api/handles/"
 
 _ATOM = {"a": "http://www.w3.org/2005/Atom"}
+_MAX_RETRIES = 3
 
 
 class SourceError(Exception):
-    """Raised when a database could not be reached or returned bad data."""
+    """Raised when a service could not be reached or returned bad data."""
 
 
 @dataclass
@@ -44,22 +47,14 @@ class Record:
         return bool(self.title or self.doi)
 
 
-def _user_agent(email: str | None) -> str:
-    ua = (
+def _user_agent() -> str:
+    return (
         f"QuickBib-ReferenceVerifier/{APP_VERSION} "
         "(+https://github.com/archisman-panigrahi/QuickBib)"
     )
-    if email:
-        ua += f" mailto:{email}"
-    return ua
 
 
-_MAX_RETRIES = 3
-
-
-def _http_get(
-    url: str, *, timeout: int, email: str | None, accept: str, _attempt: int = 0
-) -> bytes:
+def _http_get(url: str, *, timeout: int, accept: str, _attempt: int = 0) -> bytes:
     """Perform a GET request, translating HTTP/network failure into SourceError.
 
     Returns ``b""`` for a clean 404 so callers can treat "not found" as data.
@@ -67,7 +62,7 @@ def _http_get(
     """
     host = urllib.parse.urlsplit(url).netloc
     req = urllib.request.Request(
-        url, headers={"User-Agent": _user_agent(email), "Accept": accept}
+        url, headers={"User-Agent": _user_agent(), "Accept": accept}
     )
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
@@ -78,18 +73,12 @@ def _http_get(
         if exc.code in (429, 503) and _attempt < _MAX_RETRIES:
             retry_after = exc.headers.get("Retry-After") if exc.headers else None
             time.sleep(_retry_delay(retry_after, _attempt))
-            return _http_get(
-                url, timeout=timeout, email=email, accept=accept,
-                _attempt=_attempt + 1,
-            )
+            return _http_get(url, timeout=timeout, accept=accept, _attempt=_attempt + 1)
         raise SourceError(f"HTTP {exc.code} from {host}")
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
         if _attempt < _MAX_RETRIES:
             time.sleep(_retry_delay(None, _attempt))
-            return _http_get(
-                url, timeout=timeout, email=email, accept=accept,
-                _attempt=_attempt + 1,
-            )
+            return _http_get(url, timeout=timeout, accept=accept, _attempt=_attempt + 1)
         raise SourceError(f"Could not reach {host}: {exc}")
 
 
@@ -104,18 +93,43 @@ def _retry_delay(retry_after: str | None, attempt: int) -> float:
 
 
 # --------------------------------------------------------------------------
+# DOI registry (Handle System)
+# --------------------------------------------------------------------------
+
+def doi_exists(doi: str, *, timeout: int = 20) -> bool | None:
+    """Report whether a DOI is registered with *any* agency.
+
+    Uses the DOI Handle System, which - unlike CrossRef - also covers DataCite,
+    book and dataset DOIs. Returns ``True`` (registered), ``False`` (does not
+    exist), or ``None`` (could not be checked).
+    """
+    if not doi:
+        return None
+    url = f"{DOI_HANDLE_API}{urllib.parse.quote(doi, safe='')}"
+    try:
+        body = _http_get(url, timeout=timeout, accept="application/json")
+    except SourceError:
+        return None
+    if not body:  # the Handle API returns 404 for an unknown handle
+        return False
+    try:
+        code = json.loads(body).get("responseCode")
+    except ValueError:
+        return None
+    # 1 = success, 200 = handle exists but no values; 100 = handle not found.
+    return code != 100
+
+
+# --------------------------------------------------------------------------
 # CrossRef
 # --------------------------------------------------------------------------
 
-def crossref_by_doi(doi: str, *, timeout: int = 20, email: str | None = None) -> Record | None:
-    """Look up a DOI in CrossRef. Returns ``None`` if the DOI does not exist."""
+def crossref_by_doi(doi: str, *, timeout: int = 20) -> Record | None:
+    """Look up a DOI in CrossRef. Returns ``None`` if CrossRef has no such work."""
     if not doi:
         return None
-    params = {"mailto": email} if email else {}
     url = f"{CROSSREF_API}/{urllib.parse.quote(doi, safe='')}"
-    if params:
-        url += "?" + urllib.parse.urlencode(params)
-    body = _http_get(url, timeout=timeout, email=email, accept="application/json")
+    body = _http_get(url, timeout=timeout, accept="application/json")
     if not body:
         return None
     try:
@@ -126,12 +140,7 @@ def crossref_by_doi(doi: str, *, timeout: int = 20, email: str | None = None) ->
 
 
 def crossref_search(
-    title: str,
-    author: str | None = None,
-    *,
-    rows: int = 5,
-    timeout: int = 20,
-    email: str | None = None,
+    title: str, author: str | None = None, *, rows: int = 5, timeout: int = 20
 ) -> list[Record]:
     """Search CrossRef by bibliographic title (and optionally first author)."""
     if not title:
@@ -139,10 +148,8 @@ def crossref_search(
     params = {"query.bibliographic": title, "rows": str(rows)}
     if author:
         params["query.author"] = author
-    if email:
-        params["mailto"] = email
     url = f"{CROSSREF_API}?{urllib.parse.urlencode(params)}"
-    body = _http_get(url, timeout=timeout, email=email, accept="application/json")
+    body = _http_get(url, timeout=timeout, accept="application/json")
     if not body:
         return []
     try:
@@ -169,12 +176,12 @@ def _record_from_crossref(message: dict) -> Record:
             year = str(parts[0][0])
             break
     return Record(
-        title=(title_list[0] or "").strip(),
+        title=clean(title_list[0] or ""),
         authors=authors,
         year=year,
         doi=(message.get("DOI") or "").lower(),
-        container=(container[0] or "").strip(),
-        source="crossref",
+        container=clean(container[0] or ""),
+        source="CrossRef",
     )
 
 
@@ -182,13 +189,12 @@ def _record_from_crossref(message: dict) -> Record:
 # arXiv
 # --------------------------------------------------------------------------
 
-def arxiv_lookup(arxiv_id: str, *, timeout: int = 20, email: str | None = None) -> Record | None:
+def arxiv_lookup(arxiv_id: str, *, timeout: int = 20) -> Record | None:
     """Look up an arXiv identifier. Returns ``None`` if it does not exist."""
     if not arxiv_id:
         return None
-    clean_id = arxiv_id.strip()
-    url = f"{ARXIV_API}?{urllib.parse.urlencode({'id_list': clean_id, 'max_results': 1})}"
-    body = _http_get(url, timeout=timeout, email=email, accept="application/atom+xml")
+    url = f"{ARXIV_API}?{urllib.parse.urlencode({'id_list': arxiv_id.strip(), 'max_results': 1})}"
+    body = _http_get(url, timeout=timeout, accept="application/atom+xml")
     if not body:
         return None
     try:
@@ -198,7 +204,7 @@ def arxiv_lookup(arxiv_id: str, *, timeout: int = 20, email: str | None = None) 
     entry = root.find("a:entry", _ATOM)
     if entry is None:
         return None
-    entry_id = (entry.findtext("a:id", default="", namespaces=_ATOM) or "")
+    entry_id = entry.findtext("a:id", default="", namespaces=_ATOM) or ""
     title = (entry.findtext("a:title", default="", namespaces=_ATOM) or "").strip()
     # arXiv returns a placeholder "Error" entry for identifiers that do not exist.
     if "api/errors" in entry_id or title.lower() == "error":
@@ -211,10 +217,10 @@ def arxiv_lookup(arxiv_id: str, *, timeout: int = 20, email: str | None = None) 
     published = entry.findtext("a:published", default="", namespaces=_ATOM) or ""
     doi = (entry.findtext("{http://arxiv.org/schemas/atom}doi", default="") or "").lower()
     return Record(
-        title=" ".join(title.split()),
+        title=clean(title),
         authors=authors,
         year=published[:4],
         doi=doi,
         container="arXiv",
-        source="arxiv",
+        source="arXiv",
     )
