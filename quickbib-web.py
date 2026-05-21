@@ -42,10 +42,11 @@ with title_text_col:
 # Input Field with enlarged label
 st.markdown(
     "<div style='font-size:1.2rem; font-weight:400;'>"
-    "Enter DOI or arXiv number or a link to the paper to generate the BibTeX entry. See <a href='https://archisman-panigrahi.github.io/QuickBib/#examples'>(examples)</a>"
+    "Paste a DOI, arXiv ID, or paper link. <a href='https://archisman-panigrahi.github.io/QuickBib/#examples'>Examples</a>"
     "</div>",
     unsafe_allow_html=True,
 )
+st.caption("No ML-generated citations: metadata comes from Crossref and arXiv APIs.")
 doi_input = st.text_input(
     "DOI",
     placeholder="e.g. https://journals.aps.org/prl/abstract/10.1103/v6r7-4ph9",
@@ -64,33 +65,29 @@ if doi_input:
             # Center the copy button in the middle column
             _, center_col, _ = st.columns([1, 1, 1])
             with center_col:
-                st_copy_to_clipboard(bibtex, "Copy to Clipboard 📋")
+                st_copy_to_clipboard(bibtex, "Copy BibTeX")
 
         else:
-            st.error(f"Failed to resolve DOI.")
+            st.error("Could not resolve this input.")
             with st.expander("See error details"):
                 st.write(error_msg)
-st.info(
-    "QuickBib does not use any ML/AI to generate BibTeX."
-    "It retrieves citation metadata from the Crossref and arXiv APIs."
-)
 st.markdown(
     """
-    Please report bugs and suggest feature requests on <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a>. Direct journal links work for journals in APS group, Nature group, SciendeDirect and PNAS. For other journals, please use the DOI instead.
+    Bugs or requests: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a>.
+    Journal links: APS, Nature, ScienceDirect, PNAS. Otherwise, use the DOI.
     """,
     unsafe_allow_html=True,
 )
 st.markdown(
     """
-    If you find this helpful, please add a star on GitHub &nbsp;
+    Helpful? Star on GitHub &nbsp;
     <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank">
     <img src="https://img.shields.io/github/stars/archisman-panigrahi/QuickBib?style=social" alt="Star on GitHub">
     </a>
     """,
     unsafe_allow_html=True,
 )
-
 st.markdown(
-    "For an even faster DOI-to-BibTeX workflow, switch to the "
+    "For faster DOI-to-BibTeX workflow, try the "
     "[native desktop app](https://archisman-panigrahi.github.io/QuickBib/)."
 )
