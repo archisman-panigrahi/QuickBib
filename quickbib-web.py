@@ -79,6 +79,12 @@ st.markdown(
 )
 st.markdown(
     """
+    Journal links work for journals in APS group, Nature group, and PNAS. For other journals, please use the DOI instead.
+    """,
+    unsafe_allow_html=True,
+)
+st.markdown(
+    """
     If you find this helpful, please add a star on GitHub &nbsp;
     <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank">
     <img src="https://img.shields.io/github/stars/archisman-panigrahi/QuickBib?style=social" alt="Star on GitHub">
