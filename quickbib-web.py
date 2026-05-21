@@ -70,7 +70,10 @@ if doi_input:
             st.error(f"Failed to resolve DOI.")
             with st.expander("See error details"):
                 st.write(error_msg)
-
+st.info(
+    "QuickBib does not use any ML/AI to generate BibTeX."
+    "It retrieves citation metadata from the Crossref and arXiv APIs."
+)
 st.markdown(
     """
     Please report bugs and suggest feature requests on <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a>. Direct journal links work for journals in APS group, Nature group, SciendeDirect and PNAS. For other journals, please use the DOI instead.
