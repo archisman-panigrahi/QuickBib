@@ -73,7 +73,7 @@ if doi_input:
 
 st.markdown(
     """
-    Please report bugs and suggest feature requests on <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a>. Direct journal links work for journals in APS group, Nature group, and PNAS. For other journals, please use the DOI instead.
+    Please report bugs and suggest feature requests on <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a>. Direct journal links work for journals in APS group, Nature group, SciendeDirect and PNAS. For other journals, please use the DOI instead.
     """,
     unsafe_allow_html=True,
 )
