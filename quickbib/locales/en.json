@@ -13,7 +13,7 @@
   "action.feedback": "\ud83d\udcac Send Feedback",
   "button.webapp": "\ud83c\udf10 Web App",
   "button.examples": "\ud83d\udcd8 Examples",
-  "button.verify": "\u2705 Verify References",
+  "button.verify": "\u2705 Verify",
   "button.feedback": "\ud83d\udcac Send Feedback",
   "label.doi": "DOI:",
   "placeholder.query": "DOI or arXiv ID or arXiv URL or Journal URL or Article Title",

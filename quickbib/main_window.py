@@ -210,8 +210,17 @@ class QuickBibWindow(QMainWindow):
         self.copy_btn.clicked.connect(self.copy_to_clipboard)
         btn_box.addWidget(self.copy_btn)
 
+        # Size the window from its actual content. Widget widths depend on the
+        # platform, font and locale, so a hardcoded width clips the quick-links
+        # row on systems whose fonts are wider than Windows' (e.g. KDE/GTK).
+        quick_links_width = self.quick_links_widget.sizeHint().width()
+        # Switch to the compact (hamburger) layout before the row would be
+        # squeezed, rather than at an arbitrary fixed breakpoint.
+        self._compact_breakpoint = max(460, quick_links_width + 40)
+        # Open wide enough to show the quick-links row uncompressed.
+        default_width = max(500, self._compact_breakpoint + 24, self.sizeHint().width())
+        self.resize(default_width, 400)
         self._apply_responsive_layout(self.width())
-        self.resize(500, 400)
 
         # Keep references to worker/thread so they don't get GC'd
         self._worker_thread = None
