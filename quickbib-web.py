@@ -52,7 +52,6 @@ doi_input = st.text_input(
     placeholder="e.g. https://journals.aps.org/prl/abstract/10.1103/v6r7-4ph9",
     label_visibility="collapsed",  # or "hidden"
 )
-
 # Logic Trigger
 if doi_input:
     with st.spinner("Fetching data..."):
@@ -71,15 +70,10 @@ if doi_input:
             st.error("Could not resolve this input.")
             with st.expander("See error details"):
                 st.write(error_msg)
+st.caption("Journal with direct link support: APS, AMS, ACS, Nature, ScienceDirect, PNAS and SciPost. For other journals, use the DOI")
 st.markdown(
     """
     Bugs or requests: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a>.
-    Journal links: APS, Nature, ScienceDirect, PNAS. Otherwise, use the DOI.
-    """,
-    unsafe_allow_html=True,
-)
-st.markdown(
-    """
     Helpful? Star on GitHub &nbsp;
     <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank">
     <img src="https://img.shields.io/github/stars/archisman-panigrahi/QuickBib?style=social" alt="Star on GitHub">
