@@ -46,7 +46,6 @@ st.markdown(
     "</div>",
     unsafe_allow_html=True,
 )
-st.caption("No ML-generated citations: metadata comes from Crossref and arXiv APIs.")
 doi_input = st.text_input(
     "DOI",
     placeholder="e.g. https://journals.aps.org/prl/abstract/10.1103/v6r7-4ph9",
@@ -70,7 +69,8 @@ if doi_input:
             st.error("Could not resolve this input.")
             with st.expander("See error details"):
                 st.write(error_msg)
-st.caption("Journal with direct link support: APS, AMS, ACS, Nature, ScienceDirect, PNAS and SciPost. For other journals, use the DOI")
+st.caption("Direct link support: APS, AMS, ACS, Nature, ScienceDirect, PNAS and SciPost group of journals. For others, use the DOI.")
+st.markdown("No ML-generated citations: metadata comes from Crossref and arXiv APIs. Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
 st.markdown(
     """
     Bugs or requests: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a>.
