@@ -69,7 +69,7 @@ if doi_input:
             st.error("Could not resolve this input.")
             with st.expander("See error details"):
                 st.write(error_msg)
-st.caption("Direct link support: APS, AMS, ACS, Nature, ScienceDirect, PNAS and SciPost group of journals. For others, use the DOI.")
+st.caption("Direct link support: APS, AMS, ACS, Science, Nature, ScienceDirect, PNAS, IOP Science, and SciPost group of journals. For others, use the DOI.")
 st.markdown("No ML-generated citations: metadata comes from Crossref and arXiv APIs. Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
 st.markdown(
     """
