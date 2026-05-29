@@ -1,6 +1,5 @@
 import streamlit as st
-from doi2bib3 import fetch_bibtex
-# Import the button component
+from doi2bib3 import fetch_bibtex, format_bibtex_to_aps_bibitem
 from st_copy_to_clipboard import st_copy_to_clipboard
 
 # --- Your Custom Function ---
@@ -22,6 +21,12 @@ st.markdown(
     <style>
     .block-container {
         padding-top: 1rem;
+        width: 80vw;
+        max-width: 80vw;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        margin-left: auto;
+        margin-right: auto;
     }
     </style>
     """,
@@ -57,20 +62,36 @@ if doi_input:
         success, bibtex, error_msg = get_bibtex_for_doi(doi_input)
 
         if success:
-            # Display the BibTeX in a code block for easy reading
-            st.code(bibtex, language='latex')
+            try:
+                aps_bibitem = format_bibtex_to_aps_bibitem(bibtex)
+                aps_success = True
+            except Exception as e:
+                aps_success = False
+                aps_error_msg = str(e)
 
-            # Center the copy button in the middle column
-            _, center_col, _ = st.columns([1, 1, 1])
-            with center_col:
+            left_col, right_col = st.columns(2, gap="large")
+
+            with left_col:
+                st.subheader("BibTeX")
+                st.code(bibtex, language='latex', wrap_lines=True)
                 st_copy_to_clipboard(bibtex, "Copy BibTeX")
+
+            with right_col:
+                st.subheader("APS style bibitem")
+                if aps_success:
+                    st.code(aps_bibitem, language='latex', wrap_lines=True)
+                    st_copy_to_clipboard(aps_bibitem, "Copy bibitem")
+                else:
+                    st.error("Could not format the APS bibitem.")
+                    with st.expander("See APS formatting error details"):
+                        st.write(aps_error_msg)
 
         else:
             st.error("Could not resolve this input.")
             with st.expander("See error details"):
                 st.write(error_msg)
 st.caption("Direct link support: APS, AMS, ACS, Science, Nature, ScienceDirect, PNAS, IOP Science, and SciPost group of journals. For others, use the DOI.")
-st.markdown("No ML-generated citations: metadata comes from Crossref and arXiv APIs. Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
+st.markdown("No ML-generated citations: metadata comes from Crossref and arXiv APIs. Powered by [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3). Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
 st.markdown(
     """
     Bugs or requests: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a>.
