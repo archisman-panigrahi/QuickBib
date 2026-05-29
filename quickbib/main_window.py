@@ -14,13 +14,14 @@ from PyQt6.QtWidgets import (
     QToolButton,
     QMenu,
     QTextEdit,
+    QPlainTextEdit,
     QMessageBox,
     QSizePolicy,
 )
 from PyQt6.QtGui import QAction, QPixmap, QFont, QIcon, QDesktopServices
 from PyQt6.QtCore import QObject, pyqtSignal, Qt, QUrl
 
-from .helpers import get_bibtex_for_doi, copy_to_clipboard
+from .helpers import get_aps_bibitem_for_bibtex, get_bibtex_for_doi, copy_to_clipboard
 from .about_dialog import AboutDialog
 from .how_to_use_dialog import HowToUseDialog
 from .app_info import LICENSE_PATH, WEBAPP_URL, ISSUES_URL, ALGORITHM_VISUALS_URL
@@ -46,7 +47,7 @@ class QuickBibWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle(tr("window.title"))
-        self.setMinimumSize(320, 360)
+        self.setMinimumSize(320, 460)
         self._compact_breakpoint = 460
         self._is_compact_layout = None
 
@@ -71,7 +72,7 @@ class QuickBibWindow(QMainWindow):
         copy_action = QAction(tr("action.copy_bibtex"), self)
         copy_action.setFont(self._emoji_font)
         copy_action.setShortcut("Ctrl+C")
-        copy_action.triggered.connect(self.copy_to_clipboard)
+        copy_action.triggered.connect(self.copy_bibtex_to_clipboard)
         edit_menu.addAction(copy_action)
 
         help_menu = menubar.addMenu(tr("menu.help"))
@@ -180,22 +181,27 @@ class QuickBibWindow(QMainWindow):
         self.textview.setMinimumHeight(180)
         vbox.addWidget(self.textview, 1)
 
-        # Buttons (fixed-height bar so it won't overlap the output area on short windows)
-        self.btn_widget = QWidget()
-        btn_box = QHBoxLayout()
-        btn_box.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        btn_box.setContentsMargins(0, 0, 0, 0)
-        btn_box.setSpacing(8)
-        self.btn_widget.setLayout(btn_box)
-        self.btn_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        # Slightly smaller fixed height to reduce vertical margin
-        self.btn_widget.setFixedHeight(24)
-        vbox.addWidget(self.btn_widget)
+        self.copy_bibtex_btn = self._add_copy_button_row(
+            vbox,
+            tr("button.copy_bibtex_clipboard"),
+            self.copy_bibtex_to_clipboard,
+        )
 
-        self.copy_btn = QPushButton(tr("button.copy_clipboard"))
-        self.copy_btn.setFont(self._emoji_font)
-        self.copy_btn.clicked.connect(self.copy_to_clipboard)
-        btn_box.addWidget(self.copy_btn)
+        self.bibitem_label = QLabel(tr("label.aps_bibitem"))
+        vbox.addWidget(self.bibitem_label)
+
+        self.bibitem_view = QPlainTextEdit()
+        self.bibitem_view.setReadOnly(True)
+        self.bibitem_view.setLineWrapMode(QPlainTextEdit.LineWrapMode.WidgetWidth)
+        self.bibitem_view.setMinimumHeight(42)
+        self.bibitem_view.setMaximumHeight(78)
+        vbox.addWidget(self.bibitem_view)
+
+        self.copy_bibitem_btn = self._add_copy_button_row(
+            vbox,
+            tr("button.copy_aps_bibitem_clipboard"),
+            self.copy_bibitem_to_clipboard,
+        )
 
         citation_note = QLabel(tr("note.no_ml_citations", algorithm_url=ALGORITHM_VISUALS_URL))
         citation_note.setOpenExternalLinks(True)
@@ -204,7 +210,7 @@ class QuickBibWindow(QMainWindow):
         vbox.addWidget(citation_note)
 
         self._apply_responsive_layout(self.width())
-        self.resize(500, 400)
+        self.resize(500, 540)
 
         # Keep references to worker/thread so they don't get GC'd
         self._worker_thread = None
@@ -233,7 +239,8 @@ class QuickBibWindow(QMainWindow):
             self.doi_header_row.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
             self.doi_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
             self.fetch_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-            self.copy_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            self.copy_bibtex_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            self.copy_bibitem_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
             self.doi_entry.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         else:
             self.menuBar().setVisible(True)
@@ -242,8 +249,26 @@ class QuickBibWindow(QMainWindow):
             self.doi_header_row.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
             self.doi_label.setAlignment(Qt.AlignmentFlag.AlignVCenter)
             self.fetch_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
-            self.copy_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+            self.copy_bibtex_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+            self.copy_bibitem_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
             self.doi_entry.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+
+    def _add_copy_button_row(self, layout: QVBoxLayout, text: str, slot) -> QPushButton:
+        row = QWidget()
+        row_layout = QHBoxLayout()
+        row_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        row_layout.setContentsMargins(0, 0, 0, 0)
+        row_layout.setSpacing(8)
+        row.setLayout(row_layout)
+        row.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        row.setFixedHeight(24)
+        layout.addWidget(row)
+
+        button = QPushButton(text)
+        button.setFont(self._emoji_font)
+        button.clicked.connect(slot)
+        row_layout.addWidget(button)
+        return button
 
     def _setup_emoji_font(self):
         """Set up a font with good emoji support across different desktop environments."""
@@ -305,6 +330,7 @@ class QuickBibWindow(QMainWindow):
 
         self.status.setText(tr("status.fetching"))
         self.textview.clear()
+        self.bibitem_view.clear()
 
         worker = FetchWorker(doi)
 
@@ -321,9 +347,20 @@ class QuickBibWindow(QMainWindow):
     def on_fetch_finished(self, found: bool, bibtex: str, error: object):
         if found:
             self.textview.setPlainText(bibtex)
-            self.status.setText(self._format_status_with_emoji(tr("status.fetch_success")))
+            bibitem_found, bibitem, bibitem_error = get_aps_bibitem_for_bibtex(bibtex)
+            if bibitem_found:
+                self.bibitem_view.setPlainText(bibitem)
+                self.status.setText(self._format_status_with_emoji(tr("status.fetch_success")))
+            else:
+                self.bibitem_view.clear()
+                self.status.setText(
+                    self._format_status_with_emoji(
+                        tr("status.fetch_success_bibitem_failed", error=bibitem_error)
+                    )
+                )
         else:
             self.textview.clear()
+            self.bibitem_view.clear()
             if error:
                 self.status.setText(self._format_status_with_emoji(tr("status.error", error=error)))
             else:
@@ -331,8 +368,13 @@ class QuickBibWindow(QMainWindow):
 
         self._worker_thread = None
 
-    def copy_to_clipboard(self):
-        text = self.textview.toPlainText()
+    def copy_bibtex_to_clipboard(self):
+        self._copy_text_to_clipboard(self.textview.toPlainText())
+
+    def copy_bibitem_to_clipboard(self):
+        self._copy_text_to_clipboard(self.bibitem_view.toPlainText())
+
+    def _copy_text_to_clipboard(self, text: str):
         if text.strip():
             ok = copy_to_clipboard(text)
             if ok:
