@@ -3,7 +3,7 @@
 
 !define APP_NAME "QuickBib"
 !define COMPANY "Archisman Panigrahi"
-!define VERSION "0.8.4"
+!define VERSION "0.9.0"
 
 ; Installer display name shown in the window title and installer UI
 Name "${APP_NAME}"
