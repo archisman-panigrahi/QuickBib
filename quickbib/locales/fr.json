@@ -16,6 +16,7 @@
   "placeholder.query": "DOI ou ID arXiv ou URL arXiv ou URL de revue ou titre de l’article",
   "button.fetch": "Récupérer",
   "button.copy_clipboard": "📋 Copier dans le presse-papiers",
+  "note.no_ml_citations": "Métadonnées de Crossref et arXiv (pas d'IA/ML). <a href=\"{algorithm_url}\">Voici comment cela fonctionne.</a>",
   "status.link_open_failed": "ℹ️ Impossible d'ouvrir le lien.",
   "status.enter_valid_doi": "ℹ️ Veuillez saisir un DOI valide. Voir \"Aide → Exemples\" pour plus d'infos.",
   "status.fetching": "Récupération de BibTeX...",

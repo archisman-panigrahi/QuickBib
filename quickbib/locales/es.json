@@ -16,6 +16,7 @@
   "placeholder.query": "DOI o ID de arXiv o URL de arXiv o URL de la revista o título del artículo",
   "button.fetch": "Buscar",
   "button.copy_clipboard": "📋 Copiar al portapapeles",
+  "note.no_ml_citations": "Metadatos de Crossref y arXiv (sin IA/ML). <a href=\"{algorithm_url}\">Así funciona.</a>",
   "status.link_open_failed": "ℹ️ No se pudo abrir el enlace.",
   "status.enter_valid_doi": "ℹ️ Introduce un DOI válido. Consulta \"Ayuda → Ejemplos\" para más información.",
   "status.fetching": "Buscando BibTeX...",

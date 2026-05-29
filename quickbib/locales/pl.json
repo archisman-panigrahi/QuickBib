@@ -16,6 +16,7 @@
   "placeholder.query": "DOI lub identyfikator arXiv lub adres URL arXiv lub adres URL czasopisma lub tytuł artykułu",
   "button.fetch": "Pobierz",
   "button.copy_clipboard": "📋 Kopiuj do schowka",
+  "note.no_ml_citations": "Metadane z Crossref i arXiv (bez AI/ML). <a href=\"{algorithm_url}\">Oto jak to działa.</a>",
   "status.link_open_failed": "ℹ️ Nie udało się otworzyć linku.",
   "status.enter_valid_doi": "ℹ️ Wpisz poprawny DOI. Zobacz \"Pomoc → Przykłady\", aby dowiedzieć się więcej.",
   "status.fetching": "Pobieranie BibTeX...",

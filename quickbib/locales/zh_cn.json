@@ -16,6 +16,7 @@
   "placeholder.query": "DOI/ arXiv ID/ arXiv 链接/期刊链接/文章标题",
   "button.fetch": "获取",
   "button.copy_clipboard": "📋 复制到剪贴板",
+  "note.no_ml_citations": "元数据来自 Crossref 和 arXiv（无 AI/ML）。<a href=\"{algorithm_url}\">了解其工作原理。</a>",
   "status.link_open_failed": "ℹ️ 打开链接失败。",
   "status.enter_valid_doi": "ℹ️ 请输入有效的 DOI。请查看\"帮助 → 示例\"获取更多信息。",
   "status.fetching": "正在获取 BibTeX...",

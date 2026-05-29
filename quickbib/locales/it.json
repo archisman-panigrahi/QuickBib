@@ -16,6 +16,7 @@
   "placeholder.query": "DOI o ID arXiv o URL arXiv o URL della rivista o titolo dell'articolo",
   "button.fetch": "Recupera",
   "button.copy_clipboard": "📋 Copia negli appunti",
+  "note.no_ml_citations": "Metadati da Crossref e arXiv (niente IA/ML). <a href=\"{algorithm_url}\">Ecco come funziona.</a>",
   "status.link_open_failed": "ℹ️ Impossibile aprire il link.",
   "status.enter_valid_doi": "ℹ️ Inserisci un DOI valido. Vedi \"Aiuto → Esempi\" per maggiori info.",
   "status.fetching": "Recupero BibTeX in corso...",

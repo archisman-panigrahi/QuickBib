@@ -8,6 +8,7 @@ HOMEPAGE = "https://archisman-panigrahi.github.io/QuickBib/"
 REPO_URL = "https://github.com/archisman-panigrahi/QuickBib"
 WEBAPP_URL = "https://quickbib.streamlit.app/"
 ISSUES_URL = "https://github.com/archisman-panigrahi/QuickBib/issues"
+ALGORITHM_VISUALS_URL = "https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree"
 # LICENSE is located in the repository root (one level up from the package dir)
 # Use resolve().parent.parent so this works when the package is imported from
 # an installed location or run from source.

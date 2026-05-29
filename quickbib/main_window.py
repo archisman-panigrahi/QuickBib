@@ -23,7 +23,7 @@ from PyQt6.QtCore import QObject, pyqtSignal, Qt, QUrl
 from .helpers import get_bibtex_for_doi, copy_to_clipboard
 from .about_dialog import AboutDialog
 from .how_to_use_dialog import HowToUseDialog
-from .app_info import LICENSE_PATH, WEBAPP_URL, ISSUES_URL
+from .app_info import LICENSE_PATH, WEBAPP_URL, ISSUES_URL, ALGORITHM_VISUALS_URL
 from .i18n import tr
 
 
@@ -196,6 +196,12 @@ class QuickBibWindow(QMainWindow):
         self.copy_btn.setFont(self._emoji_font)
         self.copy_btn.clicked.connect(self.copy_to_clipboard)
         btn_box.addWidget(self.copy_btn)
+
+        citation_note = QLabel(tr("note.no_ml_citations", algorithm_url=ALGORITHM_VISUALS_URL))
+        citation_note.setOpenExternalLinks(True)
+        citation_note.setWordWrap(True)
+        citation_note.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        vbox.addWidget(citation_note)
 
         self._apply_responsive_layout(self.width())
         self.resize(500, 400)

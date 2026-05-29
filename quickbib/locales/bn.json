@@ -16,6 +16,7 @@
   "placeholder.query": "DOI অথবা arXiv ID অথবা arXiv URL অথবা জার্নাল URL অথবা প্রবন্ধের শিরোনাম",
   "button.fetch": "খুঁজুন",
   "button.copy_clipboard": "📋 ক্লিপবোর্ডে কপি করুন",
+  "note.no_ml_citations": "সমস্ত তথ্যের উৎস Crossref এবং arXiv (কোনো AI/ML নয়)। <a href=\"{algorithm_url}\">এটি কীভাবে কাজ করে দেখুন।</a>",
   "status.link_open_failed": "ℹ️ লিংক খোলা যায়নি।",
   "status.enter_valid_doi": "ℹ️ একটি বৈধ DOI দিন। আরও জানতে \"সহায়তা → উদাহরণ\" দেখুন।",
   "status.fetching": "BibTeX খোঁজা হচ্ছে...",

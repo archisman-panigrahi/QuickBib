@@ -16,6 +16,7 @@
   "placeholder.query": "DOI or arXiv ID or arXiv URL or Journal URL or Article Title",
   "button.fetch": "Fetch",
   "button.copy_clipboard": "\ud83d\udccb Copy to Clipboard",
+  "note.no_ml_citations": "Metadata from Crossref and arXiv (no AI/ML). <a href=\"{algorithm_url}\">Here is how it works.</a>",
   "status.link_open_failed": "\u2139\ufe0f Failed to open link.",
   "status.enter_valid_doi": "\u2139\ufe0f Please enter a valid DOI. See \"Help \u2192 Examples\" for more info.",
   "status.fetching": "Fetching BibTeX...",
