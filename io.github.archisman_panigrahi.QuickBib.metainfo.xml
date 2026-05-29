@@ -59,6 +59,12 @@
     <display_length compare="ge">320</display_length>
   </requires>
   <releases>
+    <release version="0.8.4" date="2026-05-29">
+      <description>
+        <p>no AI/ML generated citation notice</p>
+      </description>
+      <url type="details">https://github.com/archisman-panigrahi/QuickBib/releases/tag/v0.8.4</url>
+    </release>
     <release version="0.8.3" date="2026-05-22">
       <description>
         <p>Fix journal URL for IOP Science and SciPost</p>
