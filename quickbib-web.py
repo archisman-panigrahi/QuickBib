@@ -47,7 +47,7 @@ with title_text_col:
 # Input Field with enlarged label
 st.markdown(
     "<div style='font-size:1.2rem; font-weight:400;'>"
-    "Paste a DOI, arXiv ID, or paper link. <a href='https://archisman-panigrahi.github.io/QuickBib/#examples'>Examples</a>"
+    "Paste a DOI, arXiv ID, or paper link (APS, AMS, ACS, Science, Nature, ScienceDirect, PNAS, IOP Science, and SciPost group of journals. For others, use the DOI.). See <a href='https://archisman-panigrahi.github.io/QuickBib/#examples'>examples</a>"
     "</div>",
     unsafe_allow_html=True,
 )
@@ -90,7 +90,6 @@ if doi_input:
             st.error("Could not resolve this input.")
             with st.expander("See error details"):
                 st.write(error_msg)
-st.caption("Direct link support: APS, AMS, ACS, Science, Nature, ScienceDirect, PNAS, IOP Science, and SciPost group of journals. For others, use the DOI.")
 st.markdown("No ML-generated citations: metadata comes from Crossref and arXiv APIs. Powered by [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3). Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
 st.markdown(
     """
