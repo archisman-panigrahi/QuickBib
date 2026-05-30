@@ -2,8 +2,9 @@
 """
 PyInstaller spec for QuickBib.
 
-This spec collects PyQt6 resources and the project's `assets` directory. It builds
-an --onedir (COLLECT) output named `QuickBib` which the NSIS script packages.
+This spec collects PyQt6 resources plus the project's `assets` and `quickbib/po`
+directories. It builds an --onedir (COLLECT) output named `QuickBib` which the
+NSIS script packages.
 
 If you want an exe-only single-file build set `onefile=True` and adjust the NSIS script.
 """
@@ -45,14 +46,14 @@ block_cipher = None
 pyqt_datas, pyqt_binaries, pyqt_hiddenimports = collect_all('PyQt6')
 
 # Include application assets (icons, screenshots, etc.)
-# Include locale JSON files used by quickbib/i18n.py.
+# Include PO translation files used by quickbib/i18n.py.
 # Also include the repository LICENSE file and place it into the `quickbib` package
 # so runtime code that does Path(__file__).with_name('LICENSE') can find it when
 # PyInstaller produces the onedir distribution.
 datas = (
     pyqt_datas
     + Tree('assets', prefix='assets')
-    + Tree('quickbib/locales', prefix='quickbib/locales')
+    + Tree('quickbib/po', prefix='quickbib/po')
     + [(os.path.join('.', 'LICENSE'), 'quickbib')]
 )
 binaries = pyqt_binaries

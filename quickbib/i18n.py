@@ -1,13 +1,76 @@
-import json
 import os
 from pathlib import Path
 
 from PyQt6.QtCore import QLocale
 
 
-_LOCALES_DIR = Path(__file__).resolve().parent / "locales"
+_PO_DIR = Path(__file__).resolve().parent / "po"
 _DEFAULT_LOCALE = "en"
 _cache: dict[str, dict[str, str]] = {}
+
+
+def _unescape_po_string(value: str) -> str:
+    result: list[str] = []
+    i = 0
+    while i < len(value):
+        char = value[i]
+        if char != "\\" or i + 1 >= len(value):
+            result.append(char)
+            i += 1
+            continue
+
+        escaped = value[i + 1]
+        result.append({
+            "n": "\n",
+            "r": "\r",
+            "t": "\t",
+            "\\": "\\",
+            '"': '"',
+        }.get(escaped, escaped))
+        i += 2
+    return "".join(result)
+
+
+def _parse_po_string(line: str) -> str | None:
+    start = line.find('"')
+    end = line.rfind('"')
+    if start == -1 or end <= start:
+        return None
+    return _unescape_po_string(line[start + 1:end])
+
+
+def _load_po(path: Path) -> dict[str, str]:
+    translations: dict[str, str] = {}
+    current_field: str | None = None
+    current: dict[str, str] = {}
+
+    def commit() -> None:
+        msgid = current.get("msgid")
+        msgstr = current.get("msgstr")
+        if msgid and msgstr is not None:
+            translations[msgid] = msgstr
+
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line:
+            commit()
+            current = {}
+            current_field = None
+            continue
+        if line.startswith("#"):
+            continue
+
+        for field in ("msgid", "msgstr"):
+            if line.startswith(field):
+                current_field = field
+                current[field] = _parse_po_string(line) or ""
+                break
+        else:
+            if line.startswith('"') and current_field:
+                current[current_field] += _parse_po_string(line) or ""
+
+    commit()
+    return translations
 
 
 def _load_locale(locale_code: str) -> dict[str, str]:
@@ -15,27 +78,18 @@ def _load_locale(locale_code: str) -> dict[str, str]:
     if normalized in _cache:
         return _cache[normalized]
 
-    path = _LOCALES_DIR / f"{normalized}.json"
+    path = _PO_DIR / normalized / "LC_MESSAGES" / "quickbib.po"
     if not path.exists():
         _cache[normalized] = {}
         return _cache[normalized]
 
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = _load_po(path)
     except Exception:
         data = {}
 
-    if not isinstance(data, dict):
-        data = {}
-
-    # Keep only string keys/values.
-    cleaned: dict[str, str] = {}
-    for key, value in data.items():
-        if isinstance(key, str) and isinstance(value, str):
-            cleaned[key] = value
-
-    _cache[normalized] = cleaned
-    return cleaned
+    _cache[normalized] = data
+    return data
 
 
 def _preferred_locales() -> list[str]:
@@ -62,20 +116,20 @@ def _preferred_locales() -> list[str]:
     return langs
 
 
-def tr(key: str, **kwargs) -> str:
+def tr(message: str, **kwargs) -> str:
     """
-    Translate a key using JSON locale files.
-    Falls back to English, then to the key itself if missing.
+    Translate an English source string using PO locale files.
+    Falls back to the English source string if missing.
     """
     value: str | None = None
     for locale_code in _preferred_locales():
         table = _load_locale(locale_code)
-        if key in table:
-            value = table[key]
+        if message in table:
+            value = table[message]
             break
 
     if value is None:
-        value = key
+        value = message
 
     if kwargs:
         try:

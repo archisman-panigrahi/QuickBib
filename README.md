@@ -124,22 +124,82 @@ Or run the convenience script in `bin/quickbib`:
 
 ## Translations
 
-QuickBib now uses JSON-based translations in `quickbib/locales/`. All translations
+QuickBib uses gettext-style PO translations in `quickbib/po/`. All translations
 were initially done with AI and only some were later modified by native speakers.
 Therefore there may be some mistakes/bad translation.
 PRs for modifications and addition of new languages are welcome!
 
-1. Copy `quickbib/locales/en.json` to a new file like `quickbib/locales/es.json`.
-2. Translate the values, keeping keys unchanged.
-3. Validate files locally:
+### Translation file format
+
+Each language has one PO file:
 
 ```
-python3 tools/check_translations.py
+quickbib/po/<language>/LC_MESSAGES/quickbib.po
+```
+
+For example:
+
+```
+quickbib/po/fr/LC_MESSAGES/quickbib.po
+quickbib/po/pt_br/LC_MESSAGES/quickbib.po
+quickbib/po/zh_cn/LC_MESSAGES/quickbib.po
+```
+
+In each entry, `msgid` is the English source text and `msgstr` is the
+translation. Translate only `msgstr`; keep `msgid` unchanged.
+
+### Improve an existing translation
+
+1. Open the PO file for the language you want to improve.
+2. Edit the `msgstr` values.
+3. Validate the PO files:
+
+```
+python3 validate_po.py --validate
 ```
 
 4. Open a pull request.
 
-To test a specific locale locally, set `LANG` (or `LC_ALL`), for example:
+### Add a new language
+
+1. Choose a language code, such as `de`, `es`, `fr`, `pt_br`, or `zh_cn`.
+2. Create a new directory using that language code:
+
+```
+mkdir -p quickbib/po/<language>/LC_MESSAGES
+```
+
+3. Copy the English PO file:
+
+```
+cp quickbib/po/en/LC_MESSAGES/quickbib.po quickbib/po/<language>/LC_MESSAGES/quickbib.po
+```
+
+4. Edit the new file and translate the `msgstr` values. Keep `msgid` unchanged.
+5. Update the `Language:` header in the new file to match the language code.
+6. Validate the PO files:
+
+```
+python3 validate_po.py --validate
+```
+
+7. Open a pull request.
+
+### Update PO files after source changes
+
+When adding or removing calls like `tr("Text to translate")` in the source code,
+refresh the PO files before validating:
+
+```
+python3 validate_po.py --extract
+python3 validate_po.py --validate
+```
+
+`--extract` adds new English strings, removes unused strings, and refreshes
+source line references while keeping existing translations.
+
+To test a specific locale locally, set `LANG` (or `LC_ALL` if your environment
+already sets it), for example:
 
 ```
 LANG=es python3 -m quickbib

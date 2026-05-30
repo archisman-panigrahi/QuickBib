@@ -154,6 +154,10 @@ def build_app():
         # PyInstaller expects --add-data in the format source:dest
         cmd += ["--add-data", f"{assets}{os.pathsep}assets"]
 
+    po_dir = ROOT / "quickbib" / "po"
+    if po_dir.exists():
+        cmd += ["--add-data", f"{po_dir}{os.pathsep}quickbib/po"]
+
     run(cmd)
 
 
