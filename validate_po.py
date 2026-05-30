@@ -193,7 +193,11 @@ def _translation_files() -> list[Path]:
 def _extract_messages() -> dict[str, list[str]]:
     messages: dict[str, list[str]] = {}
     for path in sorted(SOURCE_DIR.glob("*.py")):
-        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        tree = ast.parse(
+            path.read_text(encoding="utf-8"),
+            filename=str(path),
+            feature_version=(3, 11),
+        )
         for node in ast.walk(tree):
             if not isinstance(node, ast.Call) or not node.args:
                 continue

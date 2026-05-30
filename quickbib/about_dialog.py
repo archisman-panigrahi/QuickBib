@@ -84,13 +84,17 @@ class AboutDialog(QDialog):
         frame_layout.addWidget(tabs)
 
         about_text = QTextBrowser()
+        translations_welcome = tr(
+            '<b>Translations:</b> Want to help translate QuickBib? Improve an existing translation or add a new language on the <a href="{repo_url}">project\'s GitHub page</a>. Not sure how to start? Open an issue on <a href="{issues_url}">GitHub</a>!',
+            repo_url=REPO_URL, issues_url=ISSUES_URL,
+        )
         about_html = f"""
         <p>{tr('{app_name} fetches BibTeX entries from DOIs, arXiv IDs, and known journal URLs. It is a simple utility to quickly convert identifiers into usable BibTeX records.', app_name=APP_NAME)}</p>
         <p>{tr('QuickBib uses <a href="https://github.com/archisman-panigrahi/doi2bib3">doi2bib3</a> as its backend for DOI to BibTeX conversion.')}</p>
         <p>
           {tr('<b>Homepage:</b> <a href="{homepage}">{homepage}</a><br><b>Source Code:</b> <a href="{repo_url}">{repo_url}</a><br><b>Report Issues:</b> <a href="{issues_url}">{issues_url}</a><br><br><b>Web app:</b> Check it out <a href="{webapp_url}">here</a>.', homepage=HOMEPAGE, repo_url=REPO_URL, issues_url=ISSUES_URL, webapp_url=WEBAPP_URL)}
         </p>
-        <p>{tr('Want to help translate QuickBib? Improve an existing translation or add a new language on the <a href="{repo_url}">project\'s GitHub page</a>.', repo_url=REPO_URL)}</p>
+        <p>{translations_welcome}</p>
         <p>{tr('<b>License:</b> Released under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html#license-text">GNU General Public License Version 3</a>. Full text available on the <i>License</i> tab.')}</p>
         """
         about_text.setHtml(about_html)
@@ -98,6 +102,10 @@ class AboutDialog(QDialog):
         tabs.addTab(about_text, tr('About'))
 
         authors_text = QTextBrowser()
+        prs_welcome = tr(
+            'Bug reports and pull requests are welcome on the <a href="{repo_url}">project\'s GitHub page</a>.',
+            repo_url=REPO_URL,
+        )
         authors_html = f"""
         <h3>{tr('Authors')}</h3>
         <ul>
@@ -109,7 +117,7 @@ class AboutDialog(QDialog):
         </ul>
         <p>{tr('This project was inspired by <a href="https://github.com/bibcure/doi2bib">doi2bib</a>, whose development unfortunately stopped.')}</p>
         <p>{tr('This project would not have been possible without the help from GitHub Copilot.')}</p>
-        <p>{tr('Bug reports and pull requests are welcome on the <a href="{repo_url}">project\'s GitHub page</a>.', repo_url=REPO_URL)}</p>
+        <p>{prs_welcome}</p>
         """
         authors_text.setHtml(authors_html)
         authors_text.setOpenExternalLinks(True)

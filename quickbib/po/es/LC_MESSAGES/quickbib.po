@@ -136,75 +136,71 @@ msgstr "Sobre QuickBib"
 msgid "Version {version}"
 msgstr "Versión {version}"
 
-#: quickbib/about_dialog.py:98
+#: quickbib/about_dialog.py:102
 msgid "About"
 msgstr "Acerca de"
 
-#: quickbib/about_dialog.py:116 quickbib/about_dialog.py:102
+#: quickbib/about_dialog.py:124 quickbib/about_dialog.py:110
 msgid "Authors"
 msgstr "Autores"
 
-#: quickbib/about_dialog.py:127
+#: quickbib/about_dialog.py:135
 msgid "Translators"
 msgstr "Traductores"
 
-#: quickbib/about_dialog.py:139
+#: quickbib/about_dialog.py:147
 msgid "License"
 msgstr "Licencia"
 
-#: quickbib/about_dialog.py:88
+#: quickbib/about_dialog.py:92
 msgid "{app_name} fetches BibTeX entries from DOIs, arXiv IDs, and known journal URLs. It is a simple utility to quickly convert identifiers into usable BibTeX records."
 msgstr "{app_name} obtiene entradas BibTeX a partir de DOI, IDs de arXiv y URLs de revistas conocidas. Es una utilidad sencilla para convertir rápidamente identificadores en registros BibTeX utilizables."
 
-#: quickbib/about_dialog.py:89
+#: quickbib/about_dialog.py:93
 msgid "QuickBib uses <a href=\"https://github.com/archisman-panigrahi/doi2bib3\">doi2bib3</a> as its backend for DOI to BibTeX conversion."
 msgstr "QuickBib utiliza <a href=\"https://github.com/archisman-panigrahi/doi2bib3\">doi2bib3</a> como motor para convertir DOI a BibTeX."
 
-#: quickbib/about_dialog.py:91
+#: quickbib/about_dialog.py:95
 msgid "<b>Homepage:</b> <a href=\"{homepage}\">{homepage}</a><br><b>Source Code:</b> <a href=\"{repo_url}\">{repo_url}</a><br><b>Report Issues:</b> <a href=\"{issues_url}\">{issues_url}</a><br><br><b>Web app:</b> Check it out <a href=\"{webapp_url}\">here</a>."
 msgstr "<b>Página web:</b> <a href=\"{homepage}\">{homepage}</a><br><b>Código fuente:</b> <a href=\"{repo_url}\">{repo_url}</a><br><b>Informar de problemas:</b> <a href=\"{issues_url}\">{issues_url}</a><br><br><b>App web:</b> Échale un vistazo <a href=\"{webapp_url}\">aquí</a>."
 
-#: quickbib/about_dialog.py:94
+#: quickbib/about_dialog.py:98
 msgid "<b>License:</b> Released under the <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">GNU General Public License Version 3</a>. Full text available on the <i>License</i> tab."
 msgstr "<b>Licencia:</b> Publicado bajo la <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">GNU General Public License Version 3</a>. El texto completo está disponible en la pestaña <i>Licencia</i>."
 
-#: quickbib/about_dialog.py:106
+#: quickbib/about_dialog.py:114
 msgid " Significant Contributors"
 msgstr "Colaboradores destacados"
 
-#: quickbib/about_dialog.py:108
+#: quickbib/about_dialog.py:116
 msgid "<a href=\"https://github.com/Kyuyrii/\">Kyuyrii</a>: Helped fix the snap package."
 msgstr "<a href=\"https://github.com/Kyuyrii/\">Kyuyrii</a>: Ayudó a corregir el paquete snap."
 
-#: quickbib/about_dialog.py:110
+#: quickbib/about_dialog.py:118
 msgid "This project was inspired by <a href=\"https://github.com/bibcure/doi2bib\">doi2bib</a>, whose development unfortunately stopped."
 msgstr "Este proyecto se inspiró en <a href=\"https://github.com/bibcure/doi2bib\">doi2bib</a>, cuyo desarrollo lamentablemente se detuvo."
 
-#: quickbib/about_dialog.py:111
+#: quickbib/about_dialog.py:119
 msgid "This project would not have been possible without the help from GitHub Copilot."
 msgstr "Este proyecto no habría sido posible sin la ayuda de GitHub Copilot."
 
-#: quickbib/about_dialog.py:112
+#: quickbib/about_dialog.py:105
 msgid "Bug reports and pull requests are welcome on the <a href=\"{repo_url}\">project's GitHub page</a>."
 msgstr "Se agradecen los reportes de errores y las pull requests en la <a href=\"{repo_url}\">página de GitHub del proyecto</a>."
 
-#: quickbib/about_dialog.py:93
-msgid "Want to help translate QuickBib? Improve an existing translation or add a new language on the <a href=\"{repo_url}\">project's GitHub page</a>."
-msgstr "¿Quieres ayudar a traducir QuickBib? Mejora una traducción existente o añade un nuevo idioma en la <a href=\"{repo_url}\">página de GitHub del proyecto</a>."
-
-#: quickbib/about_dialog.py:136
+#: quickbib/about_dialog.py:144
 msgid "<p>Unable to read LICENSE file.</p>"
 msgstr "<p>No se pudo leer el archivo LICENSE.</p>"
 
-#: quickbib/about_dialog.py:138
+#: quickbib/about_dialog.py:146
 msgid "<p>GPLv3 license text not found in repository. See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">Read it online</a>.</p>"
 msgstr "<p>No se encontró el texto de la licencia GPLv3 en el repositorio. Puedes <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">leerlo en línea</a>.</p>"
 
-#: quickbib/about_dialog.py:144
+#: quickbib/about_dialog.py:152
 msgid "<em>Dedicated to all my friends 😊</em>"
 msgstr "<em>Dedicado a todos mis amigos 😊</em>"
 
-#: quickbib/about_dialog.py:150 quickbib/how_to_use_dialog.py:83
+#: quickbib/about_dialog.py:158 quickbib/how_to_use_dialog.py:83
 msgid "✕ Close"
 msgstr "✕ Cerrar"
 
@@ -251,3 +247,7 @@ msgstr "Título (búsqueda aproximada)"
 #: quickbib/how_to_use_dialog.py:74
 msgid "Copy"
 msgstr "Copiar"
+
+#: quickbib/about_dialog.py:87
+msgid "<b>Translations:</b> Want to help translate QuickBib? Improve an existing translation or add a new language on the <a href=\"{repo_url}\">project's GitHub page</a>. Not sure how to start? Open an issue on <a href=\"{issues_url}\">GitHub</a>!"
+msgstr "<b>Traducciones:</b> ¿Quieres ayudar a traducir QuickBib? Mejora una traducción existente o añade un nuevo idioma en la <a href=\"{repo_url}\">página de GitHub del proyecto</a>. ¿No sabes cómo empezar? Abre un issue en <a href=\"{issues_url}\">GitHub</a>."
