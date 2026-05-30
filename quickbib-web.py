@@ -47,7 +47,7 @@ with title_text_col:
 # Input Field with enlarged label
 st.markdown(
     "<div style='font-size:1.2rem; font-weight:400;'>"
-    "Paste a DOI, arXiv ID, or paper link (APS, AMS, ACS, Science, Nature, ScienceDirect, PNAS, IOP Science, and SciPost group of journals. For others, use the DOI.). See <a href='https://archisman-panigrahi.github.io/QuickBib/#examples'>examples</a>"
+    "Paste a DOI, arXiv ID, or paper link (APS, AMS, ACS, Science, Nature, ScienceDirect, PNAS, IOP Science, and SciPost group of journals. For others, use the DOI). See <a href='https://archisman-panigrahi.github.io/QuickBib/#examples'>examples</a>"
     "</div>",
     unsafe_allow_html=True,
 )
