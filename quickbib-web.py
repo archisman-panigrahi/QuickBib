@@ -12,8 +12,8 @@ def get_bibtex_for_doi(doi: str):
 
 # --- Streamlit UI Layout ---
 icon_url = "https://github.com/archisman-panigrahi/QuickBib/blob/main/assets/icon/128x128/io.github.archisman_panigrahi.QuickBib.png?raw=true"
-ICON_SIZE = 128
-st.set_page_config(page_title="DOI to BibTeX", page_icon=icon_url)
+ICON_SIZE = 96
+st.set_page_config(page_title="QuickBib: DOI to BibTeX", page_icon=icon_url)
 
 # Trim top padding for a tighter layout
 st.markdown(
