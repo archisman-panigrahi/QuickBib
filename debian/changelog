@@ -1,3 +1,9 @@
+quickbib (0.9.1-1) unstable; urgency=medium
+
+  * update version for doi2bib3 update
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Fri, 29 May 2026 21:02:01 -0400
+
 quickbib (0.9.0-1) unstable; urgency=medium
 
   * Added support for bibitem output
