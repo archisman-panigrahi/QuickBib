@@ -75,11 +75,11 @@ Alternatively, prebuilt installers are available to download from [GitHub Releas
 
 ### Web App
 
-A web app is available at https://quickbib.streamlit.app/.
+A web app is available at https://archisman-panigrahi.github.io/QuickBib/webapp.
 
 ### macOS
 
-It is recommended that on macOS you use the [web app](https://quickbib.streamlit.app/) instead. _Continue reading to learn why_.
+It is recommended that on macOS you use the [web app](https://archisman-panigrahi.github.io/QuickBib/webapp) instead. _Continue reading to learn why_.
 
 No prebuilt macOS installers: Distributing an app that users can graphically install and run seems to require paying Apple perpetually (US$99/year) to sign and notarize the app even if the app is free — that’s plain extortion — so we ship the source instead. You can run QuickBib from source or build a macOS app using the packaging scripts on GitHub. **If you have a better idea about how to package the macOS app in a more convenient way (without perpetually paying Apple), please let us know in GitHub Issues**.
 
