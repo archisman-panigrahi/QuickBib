@@ -1,7 +1,7 @@
 """Read an Overleaf project's source files through Overleaf's Git bridge.
 
 Overleaf exposes every project as a Git repository. "Connecting to Overleaf"
-is therefore nothing more than ``git clone`` with a personal Git token — no
+is therefore nothing more than ``git clone`` with a personal Git token - no
 plugin or external service is involved. This module wraps that so the verifier
 can pull ``.bib`` / ``.tex`` files straight from a live project.
 """
@@ -41,7 +41,7 @@ def clone_or_pull(project_id: str, git_token: str, workdir: str | None = None) -
     if not (git_token or "").strip():
         raise OverleafError(
             "Missing Overleaf Git token. Create one under "
-            "Overleaf → Account Settings → Git Integration."
+            "Overleaf -> Account Settings -> Git Integration."
         )
 
     base = Path(workdir) if workdir else Path(tempfile.gettempdir())

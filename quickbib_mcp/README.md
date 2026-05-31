@@ -35,7 +35,11 @@ can relay verbatim.
 
 - **Python 3.10+** and **Git** on your `PATH`.
 - A local copy of the **QuickBib repository** (this folder lives inside it —
-  the server imports `quickbib.verify` from the repo, no install needed).
+  the server imports `doi2bib3.verify` for the engine and
+  `quickbib.overleaf` for Git-bridge cloning; no install step beyond the
+  requirements below).
+- The **`doi2bib3 >= 1.2.0`** Python package (installed automatically via
+  the requirements file below; ships the verification engine).
 - The **`mcp`** package:
 
   ```
@@ -112,7 +116,7 @@ running over stdio. Press Ctrl+C to exit. For a quick functional check without
 the protocol, the underlying engine is also runnable directly:
 
 ```
-python -m quickbib.verify --help
+doi2bib3 verify --help
 ```
 
 ## Usage examples

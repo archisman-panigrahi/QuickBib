@@ -2,7 +2,7 @@
 
 Lets the user check a local ``.bib`` file or a live Overleaf project for
 references that may be incorrect or do not exist. The actual checking is done
-by the deterministic engine in :mod:`quickbib.verify` on a background thread;
+by the deterministic engine in :mod:`doi2bib3.verify` on a background thread;
 this module is only the PyQt6 front-end.
 """
 
@@ -30,7 +30,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from .verify import (
+from doi2bib3.verify import (
     ERROR,
     MISMATCH,
     NOT_FOUND,
@@ -43,7 +43,7 @@ from .verify import (
     summary,
     verify_entries,
 )
-from .verify.overleaf import (
+from .overleaf import (
     OverleafError,
     clone_or_pull,
     find_bib_files,

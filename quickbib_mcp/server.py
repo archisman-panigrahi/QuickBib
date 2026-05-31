@@ -23,17 +23,18 @@ if str(_REPO_ROOT) not in sys.path:
 
 from mcp.server.fastmcp import FastMCP  # noqa: E402
 
-from quickbib.verify import (  # noqa: E402
+from doi2bib3 import (  # noqa: E402
+    BibEntry,
     STATUS_ICON,
     VERIFIED,
     check_cite_keys,
+    normalize_doi,
     parse_bibtex,
     summary,
     verify_entries,
     verify_entry,
 )
-from quickbib.verify.bibparser import BibEntry, normalize_doi  # noqa: E402
-from quickbib.verify.overleaf import (  # noqa: E402
+from quickbib.overleaf import (  # noqa: E402
     OverleafError,
     clone_or_pull,
     find_bib_files,

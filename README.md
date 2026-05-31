@@ -128,6 +128,8 @@ Or run the convenience script in `bin/quickbib`:
 
 Large language models often invent realistic-looking citations — DOIs that do not resolve, papers that were never written, or DOIs that point to a completely different article. QuickBib can check every BibTeX reference against authoritative databases (CrossRef, arXiv, and the DOI registry) and tell you which ones hold up.
 
+The verification engine itself ships in QuickBib's existing BibTeX backend, [`doi2bib3`](https://github.com/archisman-panigrahi/doi2bib3) — the desktop app, the CLI and the MCP server are three thin front-ends on top of it.
+
 Verification is **deterministic**: QuickBib fetches the real record for each entry and corroborates the title, authors, and year in code — no AI service, API key, or subscription is involved. Each reference is reported as one of:
 
 - **verified** — an identifier resolves and the metadata is corroborated, or the title and authors were matched in CrossRef;
@@ -147,12 +149,12 @@ Open QuickBib and choose **Tools → Verify References** (or the **Verify Refere
 No GUI required:
 
 ```
-python3 -m quickbib.verify references.bib
-python3 -m quickbib.verify ./paper-folder
+doi2bib3 verify references.bib
+doi2bib3 verify ./paper-folder
 python3 -m quickbib.verify --overleaf <PROJECT_ID> --token <GIT_TOKEN>
 ```
 
-Add `--json` for machine-readable output. When `.tex` files are present, it also reports `\cite` keys that are not defined in any `.bib` file (a common sign of an invented citation key).
+The first two forms run `doi2bib3 verify` directly (no QuickBib install needed once `doi2bib3 >= 1.2.0` is on `PATH`). The third form delegates to the same engine but adds Overleaf-project support through QuickBib's Git-bridge helper. Add `--json` for machine-readable output. When `.tex` files are present, it also reports `\cite` keys that are not defined in any `.bib` file (a common sign of an invented citation key).
 
 ### 3. As an MCP server (optional — for Claude Desktop, Cursor, …)
 
