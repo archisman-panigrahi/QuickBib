@@ -1,3 +1,9 @@
+quickbib (0.8.1-1) unstable; urgency=medium
+
+  * better arXiv link handling via doi2bib3 v0.9.1
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Wed, 20 May 2026 14:38:33 -0400
+
 quickbib (0.8.0-1) unstable; urgency=medium
 
   * mobile friendly responsive interface

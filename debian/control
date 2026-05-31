@@ -11,7 +11,7 @@ Rules-Requires-Root: no
 
 Package: quickbib
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}, python3-pyqt6, python3-doi2bib3 (>= 0.9.0)
+Depends: ${misc:Depends}, ${python3:Depends}, python3-pyqt6, python3-doi2bib3 (>= 0.9.1)
 Description: Quickly get BibTeX from a DOI
  QuickBib helps you quickly generate BibTeX bibliographic entries from identifiers such as DOIs, arXiv IDs, article URLs and their titles.
  Enter an identifier and QuickBib will fetch the metadata and produce a ready-to-use BibTeX entry which you can copy to your clipboard and use in your LaTeX documents.

@@ -4,7 +4,7 @@ This is a cross platform app that enables you to get the bibtex entry from a DOI
 
 QuickBib can also **verify** that the BibTeX references in a paper are authentic and not hallucinated — see [Verify references](#verify-references).
  
-![screenshot](assets/screenshots/quickbib-animated.gif)
+<img src="assets/screenshots/quickbib-animated.gif" width="420" height="400"><br><br>
 
 ## Star History
 
