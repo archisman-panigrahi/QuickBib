@@ -1,3 +1,33 @@
+quickbib (0.9.1-1) unstable; urgency=medium
+
+  * update version for doi2bib3 update
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Fri, 29 May 2026 21:02:01 -0400
+
+quickbib (0.9.0-1) unstable; urgency=medium
+
+  * Added support for bibitem output
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Fri, 29 May 2026 19:35:17 -0400
+
+quickbib (0.8.4-1) unstable; urgency=medium
+
+  * no AI/ML generated citation notice
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Fri, 29 May 2026 10:11:03 -0400
+
+quickbib (0.8.3-1) unstable; urgency=medium
+
+  * Fix journal URL for IOP Science and SciPost
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Fri, 22 May 2026 13:37:54 -0400
+
+quickbib (0.8.2-1) unstable; urgency=medium
+
+  * added support for ScienceDirect journals
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Thu, 21 May 2026 11:03:05 -0400
+
 quickbib (0.8.1-1) unstable; urgency=medium
 
   * better arXiv link handling via doi2bib3 v0.9.1

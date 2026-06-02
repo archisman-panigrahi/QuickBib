@@ -14,17 +14,18 @@ from PyQt6.QtWidgets import (
     QToolButton,
     QMenu,
     QTextEdit,
+    QPlainTextEdit,
     QMessageBox,
     QSizePolicy,
 )
 from PyQt6.QtGui import QAction, QPixmap, QFont, QIcon, QDesktopServices
 from PyQt6.QtCore import QObject, pyqtSignal, Qt, QUrl
 
-from .helpers import get_bibtex_for_doi, copy_to_clipboard
+from .helpers import get_aps_bibitem_for_bibtex, get_bibtex_for_doi, copy_to_clipboard
 from .about_dialog import AboutDialog
 from .how_to_use_dialog import HowToUseDialog
 from .verify_dialog import VerifyDialog
-from .app_info import LICENSE_PATH, WEBAPP_URL, ISSUES_URL
+from .app_info import LICENSE_PATH, WEBAPP_URL, ISSUES_URL, ALGORITHM_VISUALS_URL
 from .i18n import tr
 
 
@@ -46,8 +47,8 @@ class FetchWorker(QObject):
 class QuickBibWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(tr("window.title"))
-        self.setMinimumSize(320, 360)
+        self.setWindowTitle(tr('QuickBib: DOI → BibTeX'))
+        self.setMinimumSize(320, 460)
         self._compact_breakpoint = 460
         self._is_compact_layout = None
 
@@ -62,44 +63,44 @@ class QuickBibWindow(QMainWindow):
 
         # Menu bar
         menubar = self.menuBar()
-        file_menu = menubar.addMenu(tr("menu.file"))
-        quit_action = QAction(tr("action.quit"), self)
+        file_menu = menubar.addMenu(tr('&File'))
+        quit_action = QAction(tr('🚪 &Quit'), self)
         quit_action.setFont(self._emoji_font)
         quit_action.triggered.connect(self.close)
         file_menu.addAction(quit_action)
 
-        edit_menu = menubar.addMenu(tr("menu.edit"))
-        copy_action = QAction(tr("action.copy_bibtex"), self)
+        edit_menu = menubar.addMenu(tr('&Edit'))
+        copy_action = QAction(tr('📋 &Copy BibTeX'), self)
         copy_action.setFont(self._emoji_font)
         copy_action.setShortcut("Ctrl+C")
-        copy_action.triggered.connect(self.copy_to_clipboard)
+        copy_action.triggered.connect(self.copy_bibtex_to_clipboard)
         edit_menu.addAction(copy_action)
 
-        tools_menu = menubar.addMenu(tr("menu.tools"))
-        verify_action = QAction(tr("action.verify"), self)
+        tools_menu = menubar.addMenu(tr('&Tools'))
+        verify_action = QAction(tr('✅ &Verify References'), self)
         verify_action.setFont(self._emoji_font)
         verify_action.triggered.connect(self.show_verify_dialog)
         tools_menu.addAction(verify_action)
 
-        help_menu = menubar.addMenu(tr("menu.help"))
-        about_action = QAction(tr("action.about"), self)
+        help_menu = menubar.addMenu(tr('&Help'))
+        about_action = QAction(tr('🤔 &About QuickBib'), self)
         about_action.setFont(self._emoji_font)
         about_action.triggered.connect(self.show_about)
         help_menu.addAction(about_action)
 
-        howto_action = QAction(tr("action.examples"), self)
+        howto_action = QAction(tr('📘 &Examples'), self)
         howto_action.setFont(self._emoji_font)
         howto_action.triggered.connect(self.show_how_to_use)
         help_menu.addAction(howto_action)
 
         help_menu.addSeparator()
 
-        webapp_action = QAction(tr("action.webapp"), self)
+        webapp_action = QAction(tr('🌐 Web App'), self)
         webapp_action.setFont(self._emoji_font)
         webapp_action.triggered.connect(lambda: self._open_url(WEBAPP_URL))
         help_menu.addAction(webapp_action)
 
-        feedback_action = QAction(tr("action.feedback"), self)
+        feedback_action = QAction(tr('💬 Send Feedback'), self)
         feedback_action.setFont(self._emoji_font)
         feedback_action.triggered.connect(lambda: self._open_url(ISSUES_URL))
         help_menu.addAction(feedback_action)
@@ -132,22 +133,22 @@ class QuickBibWindow(QMainWindow):
         self.quick_links_widget.setLayout(quick_links)
         vbox.addWidget(self.quick_links_widget)
 
-        webapp_btn = QPushButton(tr("button.webapp"))
+        webapp_btn = QPushButton(tr('🌐 Web App'))
         webapp_btn.setFont(self._emoji_font)
         webapp_btn.clicked.connect(lambda: self._open_url(WEBAPP_URL))
         quick_links.addWidget(webapp_btn)
 
-        howto_btn = QPushButton(tr("button.examples"))
+        howto_btn = QPushButton(tr('📘 Examples'))
         howto_btn.setFont(self._emoji_font)
         howto_btn.clicked.connect(self.show_how_to_use)
         quick_links.addWidget(howto_btn)
 
-        verify_btn = QPushButton(tr("button.verify"))
+        verify_btn = QPushButton(tr('✅ Verify'))
         verify_btn.setFont(self._emoji_font)
         verify_btn.clicked.connect(self.show_verify_dialog)
         quick_links.addWidget(verify_btn)
 
-        feedback_btn = QPushButton(tr("button.feedback"))
+        feedback_btn = QPushButton(tr('💬 Send Feedback'))
         feedback_btn.setFont(self._emoji_font)
         feedback_btn.clicked.connect(lambda: self._open_url(ISSUES_URL))
         quick_links.addWidget(feedback_btn)
@@ -164,18 +165,18 @@ class QuickBibWindow(QMainWindow):
         self.doi_header_row.setLayout(self.doi_header_layout)
         self.entry_box.addWidget(self.doi_header_row)
 
-        self.doi_label = QLabel(tr("label.doi"))
+        self.doi_label = QLabel(tr('DOI:'))
         self.doi_header_layout.addWidget(self.doi_label)
         self.doi_header_layout.addStretch(1)
         self.doi_header_layout.addWidget(self.mobile_menu_btn)
 
         self.doi_entry = QLineEdit()
-        self.doi_entry.setPlaceholderText(tr("placeholder.query"))
+        self.doi_entry.setPlaceholderText(tr('DOI or arXiv ID or arXiv URL or Journal URL or Article Title'))
         self.entry_box.addWidget(self.doi_entry)
         # Trigger fetch when user presses Enter in the DOI entry
         self.doi_entry.returnPressed.connect(self.fetch_bibtex)
 
-        self.fetch_btn = QPushButton(tr("button.fetch"))
+        self.fetch_btn = QPushButton(tr('Fetch'))
         self.fetch_btn.clicked.connect(self.fetch_bibtex)
         self.entry_box.addWidget(self.fetch_btn)
 
@@ -193,22 +194,33 @@ class QuickBibWindow(QMainWindow):
         self.textview.setMinimumHeight(180)
         vbox.addWidget(self.textview, 1)
 
-        # Buttons (fixed-height bar so it won't overlap the output area on short windows)
-        self.btn_widget = QWidget()
-        btn_box = QHBoxLayout()
-        btn_box.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        btn_box.setContentsMargins(0, 0, 0, 0)
-        btn_box.setSpacing(8)
-        self.btn_widget.setLayout(btn_box)
-        self.btn_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        # Slightly smaller fixed height to reduce vertical margin
-        self.btn_widget.setFixedHeight(24)
-        vbox.addWidget(self.btn_widget)
+        self.copy_bibtex_btn = self._add_copy_button_row(
+            vbox,
+            tr('📋 Copy BibTeX to Clipboard'),
+            self.copy_bibtex_to_clipboard,
+        )
 
-        self.copy_btn = QPushButton(tr("button.copy_clipboard"))
-        self.copy_btn.setFont(self._emoji_font)
-        self.copy_btn.clicked.connect(self.copy_to_clipboard)
-        btn_box.addWidget(self.copy_btn)
+        self.bibitem_label = QLabel(tr('APS Style Bibitem:'))
+        vbox.addWidget(self.bibitem_label)
+
+        self.bibitem_view = QPlainTextEdit()
+        self.bibitem_view.setReadOnly(True)
+        self.bibitem_view.setLineWrapMode(QPlainTextEdit.LineWrapMode.WidgetWidth)
+        self.bibitem_view.setMinimumHeight(42)
+        self.bibitem_view.setMaximumHeight(78)
+        vbox.addWidget(self.bibitem_view)
+
+        self.copy_bibitem_btn = self._add_copy_button_row(
+            vbox,
+            tr('📋 Copy Bibitem to Clipboard'),
+            self.copy_bibitem_to_clipboard,
+        )
+
+        citation_note = QLabel(tr('Metadata from Crossref and arXiv (no AI/ML). <a href="{algorithm_url}">Here is how it works.</a>', algorithm_url=ALGORITHM_VISUALS_URL))
+        citation_note.setOpenExternalLinks(True)
+        citation_note.setWordWrap(True)
+        citation_note.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        vbox.addWidget(citation_note)
 
         # Size the window from its actual content. Widget widths depend on the
         # platform, font and locale, so a hardcoded width clips the quick-links
@@ -219,8 +231,8 @@ class QuickBibWindow(QMainWindow):
         self._compact_breakpoint = max(460, quick_links_width + 40)
         # Open wide enough to show the quick-links row uncompressed.
         default_width = max(500, self._compact_breakpoint + 24, self.sizeHint().width())
-        self.resize(default_width, 400)
         self._apply_responsive_layout(self.width())
+        self.resize(default_width, 540)
 
         # Keep references to worker/thread so they don't get GC'd
         self._worker_thread = None
@@ -249,7 +261,8 @@ class QuickBibWindow(QMainWindow):
             self.doi_header_row.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
             self.doi_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
             self.fetch_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-            self.copy_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            self.copy_bibtex_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+            self.copy_bibitem_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
             self.doi_entry.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         else:
             self.menuBar().setVisible(True)
@@ -258,8 +271,26 @@ class QuickBibWindow(QMainWindow):
             self.doi_header_row.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
             self.doi_label.setAlignment(Qt.AlignmentFlag.AlignVCenter)
             self.fetch_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
-            self.copy_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+            self.copy_bibtex_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+            self.copy_bibitem_btn.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
             self.doi_entry.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+
+    def _add_copy_button_row(self, layout: QVBoxLayout, text: str, slot) -> QPushButton:
+        row = QWidget()
+        row_layout = QHBoxLayout()
+        row_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        row_layout.setContentsMargins(0, 0, 0, 0)
+        row_layout.setSpacing(8)
+        row.setLayout(row_layout)
+        row.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        row.setFixedHeight(24)
+        layout.addWidget(row)
+
+        button = QPushButton(text)
+        button.setFont(self._emoji_font)
+        button.clicked.connect(slot)
+        row_layout.addWidget(button)
+        return button
 
     def _setup_emoji_font(self):
         """Set up a font with good emoji support across different desktop environments."""
@@ -303,7 +334,7 @@ class QuickBibWindow(QMainWindow):
         try:
             QDesktopServices.openUrl(QUrl(url))
         except Exception:
-            self.status.setText(self._format_status_with_emoji(tr("status.link_open_failed")))
+            self.status.setText(self._format_status_with_emoji(tr('ℹ️ Failed to open link.')))
 
     def show_about(self):
         dlg = AboutDialog(self)
@@ -320,11 +351,12 @@ class QuickBibWindow(QMainWindow):
     def fetch_bibtex(self):
         doi = self.doi_entry.text().strip()
         if not doi:
-            self.status.setText(self._format_status_with_emoji(tr("status.enter_valid_doi")))
+            self.status.setText(self._format_status_with_emoji(tr('ℹ️ Please enter a valid DOI. See "Help → Examples" for more info.')))
             return
 
-        self.status.setText(tr("status.fetching"))
+        self.status.setText(tr('Fetching BibTeX...'))
         self.textview.clear()
+        self.bibitem_view.clear()
 
         worker = FetchWorker(doi)
 
@@ -341,23 +373,39 @@ class QuickBibWindow(QMainWindow):
     def on_fetch_finished(self, found: bool, bibtex: str, error: object):
         if found:
             self.textview.setPlainText(bibtex)
-            self.status.setText(self._format_status_with_emoji(tr("status.fetch_success")))
+            bibitem_found, bibitem, bibitem_error = get_aps_bibitem_for_bibtex(bibtex)
+            if bibitem_found:
+                self.bibitem_view.setPlainText(bibitem)
+                self.status.setText(self._format_status_with_emoji(tr('✅ Fetched successfully.')))
+            else:
+                self.bibitem_view.clear()
+                self.status.setText(
+                    self._format_status_with_emoji(
+                        tr('✅ Fetched BibTeX. APS Bibitem unavailable: {error}', error=bibitem_error)
+                    )
+                )
         else:
             self.textview.clear()
+            self.bibitem_view.clear()
             if error:
-                self.status.setText(self._format_status_with_emoji(tr("status.error", error=error)))
+                self.status.setText(self._format_status_with_emoji(tr('ℹ️ Error: {error}', error=error)))
             else:
-                self.status.setText(self._format_status_with_emoji(tr("status.error_not_found")))
+                self.status.setText(self._format_status_with_emoji(tr('ℹ️ Error: DOI not found or CrossRef request failed.')))
 
         self._worker_thread = None
 
-    def copy_to_clipboard(self):
-        text = self.textview.toPlainText()
+    def copy_bibtex_to_clipboard(self):
+        self._copy_text_to_clipboard(self.textview.toPlainText())
+
+    def copy_bibitem_to_clipboard(self):
+        self._copy_text_to_clipboard(self.bibitem_view.toPlainText())
+
+    def _copy_text_to_clipboard(self, text: str):
         if text.strip():
             ok = copy_to_clipboard(text)
             if ok:
-                self.status.setText(self._format_status_with_emoji(tr("status.copy_success")))
+                self.status.setText(self._format_status_with_emoji(tr('✅ Copied to clipboard!')))
             else:
-                self.status.setText(self._format_status_with_emoji(tr("status.copy_failed")))
+                self.status.setText(self._format_status_with_emoji(tr('ℹ️ Failed to copy to clipboard.')))
         else:
-            self.status.setText(self._format_status_with_emoji(tr("status.nothing_to_copy")))
+            self.status.setText(self._format_status_with_emoji(tr('ℹ️ Nothing to copy.')))

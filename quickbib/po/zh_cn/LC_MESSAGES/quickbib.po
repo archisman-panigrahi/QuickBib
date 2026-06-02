@@ -1,0 +1,265 @@
+# QuickBib translations.
+# Copyright (C) 2026 QuickBib contributors
+# This file is distributed under the same license as the QuickBib project.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: QuickBib\n"
+"Report-Msgid-Bugs-To: https://github.com/archisman-panigrahi/quickbib/issues\n"
+"POT-Creation-Date: 2026-05-30 00:00-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_cn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: QuickBib migration script\n"
+
+#: quickbib\main_window.py:50
+msgid "QuickBib: DOI → BibTeX"
+msgstr "QuickBib: DOI → BibTeX"
+
+#: quickbib\main_window.py:66
+msgid "&File"
+msgstr "文件"
+
+#: quickbib\main_window.py:72
+msgid "&Edit"
+msgstr "编辑"
+
+#: quickbib\main_window.py:85
+msgid "&Help"
+msgstr "帮助"
+
+#: quickbib\main_window.py:67
+msgid "🚪 &Quit"
+msgstr "🚪 退出"
+
+#: quickbib\main_window.py:73
+msgid "📋 &Copy BibTeX"
+msgstr "📋 复制 BibTeX"
+
+#: quickbib\main_window.py:86
+msgid "🤔 &About QuickBib"
+msgstr "🤔 关于 QuickBib"
+
+#: quickbib\main_window.py:91
+msgid "📘 &Examples"
+msgstr "📖 示例"
+
+#: quickbib\main_window.py:98 quickbib\main_window.py:136
+msgid "🌐 Web App"
+msgstr "🌐 网页应用"
+
+#: quickbib\main_window.py:103 quickbib\main_window.py:151
+msgid "💬 Send Feedback"
+msgstr "💬 发送反馈"
+
+#: quickbib\main_window.py:141
+msgid "📘 Examples"
+msgstr "📖 示例"
+
+#: quickbib\main_window.py:168
+msgid "DOI:"
+msgstr "DOI:"
+
+#: quickbib\main_window.py:174
+msgid "DOI or arXiv ID or arXiv URL or Journal URL or Article Title"
+msgstr "DOI/ arXiv ID/ arXiv 链接/期刊链接/文章标题"
+
+#: quickbib\main_window.py:179
+msgid "Fetch"
+msgstr "获取"
+
+#: quickbib\main_window.py:203
+msgid "APS Style Bibitem:"
+msgstr "APS 样式 Bibitem:"
+
+#: quickbib\main_window.py:199
+msgid "📋 Copy BibTeX to Clipboard"
+msgstr "📋 复制 BibTeX 到剪贴板"
+
+#: quickbib\main_window.py:215
+msgid "📋 Copy Bibitem to Clipboard"
+msgstr "📋 复制 Bibitem 到剪贴板"
+
+#: quickbib\main_window.py:219
+msgid "Metadata from Crossref and arXiv (no AI/ML). <a href=\"{algorithm_url}\">Here is how it works.</a>"
+msgstr "元数据来自 Crossref 和 arXiv（无 AI/ML）。<a href=\"{algorithm_url}\">了解其工作原理。</a>"
+
+#: quickbib\main_window.py:337
+msgid "ℹ️ Failed to open link."
+msgstr "ℹ️ 打开链接失败。"
+
+#: quickbib\main_window.py:354
+msgid "ℹ️ Please enter a valid DOI. See \"Help → Examples\" for more info."
+msgstr "ℹ️ 请输入有效的 DOI。请查看\"帮助 → 示例\"获取更多信息。"
+
+#: quickbib\main_window.py:357
+msgid "Fetching BibTeX..."
+msgstr "正在获取 BibTeX..."
+
+#: quickbib\main_window.py:379
+msgid "✅ Fetched successfully."
+msgstr "✅ 获取成功。"
+
+#: quickbib\main_window.py:384
+msgid "✅ Fetched BibTeX. APS Bibitem unavailable: {error}"
+msgstr "✅ 已获取 BibTeX。APS Bibitem 不可用: {error}"
+
+#: quickbib\main_window.py:391
+msgid "ℹ️ Error: {error}"
+msgstr "ℹ️ 错误: {error}"
+
+#: quickbib\main_window.py:393
+msgid "ℹ️ Error: DOI not found or CrossRef request failed."
+msgstr "ℹ️ 错误: DOI 未找到或 CrossRef 请求失败。"
+
+#: quickbib\main_window.py:407
+msgid "✅ Copied to clipboard!"
+msgstr "✅ 已复制到剪贴板！"
+
+#: quickbib\main_window.py:409
+msgid "ℹ️ Failed to copy to clipboard."
+msgstr "ℹ️ 复制到剪贴板失败。"
+
+#: quickbib\main_window.py:411
+msgid "ℹ️ Nothing to copy."
+msgstr "ℹ️ 没有内容可复制。"
+
+#: quickbib\about_dialog.py:22
+msgid "About QuickBib"
+msgstr "关于 QuickBib"
+
+#: quickbib\about_dialog.py:69
+msgid "Version {version}"
+msgstr "版本 {version}"
+
+#: quickbib\about_dialog.py:102
+msgid "About"
+msgstr "关于"
+
+#: quickbib\about_dialog.py:124 quickbib\about_dialog.py:110
+msgid "Authors"
+msgstr "作者"
+
+#: quickbib\about_dialog.py:135
+msgid "Translators"
+msgstr "译者"
+
+#: quickbib\about_dialog.py:147
+msgid "License"
+msgstr "许可证"
+
+#: quickbib\about_dialog.py:92
+msgid "{app_name} fetches BibTeX entries from DOIs, arXiv IDs, and known journal URLs. It is a simple utility to quickly convert identifiers into usable BibTeX records."
+msgstr "{app_name} 可以从 DOI、arXiv ID 和已知期刊链接获取 BibTeX 条目。这是一个简单实用的工具，可以快速将标识符转换为可用的 BibTeX 记录。"
+
+#: quickbib\about_dialog.py:93
+msgid "QuickBib uses <a href=\"https://github.com/archisman-panigrahi/doi2bib3\">doi2bib3</a> as its backend for DOI to BibTeX conversion."
+msgstr "QuickBib 使用 <a href=\"https://github.com/archisman-panigrahi/doi2bib3\">doi2bib3</a> 作为 DOI 到 BibTeX 转换的后端。"
+
+#: quickbib\about_dialog.py:95
+msgid "<b>Homepage:</b> <a href=\"{homepage}\">{homepage}</a><br><b>Source Code:</b> <a href=\"{repo_url}\">{repo_url}</a><br><b>Report Issues:</b> <a href=\"{issues_url}\">{issues_url}</a><br><br><b>Web app:</b> Check it out <a href=\"{webapp_url}\">here</a>."
+msgstr "<b>主页:</b> <a href=\"{homepage}\">{homepage}</a><br><b>源代码:</b> <a href=\"{repo_url}\">{repo_url}</a><br><b>报告问题:</b> <a href=\"{issues_url}\">{issues_url}</a><br><br><b>网页应用:</b> 在<a href=\"{webapp_url}\">这里</a>查看。"
+
+#: quickbib\about_dialog.py:98
+msgid "<b>License:</b> Released under the <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">GNU General Public License Version 3</a>. Full text available on the <i>License</i> tab."
+msgstr "<b>许可证:</b> 采用 <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">GNU 通用公共许可证第3版</a>发布。完整文本可在<i>许可证</i>标签页查看。"
+
+#: quickbib\about_dialog.py:114
+msgid " Significant Contributors"
+msgstr "重要贡献者"
+
+#: quickbib\about_dialog.py:116
+msgid "<a href=\"https://github.com/Kyuyrii/\">Kyuyrii</a>: Helped fix the snap package."
+msgstr "<a href=\"https://github.com/Kyuyrii/\">Kyuyrii</a>: 帮助修复了 snap 包。"
+
+#: quickbib\about_dialog.py:118
+msgid "This project was inspired by <a href=\"https://github.com/bibcure/doi2bib\">doi2bib</a>, whose development unfortunately stopped."
+msgstr "该项目受到 <a href=\"https://github.com/bibcure/doi2bib\">doi2bib</a> 的启发，其开发不幸已停止。"
+
+#: quickbib\about_dialog.py:119
+msgid "This project would not have been possible without the help from GitHub Copilot."
+msgstr "没有 GitHub Copilot 的帮助，这个项目不可能实现。"
+
+#: quickbib\about_dialog.py:105
+msgid "Bug reports and pull requests are welcome on the <a href=\"{repo_url}\">project's GitHub page</a>."
+msgstr "欢迎在<a href=\"{repo_url}\">项目的 GitHub 页面</a>提交错误报告和拉取请求。"
+
+#: quickbib\about_dialog.py:144
+msgid "<p>Unable to read LICENSE file.</p>"
+msgstr "<p>无法读取 LICENSE 文件。</p>"
+
+#: quickbib\about_dialog.py:146
+msgid "<p>GPLv3 license text not found in repository. See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">Read it online</a>.</p>"
+msgstr "<p>存储库中未找到 GPLv3 许可证文本。请<a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">在线阅读</a>。</p>"
+
+#: quickbib\about_dialog.py:152
+msgid "<em>Dedicated to all my friends 😊</em>"
+msgstr "<em>献给我的所有朋友 😊</em>"
+
+#: quickbib\about_dialog.py:158 quickbib\how_to_use_dialog.py:83
+msgid "✕ Close"
+msgstr "✕ 关闭"
+
+#: quickbib\how_to_use_dialog.py:19
+msgid "Example inputs for QuickBib"
+msgstr "QuickBib 示例输入"
+
+#: quickbib\how_to_use_dialog.py:27
+msgid "Examples of what you can paste into QuickBib main window:"
+msgstr "您可以粘贴到 QuickBib 主窗口的示例:"
+
+#: quickbib\how_to_use_dialog.py:50
+msgid "DOI"
+msgstr "DOI"
+
+#: quickbib\how_to_use_dialog.py:51
+msgid "DOI link"
+msgstr "DOI 链接"
+
+#: quickbib\how_to_use_dialog.py:52
+msgid "arXiv URL"
+msgstr "arXiv 链接"
+
+#: quickbib\how_to_use_dialog.py:53
+msgid "arXiv ID"
+msgstr "arXiv ID"
+
+#: quickbib\how_to_use_dialog.py:54
+msgid "arXiv ID (short)"
+msgstr "arXiv ID (短格式)"
+
+#: quickbib\how_to_use_dialog.py:55
+msgid "Old arXiv ID"
+msgstr "旧版 arXiv ID"
+
+#: quickbib\how_to_use_dialog.py:56
+msgid "Journal URL (works with APS, AMS, ACS, PNAS, Nature, ScienceDirect...)"
+msgstr "期刊链接 (适用于 APS, AMS, ACS, PNAS, Nature, ScienceDirect 等)"
+
+#: quickbib\how_to_use_dialog.py:57
+msgid "Title (fuzzy search)"
+msgstr "标题 (模糊搜索)"
+
+#: quickbib\how_to_use_dialog.py:74
+msgid "Copy"
+msgstr "复制"
+
+#: quickbib\about_dialog.py:87
+msgid "<b>Translations:</b> Want to help translate QuickBib? Improve an existing translation or add a new language on the <a href=\"{repo_url}\">project's GitHub page</a>. Not sure how to start? Open an issue on <a href=\"{issues_url}\">GitHub</a>!"
+msgstr "<b>翻译：</b>想帮助翻译 QuickBib 吗？请在<a href=\"{repo_url}\">项目的 GitHub 页面</a>改进现有翻译或添加新语言。不知道如何开始？请在 <a href=\"{issues_url}\">GitHub</a> 上创建 issue！"
+
+#: quickbib\main_window.py:79
+msgid "&Tools"
+msgstr ""
+
+#: quickbib\main_window.py:80
+msgid "✅ &Verify References"
+msgstr ""
+
+#: quickbib\main_window.py:146
+msgid "✅ Verify"
+msgstr ""

@@ -19,5 +19,5 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Validate locale files
-        run: python tools/check_translations.py
+      - name: Validate PO files
+        run: python validate_po.py --validate

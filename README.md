@@ -1,6 +1,6 @@
 # <img src="assets/icon/scalable/io.github.archisman_panigrahi.QuickBib.svg" align="left" width="90" height="90">  <br> QuickBib
 
-This is a cross platform app that enables you to get the bibtex entry from a DOI number, arXiv ID, article url (supports Nature journals, APS journals, PNAS, and more) or article title. It uses [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3) as its backend. Written in Python, QuickBib is licensed under GPLv3.
+This is a cross platform app that enables you to get the bibtex entry from a DOI number, arXiv ID, article url (supports Nature journals, APS journals, ACS journals, AMS journals, Science, PNAS, ScienceDirect, IOP Science, SciPost and more) or article title. It uses [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3) as its backend. Written in Python, QuickBib is licensed under GPLv3.
 
 QuickBib can also **verify** that the BibTeX references in a paper are authentic and not hallucinated — see [Verify references](#verify-references).
  
@@ -77,11 +77,11 @@ Alternatively, prebuilt installers are available to download from [GitHub Releas
 
 ### Web App
 
-A web app is available at https://quickbib.streamlit.app/.
+A web app is available at https://archisman-panigrahi.github.io/QuickBib/webapp.
 
 ### macOS
 
-It is recommended that on macOS you use the [web app](https://quickbib.streamlit.app/) instead. _Continue reading to learn why_.
+It is recommended that on macOS you use the [web app](https://archisman-panigrahi.github.io/QuickBib/webapp) instead. _Continue reading to learn why_.
 
 No prebuilt macOS installers: Distributing an app that users can graphically install and run seems to require paying Apple perpetually (US$99/year) to sign and notarize the app even if the app is free — that’s plain extortion — so we ship the source instead. You can run QuickBib from source or build a macOS app using the packaging scripts on GitHub. **If you have a better idea about how to package the macOS app in a more convenient way (without perpetually paying Apple), please let us know in GitHub Issues**.
 
@@ -162,22 +162,82 @@ The [`quickbib_mcp/`](quickbib_mcp/) folder is an optional [Model Context Protoc
 
 ## Translations
 
-QuickBib now uses JSON-based translations in `quickbib/locales/`. All translations
+QuickBib uses gettext-style PO translations in `quickbib/po/`. All translations
 were initially done with AI and only some were later modified by native speakers.
 Therefore there may be some mistakes/bad translation.
 PRs for modifications and addition of new languages are welcome!
 
-1. Copy `quickbib/locales/en.json` to a new file like `quickbib/locales/es.json`.
-2. Translate the values, keeping keys unchanged.
-3. Validate files locally:
+### Translation file format
+
+Each language has one PO file:
 
 ```
-python3 tools/check_translations.py
+quickbib/po/<language>/LC_MESSAGES/quickbib.po
+```
+
+For example:
+
+```
+quickbib/po/fr/LC_MESSAGES/quickbib.po
+quickbib/po/pt_br/LC_MESSAGES/quickbib.po
+quickbib/po/zh_cn/LC_MESSAGES/quickbib.po
+```
+
+In each entry, `msgid` is the English source text and `msgstr` is the
+translation. Translate only `msgstr`; keep `msgid` unchanged.
+
+### Improve an existing translation
+
+1. Open the PO file for the language you want to improve.
+2. Edit the `msgstr` values.
+3. Validate the PO files:
+
+```
+python3 validate_po.py --validate
 ```
 
 4. Open a pull request.
 
-To test a specific locale locally, set `LANG` (or `LC_ALL`), for example:
+### Add a new language
+
+1. Choose a language code, such as `de`, `es`, `fr`, `pt_br`, or `zh_cn`.
+2. Create a new directory using that language code:
+
+```
+mkdir -p quickbib/po/<language>/LC_MESSAGES
+```
+
+3. Copy the English PO file:
+
+```
+cp quickbib/po/en/LC_MESSAGES/quickbib.po quickbib/po/<language>/LC_MESSAGES/quickbib.po
+```
+
+4. Edit the new file and translate the `msgstr` values. Keep `msgid` unchanged.
+5. Update the `Language:` header in the new file to match the language code.
+6. Validate the PO files:
+
+```
+python3 validate_po.py --validate
+```
+
+7. Open a pull request.
+
+### Update PO files after source changes
+
+When adding or removing calls like `tr("Text to translate")` in the source code,
+refresh the PO files before validating:
+
+```
+python3 validate_po.py --extract
+python3 validate_po.py --validate
+```
+
+`--extract` adds new English strings, removes unused strings, and refreshes
+source line references while keeping existing translations.
+
+To test a specific locale locally, set `LANG` (or `LC_ALL` if your environment
+already sets it), for example:
 
 ```
 LANG=es python3 -m quickbib
