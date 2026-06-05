@@ -59,6 +59,12 @@
     <display_length compare="ge">320</display_length>
   </requires>
   <releases>
+    <release version="0.9.2" date="2026-06-05">
+      <description>
+        <p>better support for chemical compounds in paper title</p>
+      </description>
+      <url type="details">https://github.com/archisman-panigrahi/QuickBib/releases/tag/v0.9.2</url>
+    </release>
     <release version="0.9.1" date="2026-05-29">
       <description>
         <p>update version for doi2bib3 update</p>

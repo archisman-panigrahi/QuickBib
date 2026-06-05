@@ -1,3 +1,9 @@
+quickbib (0.9.2-1) unstable; urgency=medium
+
+  * better support for chemical compounds in paper title
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Fri, 05 Jun 2026 16:22:40 -0400
+
 quickbib (0.9.1-1) unstable; urgency=medium
 
   * update version for doi2bib3 update
