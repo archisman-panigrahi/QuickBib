@@ -1,4 +1,4 @@
-project('quickbib', 'c', version : '0.9.2')
+project('quickbib', 'c', version : '0.9.3')
 
 # Install python source files (copied as-is)
 # Install the top-level entrypoint script that bootstraps the app (keeps
