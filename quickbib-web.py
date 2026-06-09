@@ -93,7 +93,7 @@ if doi_input:
 st.markdown("No ML-generated citations: metadata comes from Crossref and arXiv APIs. Powered by [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3). Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
 st.markdown(
     """
-    Bugs or requests: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a>.
+    Bugs or feature requests: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a>.
     Helpful? Star on GitHub &nbsp;
     <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank">
     <img src="https://img.shields.io/github/stars/archisman-panigrahi/QuickBib?style=social" alt="Star on GitHub">
