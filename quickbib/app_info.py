@@ -6,7 +6,7 @@ APP_NAME = "QuickBib"
 APP_VERSION = "0.9.3"
 HOMEPAGE = "https://archisman-panigrahi.github.io/QuickBib/"
 REPO_URL = "https://github.com/archisman-panigrahi/QuickBib"
-WEBAPP_URL = "https://github.com/archisman-panigrahi/QuickBib/webapp/"
+WEBAPP_URL = "https://archisman-panigrahi.github.io/QuickBib/webapp"
 ISSUES_URL = "https://github.com/archisman-panigrahi/QuickBib/issues"
 ALGORITHM_VISUALS_URL = "https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree"
 # LICENSE is located in the repository root (one level up from the package dir)
