@@ -59,6 +59,12 @@
     <display_length compare="ge">320</display_length>
   </requires>
   <releases>
+    <release version="0.9.4" date="2026-06-13">
+      <description>
+        <p>Fix webapp URL</p>
+      </description>
+      <url type="details">https://github.com/archisman-panigrahi/QuickBib/releases/tag/v0.9.4</url>
+    </release>
     <release version="0.9.3" date="2026-06-05">
       <description>
         <p>update version to ship new features withdoi2bib3 v1.4.0 update</p>

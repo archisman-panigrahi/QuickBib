@@ -1,3 +1,9 @@
+quickbib (0.9.4-1) unstable; urgency=medium
+
+  * Fix webapp URL
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Sat, 13 Jun 2026 01:19:26 -0400
+
 quickbib (0.9.3-1) unstable; urgency=medium
 
   * update version to ship new features withdoi2bib3 v1.4.0 update
