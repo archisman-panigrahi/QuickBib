@@ -24,6 +24,7 @@ from PyQt6.QtCore import QObject, pyqtSignal, Qt, QUrl
 from .helpers import get_aps_bibitem_for_bibtex, get_bibtex_for_doi, copy_to_clipboard
 from .about_dialog import AboutDialog
 from .how_to_use_dialog import HowToUseDialog
+from .verify_dialog import VerifyDialog
 from .app_info import LICENSE_PATH, WEBAPP_URL, ISSUES_URL, ALGORITHM_VISUALS_URL
 from .i18n import tr
 
@@ -75,6 +76,12 @@ class QuickBibWindow(QMainWindow):
         copy_action.triggered.connect(self.copy_bibtex_to_clipboard)
         edit_menu.addAction(copy_action)
 
+        tools_menu = menubar.addMenu(tr('&Tools'))
+        verify_action = QAction(tr('✅ &Verify References'), self)
+        verify_action.setFont(self._emoji_font)
+        verify_action.triggered.connect(self.show_verify_dialog)
+        tools_menu.addAction(verify_action)
+
         help_menu = menubar.addMenu(tr('&Help'))
         about_action = QAction(tr('🤔 &About QuickBib'), self)
         about_action.setFont(self._emoji_font)
@@ -106,6 +113,7 @@ class QuickBibWindow(QMainWindow):
 
         mobile_menu = QMenu(self.mobile_menu_btn)
         mobile_menu.addAction(copy_action)
+        mobile_menu.addAction(verify_action)
         mobile_menu.addSeparator()
         mobile_menu.addAction(about_action)
         mobile_menu.addAction(howto_action)
@@ -134,6 +142,11 @@ class QuickBibWindow(QMainWindow):
         howto_btn.setFont(self._emoji_font)
         howto_btn.clicked.connect(self.show_how_to_use)
         quick_links.addWidget(howto_btn)
+
+        verify_btn = QPushButton(tr('✅ Verify'))
+        verify_btn.setFont(self._emoji_font)
+        verify_btn.clicked.connect(self.show_verify_dialog)
+        quick_links.addWidget(verify_btn)
 
         feedback_btn = QPushButton(tr('💬 Send Feedback'))
         feedback_btn.setFont(self._emoji_font)
@@ -209,8 +222,17 @@ class QuickBibWindow(QMainWindow):
         citation_note.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         vbox.addWidget(citation_note)
 
+        # Size the window from its actual content. Widget widths depend on the
+        # platform, font and locale, so a hardcoded width clips the quick-links
+        # row on systems whose fonts are wider than Windows' (e.g. KDE/GTK).
+        quick_links_width = self.quick_links_widget.sizeHint().width()
+        # Switch to the compact (hamburger) layout before the row would be
+        # squeezed, rather than at an arbitrary fixed breakpoint.
+        self._compact_breakpoint = max(460, quick_links_width + 40)
+        # Open wide enough to show the quick-links row uncompressed.
+        default_width = max(500, self._compact_breakpoint + 24, self.sizeHint().width())
         self._apply_responsive_layout(self.width())
-        self.resize(500, 540)
+        self.resize(default_width, 540)
 
         # Keep references to worker/thread so they don't get GC'd
         self._worker_thread = None
@@ -320,6 +342,10 @@ class QuickBibWindow(QMainWindow):
 
     def show_how_to_use(self):
         dlg = HowToUseDialog(self)
+        dlg.exec()
+
+    def show_verify_dialog(self):
+        dlg = VerifyDialog(self)
         dlg.exec()
 
     def fetch_bibtex(self):

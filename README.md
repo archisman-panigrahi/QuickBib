@@ -2,6 +2,8 @@
 
 This is a cross platform app that enables you to get the bibtex entry from a DOI number, arXiv ID, article url (supports Nature journals, APS journals, ACS journals, AMS journals, Science, PNAS, ScienceDirect, IOP Science, SciPost and more) or article title. It uses [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3) as its backend. Written in Python, QuickBib is licensed under GPLv3.
 
+QuickBib can also **verify** that the BibTeX references in a paper are authentic and not hallucinated — see [Verify references](#verify-references).
+ 
 <img src="assets/screenshots/quickbib-animated.gif" width="420" height="400"><br><br>
 
 ## Star History
@@ -127,6 +129,42 @@ Or run the convenience script in `bin/quickbib`:
 ```
 ./bin/quickbib
 ```
+
+## Verify references
+
+Large language models often invent realistic-looking citations — DOIs that do not resolve, papers that were never written, or DOIs that point to a completely different article. QuickBib can check every BibTeX reference against authoritative databases (CrossRef, arXiv, and the DOI registry) and tell you which ones hold up.
+
+The verification engine itself ships in QuickBib's existing BibTeX backend, [`doi2bib3`](https://github.com/archisman-panigrahi/doi2bib3) — the desktop app, the CLI and the MCP server are three thin front-ends on top of it.
+
+Verification is **deterministic**: QuickBib fetches the real record for each entry and corroborates the title, authors, and year in code — no AI service, API key, or subscription is involved. Each reference is reported as one of:
+
+- **verified** — an identifier resolves and the metadata is corroborated, or the title and authors were matched in CrossRef;
+- **review** — the work exists, but its registered metadata could not be matched to the entry with confidence — worth a quick look;
+- **mismatch** — the DOI/arXiv ID resolves, but to a record with a different title *and* different authors;
+- **unresolved** — the DOI/arXiv ID does not resolve in CrossRef or the DOI registry;
+- **unverified** — the entry had no identifier and no confident match, or a database was unreachable.
+
+There are three ways to use it.
+
+### 1. In the desktop app
+
+Open QuickBib and choose **Tools → Verify References** (or the **Verify References** quick-link button). Point it at a local `.bib` file, or connect directly to an Overleaf project using your Overleaf project ID and Git token. Results appear in a colour-coded table with the full finding for each reference.
+
+### 2. From the command line
+
+No GUI required:
+
+```
+doi2bib3 verify references.bib
+doi2bib3 verify ./paper-folder
+python3 -m quickbib.verify --overleaf <PROJECT_ID> --token <GIT_TOKEN>
+```
+
+The first two forms run `doi2bib3 verify` directly (no QuickBib install needed once `doi2bib3 >= 1.2.0` is on `PATH`). The third form delegates to the same engine but adds Overleaf-project support through QuickBib's Git-bridge helper. Add `--json` for machine-readable output. When `.tex` files are present, it also reports `\cite` keys that are not defined in any `.bib` file (a common sign of an invented citation key).
+
+### 3. As an MCP server (optional — for Claude Desktop, Cursor, …)
+
+The [`quickbib_mcp/`](quickbib_mcp/) folder is an optional [Model Context Protocol](https://modelcontextprotocol.io) server that exposes the same verification engine to AI assistants — so you can ask Claude to "check the references in my Overleaf project" while you write. See [`quickbib_mcp/README.md`](quickbib_mcp/README.md) for setup. The desktop app and CLI above work entirely on their own; the MCP server is just an extra front-end.
 
 ## Translations
 

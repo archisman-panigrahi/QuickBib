@@ -16,238 +16,250 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: QuickBib migration script\n"
 
-#: quickbib/main_window.py:49
+#: quickbib\main_window.py:50
 msgid "QuickBib: DOI → BibTeX"
 msgstr "QuickBib: DOI → BibTeX"
 
-#: quickbib/main_window.py:65
+#: quickbib\main_window.py:66
 msgid "&File"
 msgstr "&ফাইল"
 
-#: quickbib/main_window.py:71
+#: quickbib\main_window.py:72
 msgid "&Edit"
 msgstr "&সম্পাদনা"
 
-#: quickbib/main_window.py:78
+#: quickbib\main_window.py:85
 msgid "&Help"
 msgstr "&সহায়তা"
 
-#: quickbib/main_window.py:66
+#: quickbib\main_window.py:67
 msgid "🚪 &Quit"
 msgstr "🚪 &বন্ধ করুন"
 
-#: quickbib/main_window.py:72
+#: quickbib\main_window.py:73
 msgid "📋 &Copy BibTeX"
 msgstr "📋 &BibTeX কপি করুন"
 
-#: quickbib/main_window.py:79
+#: quickbib\main_window.py:86
 msgid "🤔 &About QuickBib"
 msgstr "🤔 &QuickBib সম্পর্কে জানুন"
 
-#: quickbib/main_window.py:84
+#: quickbib\main_window.py:91
 msgid "📘 &Examples"
 msgstr "📘 &উদাহরণ"
 
-#: quickbib/main_window.py:91 quickbib/main_window.py:128
+#: quickbib\main_window.py:98 quickbib\main_window.py:136
 msgid "🌐 Web App"
 msgstr "🌐 ওয়েব অ্যাপ"
 
-#: quickbib/main_window.py:96 quickbib/main_window.py:138
+#: quickbib\main_window.py:103 quickbib\main_window.py:151
 msgid "💬 Send Feedback"
 msgstr "💬 মতামত পাঠান"
 
-#: quickbib/main_window.py:133
+#: quickbib\main_window.py:141
 msgid "📘 Examples"
 msgstr "📘 উদাহরণ"
 
-#: quickbib/main_window.py:155
+#: quickbib\main_window.py:168
 msgid "DOI:"
 msgstr "DOI:"
 
-#: quickbib/main_window.py:161
+#: quickbib\main_window.py:174
 msgid "DOI or arXiv ID or arXiv URL or Journal URL or Article Title"
 msgstr "DOI অথবা arXiv ID অথবা arXiv URL অথবা জার্নাল URL অথবা প্রবন্ধের শিরোনাম"
 
-#: quickbib/main_window.py:166
+#: quickbib\main_window.py:179
 msgid "Fetch"
 msgstr "খুঁজুন"
 
-#: quickbib/main_window.py:190
+#: quickbib\main_window.py:203
 msgid "APS Style Bibitem:"
 msgstr "APS স্টাইল Bibitem:"
 
-#: quickbib/main_window.py:186
+#: quickbib\main_window.py:199
 msgid "📋 Copy BibTeX to Clipboard"
 msgstr "📋 BibTeX ক্লিপবোর্ডে কপি করুন"
 
-#: quickbib/main_window.py:202
+#: quickbib\main_window.py:215
 msgid "📋 Copy Bibitem to Clipboard"
 msgstr "📋 Bibitem ক্লিপবোর্ডে কপি করুন"
 
-#: quickbib/main_window.py:206
+#: quickbib\main_window.py:219
 msgid "Metadata from Crossref and arXiv (no AI/ML). <a href=\"{algorithm_url}\">Here is how it works.</a>"
 msgstr "সমস্ত তথ্যের উৎস Crossref এবং arXiv (কোনো AI/ML নয়)। <a href=\"{algorithm_url}\">এটি কীভাবে কাজ করে দেখুন।</a>"
 
-#: quickbib/main_window.py:315
+#: quickbib\main_window.py:337
 msgid "ℹ️ Failed to open link."
 msgstr "ℹ️ লিংক খোলা যায়নি।"
 
-#: quickbib/main_window.py:328
+#: quickbib\main_window.py:354
 msgid "ℹ️ Please enter a valid DOI. See \"Help → Examples\" for more info."
 msgstr "ℹ️ একটি বৈধ DOI দিন। আরও জানতে \"সহায়তা → উদাহরণ\" দেখুন।"
 
-#: quickbib/main_window.py:331
+#: quickbib\main_window.py:357
 msgid "Fetching BibTeX..."
 msgstr "BibTeX খোঁজা হচ্ছে..."
 
-#: quickbib/main_window.py:353
+#: quickbib\main_window.py:379
 msgid "✅ Fetched successfully."
 msgstr "✅ পাওয়া গেছে।"
 
-#: quickbib/main_window.py:358
+#: quickbib\main_window.py:384
 msgid "✅ Fetched BibTeX. APS Bibitem unavailable: {error}"
 msgstr "✅ BibTeX পাওয়া গেছে। APS Bibitem পাওয়া যায়নি: {error}"
 
-#: quickbib/main_window.py:365
+#: quickbib\main_window.py:391
 msgid "ℹ️ Error: {error}"
 msgstr "ℹ️ ত্রুটি: {error}"
 
-#: quickbib/main_window.py:367
+#: quickbib\main_window.py:393
 msgid "ℹ️ Error: DOI not found or CrossRef request failed."
 msgstr "ℹ️ ত্রুটি: DOI পাওয়া যায়নি বা CrossRef এ খোঁজা ব্যর্থ হয়েছে।"
 
-#: quickbib/main_window.py:381
+#: quickbib\main_window.py:407
 msgid "✅ Copied to clipboard!"
 msgstr "✅ ক্লিপবোর্ডে কপি হয়েছে!"
 
-#: quickbib/main_window.py:383
+#: quickbib\main_window.py:409
 msgid "ℹ️ Failed to copy to clipboard."
 msgstr "ℹ️ ক্লিপবোর্ডে কপি করা যায়নি।"
 
-#: quickbib/main_window.py:385
+#: quickbib\main_window.py:411
 msgid "ℹ️ Nothing to copy."
 msgstr "ℹ️ কপি করার মতো কিছু নেই।"
 
-#: quickbib/about_dialog.py:22
+#: quickbib\about_dialog.py:22
 msgid "About QuickBib"
 msgstr "QuickBib সম্পর্কে"
 
-#: quickbib/about_dialog.py:69
+#: quickbib\about_dialog.py:69
 msgid "Version {version}"
 msgstr "সংস্করণ {version}"
 
-#: quickbib/about_dialog.py:102
+#: quickbib\about_dialog.py:102
 msgid "About"
 msgstr "আমাদের কথা"
 
-#: quickbib/about_dialog.py:124 quickbib/about_dialog.py:110
+#: quickbib\about_dialog.py:124 quickbib\about_dialog.py:110
 msgid "Authors"
 msgstr "নির্মাতা"
 
-#: quickbib/about_dialog.py:135
+#: quickbib\about_dialog.py:135
 msgid "Translators"
 msgstr "অনুবাদক"
 
-#: quickbib/about_dialog.py:147
+#: quickbib\about_dialog.py:147
 msgid "License"
 msgstr "অনুজ্ঞাপত্র"
 
-#: quickbib/about_dialog.py:92
+#: quickbib\about_dialog.py:92
 msgid "{app_name} fetches BibTeX entries from DOIs, arXiv IDs, and known journal URLs. It is a simple utility to quickly convert identifiers into usable BibTeX records."
 msgstr "{app_name} DOI, arXiv ID এবং পরিচিত জার্নাল URL থেকে BibTeX খুঁজে বার করে। এটি গবেষণাপত্রের DOI দ্রুত BibTeX-এ রূপান্তর করার একটি সহজ উপায়।"
 
-#: quickbib/about_dialog.py:93
+#: quickbib\about_dialog.py:93
 msgid "QuickBib uses <a href=\"https://github.com/archisman-panigrahi/doi2bib3\">doi2bib3</a> as its backend for DOI to BibTeX conversion."
 msgstr "DOI থেকে BibTeX রূপান্তরের জন্য QuickBib <a href=\"https://github.com/archisman-panigrahi/doi2bib3\">doi2bib3</a> ব্যবহার করে।"
 
-#: quickbib/about_dialog.py:95
+#: quickbib\about_dialog.py:95
 msgid "<b>Homepage:</b> <a href=\"{homepage}\">{homepage}</a><br><b>Source Code:</b> <a href=\"{repo_url}\">{repo_url}</a><br><b>Report Issues:</b> <a href=\"{issues_url}\">{issues_url}</a><br><br><b>Web app:</b> Check it out <a href=\"{webapp_url}\">here</a>."
 msgstr "<b>হোমপেজ:</b> <a href=\"{homepage}\">{homepage}</a><br><b>সোর্স কোড:</b> <a href=\"{repo_url}\">{repo_url}</a><br><b>সমস্যা জানান:</b> <a href=\"{issues_url}\">{issues_url}</a><br><br><b>ওয়েব অ্যাপ:</b> <a href=\"{webapp_url}\">এখানে দেখুন</a>।"
 
-#: quickbib/about_dialog.py:98
+#: quickbib\about_dialog.py:98
 msgid "<b>License:</b> Released under the <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">GNU General Public License Version 3</a>. Full text available on the <i>License</i> tab."
 msgstr "<b>অনুজ্ঞাপত্র:</b> এই প্রকল্পটি <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">GNU General Public License Version 3</a> এর অধীনে প্রকাশিত। সম্পূর্ণ <i>অনুজ্ঞাপত্রটি</i> ট্যাবে আছে।"
 
-#: quickbib/about_dialog.py:114
+#: quickbib\about_dialog.py:114
 msgid " Significant Contributors"
 msgstr "উল্লেখযোগ্য অবদানকারী"
 
-#: quickbib/about_dialog.py:116
+#: quickbib\about_dialog.py:116
 msgid "<a href=\"https://github.com/Kyuyrii/\">Kyuyrii</a>: Helped fix the snap package."
 msgstr "<a href=\"https://github.com/Kyuyrii/\">Kyuyrii</a>: snap প্যাকেজের সমস্যাগুলি ঠিক করতে সাহায্য করেছেন।"
 
-#: quickbib/about_dialog.py:118
+#: quickbib\about_dialog.py:118
 msgid "This project was inspired by <a href=\"https://github.com/bibcure/doi2bib\">doi2bib</a>, whose development unfortunately stopped."
 msgstr "এই প্রকল্পটি <a href=\"https://github.com/bibcure/doi2bib\">doi2bib</a> থেকে অনুপ্রাণিত। কিন্তু তা তৈরি বন্ধ হয়ে গেছে।"
 
-#: quickbib/about_dialog.py:119
+#: quickbib\about_dialog.py:119
 msgid "This project would not have been possible without the help from GitHub Copilot."
 msgstr "GitHub Copilot-এর সহায়তা ছাড়া এই প্রকল্পটি সম্ভব হতো না।"
 
-#: quickbib/about_dialog.py:105
+#: quickbib\about_dialog.py:105
 msgid "Bug reports and pull requests are welcome on the <a href=\"{repo_url}\">project's GitHub page</a>."
 msgstr "আমাদের <a href=\"{repo_url}\">প্রকল্পের GitHub পাতায়</a> যেকোনো ত্রুটি (bug report) জানান এবং পরিবর্তনের প্রস্তাব (pull request) পাঠান।"
 
-#: quickbib/about_dialog.py:144
+#: quickbib\about_dialog.py:144
 msgid "<p>Unable to read LICENSE file.</p>"
 msgstr "<p>অনুজ্ঞাপত্র পড়া যায়নি।</p>"
 
-#: quickbib/about_dialog.py:146
+#: quickbib\about_dialog.py:146
 msgid "<p>GPLv3 license text not found in repository. See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">Read it online</a>.</p>"
 msgstr "<p>রিপোজিটরিতে GPLv3 অনুজ্ঞাপত্র লেখাটি খুঁজে পাওয়া যায়নি। অনলাইনে <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">এখানে পড়ুন</a>।</p>"
 
-#: quickbib/about_dialog.py:152
+#: quickbib\about_dialog.py:152
 msgid "<em>Dedicated to all my friends 😊</em>"
 msgstr "<em>উৎসর্গ- আমার সব বন্ধুদের প্রতি 😊</em>"
 
-#: quickbib/about_dialog.py:158 quickbib/how_to_use_dialog.py:83
+#: quickbib\about_dialog.py:158 quickbib\how_to_use_dialog.py:83
 msgid "✕ Close"
 msgstr "✕ বন্ধ করুন"
 
-#: quickbib/how_to_use_dialog.py:19
+#: quickbib\how_to_use_dialog.py:19
 msgid "Example inputs for QuickBib"
 msgstr "QuickBib-এর জন্য উদাহরণ ইনপুট"
 
-#: quickbib/how_to_use_dialog.py:27
+#: quickbib\how_to_use_dialog.py:27
 msgid "Examples of what you can paste into QuickBib main window:"
 msgstr "QuickBib-এর মূল উইন্ডোতে আপনি এগুলো পেস্ট করতে পারেন:"
 
-#: quickbib/how_to_use_dialog.py:50
+#: quickbib\how_to_use_dialog.py:50
 msgid "DOI"
 msgstr "DOI"
 
-#: quickbib/how_to_use_dialog.py:51
+#: quickbib\how_to_use_dialog.py:51
 msgid "DOI link"
 msgstr "DOI লিংক"
 
-#: quickbib/how_to_use_dialog.py:52
+#: quickbib\how_to_use_dialog.py:52
 msgid "arXiv URL"
 msgstr "arXiv URL"
 
-#: quickbib/how_to_use_dialog.py:53
+#: quickbib\how_to_use_dialog.py:53
 msgid "arXiv ID"
 msgstr "arXiv ID"
 
-#: quickbib/how_to_use_dialog.py:54
+#: quickbib\how_to_use_dialog.py:54
 msgid "arXiv ID (short)"
 msgstr "arXiv ID (সংক্ষিপ্ত)"
 
-#: quickbib/how_to_use_dialog.py:55
+#: quickbib\how_to_use_dialog.py:55
 msgid "Old arXiv ID"
 msgstr "পুরনো arXiv ID"
 
-#: quickbib/how_to_use_dialog.py:56
+#: quickbib\how_to_use_dialog.py:56
 msgid "Journal URL (works with APS, AMS, ACS, PNAS, Nature, ScienceDirect...)"
 msgstr "জার্নাল URL (APS, AMS, ACS, PNAS, Nature, ScienceDirect ইত্যাদি কাজ করে)"
 
-#: quickbib/how_to_use_dialog.py:57
+#: quickbib\how_to_use_dialog.py:57
 msgid "Title (fuzzy search)"
 msgstr "শিরোনাম (আনুমানিক অনুসন্ধান)"
 
-#: quickbib/how_to_use_dialog.py:74
+#: quickbib\how_to_use_dialog.py:74
 msgid "Copy"
 msgstr "কপি"
 
-#: quickbib/about_dialog.py:87
+#: quickbib\about_dialog.py:87
 msgid "<b>Translations:</b> Want to help translate QuickBib? Improve an existing translation or add a new language on the <a href=\"{repo_url}\">project's GitHub page</a>. Not sure how to start? Open an issue on <a href=\"{issues_url}\">GitHub</a>!"
 msgstr "<b>অনুবাদ:</b> QuickBib অনুবাদে সাহায্য করতে চান? <a href=\"{repo_url}\">প্রকল্পের GitHub পাতায়</a> এখনকার অনুবাদ আরও ভালো করুন বা নতুন ভাষা যোগ করুন। কীভাবে শুরু করবেন বুঝতে পারছেন না? <a href=\"{issues_url}\">GitHub</a>-এ একটি issue খুলুন!"
+
+#: quickbib\main_window.py:79
+msgid "&Tools"
+msgstr ""
+
+#: quickbib\main_window.py:80
+msgid "✅ &Verify References"
+msgstr ""
+
+#: quickbib\main_window.py:146
+msgid "✅ Verify"
+msgstr ""

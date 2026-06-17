@@ -44,7 +44,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
-
+\.claude
 # Translations
 *.mo
 *.pot
@@ -160,3 +160,4 @@ flatpak/repo
 *.snap
 *.exe
 debian/files
+overleafmcp/
