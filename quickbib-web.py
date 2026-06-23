@@ -60,17 +60,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
-# Input Field with enlarged label
-st.markdown(
-    "<div style='font-size:1.2rem; font-weight:400;'>"
-    "Paste a DOI, arXiv ID, or paper link. See <a href='https://archisman-panigrahi.github.io/QuickBib/#examples'>examples</a>."
-    "</div>",
-    unsafe_allow_html=True,
-)
 doi_input = st.text_input(
     "DOI",
-    placeholder="e.g. https://journals.aps.org/prl/abstract/10.1103/v6r7-4ph9",
+    placeholder="Paste a DOI, arXiv ID, or paper link here, e.g. https://journals.aps.org/prl/abstract/10.1103/v6r7-4ph9",
     label_visibility="collapsed",  # or "hidden"
 )
 # Logic Trigger
@@ -107,6 +99,7 @@ if doi_input:
             st.error("Could not resolve this input.")
             with st.expander("See error details"):
                 st.write(error_msg)
+st.markdown("View [examples](https://archisman-panigrahi.github.io/QuickBib/#examples).")
 st.markdown("**No ML-generated citations**: metadata comes from Crossref and arXiv APIs. Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
 st.markdown(
     """
