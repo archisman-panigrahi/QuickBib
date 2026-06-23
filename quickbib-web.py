@@ -47,7 +47,7 @@ with title_text_col:
 # Input Field with enlarged label
 st.markdown(
     "<div style='font-size:1.2rem; font-weight:400;'>"
-    "Paste a DOI, arXiv ID, or paper link (APS, AMS, ACS, Science, Nature, ScienceDirect, PNAS, IOP Science, and SciPost group of journals. For others, use the DOI). See <a href='https://archisman-panigrahi.github.io/QuickBib/#examples'>examples</a>"
+    "Paste a DOI, arXiv ID, or paper link. See <a href='https://archisman-panigrahi.github.io/QuickBib/#examples'>examples</a>."
     "</div>",
     unsafe_allow_html=True,
 )
@@ -93,11 +93,11 @@ if doi_input:
 st.markdown("**No ML-generated citations**: metadata comes from Crossref and arXiv APIs. Powered by [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3). Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
 st.markdown(
     """
-    Bugs or feature requests: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a> &middot;
+    **Bugs or feature requests**: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a> &middot;
     Helpful? Star on GitHub &nbsp;
     <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank">
     <img src="https://img.shields.io/github/stars/archisman-panigrahi/QuickBib?style=social" alt="Star on GitHub">
-    </a> &middot; Try the [native desktop app](https://archisman-panigrahi.github.io/QuickBib/).
+    </a> &nbsp; &middot; Try the [native desktop app](https://archisman-panigrahi.github.io/QuickBib/).
     """,
     unsafe_allow_html=True,
 )
