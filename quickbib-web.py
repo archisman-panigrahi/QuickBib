@@ -97,7 +97,7 @@ st.markdown(
     Helpful? Star on GitHub &nbsp;
     <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank">
     <img src="https://img.shields.io/github/stars/archisman-panigrahi/QuickBib?style=social" alt="Star on GitHub">
-    </a> &nbsp; &middot; Try the [native desktop app](https://archisman-panigrahi.github.io/QuickBib/).
+    </a> &nbsp; &middot; Try the [QuickBib desktop app](https://archisman-panigrahi.github.io/QuickBib/).
     """,
     unsafe_allow_html=True,
 )
