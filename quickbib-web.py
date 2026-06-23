@@ -90,18 +90,14 @@ if doi_input:
             st.error("Could not resolve this input.")
             with st.expander("See error details"):
                 st.write(error_msg)
-st.markdown("No ML-generated citations: metadata comes from Crossref and arXiv APIs. Powered by [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3). Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
+st.markdown("**No ML-generated citations**: metadata comes from Crossref and arXiv APIs. Powered by [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3). Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
 st.markdown(
     """
-    Bugs or feature requests: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a>.
+    Bugs or feature requests: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a> &middot;
     Helpful? Star on GitHub &nbsp;
     <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank">
     <img src="https://img.shields.io/github/stars/archisman-panigrahi/QuickBib?style=social" alt="Star on GitHub">
-    </a>
+    </a> &middot; Try the [native desktop app](https://archisman-panigrahi.github.io/QuickBib/).
     """,
     unsafe_allow_html=True,
-)
-st.markdown(
-    "For faster DOI-to-BibTeX workflow, try the "
-    "[native desktop app](https://archisman-panigrahi.github.io/QuickBib/)."
 )
