@@ -12,7 +12,6 @@ def get_bibtex_for_doi(doi: str):
 
 # --- Streamlit UI Layout ---
 icon_url = "https://github.com/archisman-panigrahi/QuickBib/blob/main/assets/icon/128x128/io.github.archisman_panigrahi.QuickBib.png?raw=true"
-ICON_SIZE = 96
 st.set_page_config(page_title="QuickBib: DOI to BibTeX", page_icon=icon_url)
 
 # Trim top padding for a tighter layout
@@ -20,7 +19,7 @@ st.markdown(
     """
     <style>
     .block-container {
-        padding-top: 1rem;
+        padding-top: 2rem;
         width: 80vw;
         max-width: 80vw;
         padding-left: 2rem;
@@ -33,15 +32,33 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-title_icon_col, title_text_col = st.columns([0.12, 0.82])
-with title_icon_col:
-    st.markdown(
-        f"<div style='padding-top:30px; text-align:left;'>"
-        f"<img src='{icon_url}' width='{ICON_SIZE}'/></div>",
-        unsafe_allow_html=True,
-    )
-with title_text_col:
-    st.title("QuickBib: DOI/arXiv to BibTeX")
+st.markdown(
+    f"""
+    <style>
+    .quickbib-header {{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0 0 0.75rem 0;
+    }}
+    .quickbib-header img {{
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+        flex: 0 0 auto;
+    }}
+    .quickbib-header h1 {{
+        margin: 0;
+        line-height: 1.05;
+    }}
+    </style>
+    <div class='quickbib-header'>
+        <img src='{icon_url}' alt='QuickBib icon' />
+        <h1>QuickBib: DOI/arXiv to BibTeX</h1>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 # Input Field with enlarged label
@@ -69,7 +86,7 @@ if doi_input:
                 aps_success = False
                 aps_error_msg = str(e)
 
-            left_col, right_col = st.columns(2, gap="large")
+            left_col, right_col = st.columns([0.65, 0.35], gap="large")
 
             with left_col:
                 st.subheader("BibTeX")
@@ -90,14 +107,14 @@ if doi_input:
             st.error("Could not resolve this input.")
             with st.expander("See error details"):
                 st.write(error_msg)
-st.markdown("**No ML-generated citations**: metadata comes from Crossref and arXiv APIs. Powered by [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3). Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
+st.markdown("**No ML-generated citations**: metadata comes from Crossref and arXiv APIs. Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
 st.markdown(
     """
-    **Bugs or feature requests**: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a> &middot;
+    **Bugs or feature requests**: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a> &bull;
     Helpful? Star on GitHub &nbsp;
     <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank">
     <img src="https://img.shields.io/github/stars/archisman-panigrahi/QuickBib?style=social" alt="Star on GitHub">
-    </a> &nbsp; &middot; Try the [QuickBib desktop app](https://archisman-panigrahi.github.io/QuickBib/).
+    </a> &nbsp; &bull; Try the [QuickBib desktop app](https://archisman-panigrahi.github.io/QuickBib/).
     """,
     unsafe_allow_html=True,
 )
