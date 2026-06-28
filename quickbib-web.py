@@ -100,7 +100,7 @@ if doi_input:
             with st.expander("See error details"):
                 st.write(error_msg)
 st.markdown("View [examples](https://archisman-panigrahi.github.io/QuickBib/#examples).")
-st.markdown("**No ML-generated citations**: metadata comes from Crossref and arXiv APIs. Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
+st.markdown("**No AI/ML-generated citations**: metadata comes from Crossref and arXiv APIs. Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
 st.markdown(
     """
     **Bugs or feature requests**: <a href="https://github.com/archisman-panigrahi/QuickBib/issues">GitHub</a> &bull;
