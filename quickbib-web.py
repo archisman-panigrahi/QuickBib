@@ -19,6 +19,7 @@ st.markdown(
     """
     <style>
     .block-container {
+        box-sizing: border-box;
         padding-top: 2rem;
         width: 80vw;
         max-width: 80vw;
@@ -50,6 +51,27 @@ st.markdown(
     .quickbib-header h1 {{
         margin: 0;
         line-height: 1.05;
+    }}
+    @media (max-width: 640px) {{
+        .block-container {{
+            width: 100vw;
+            max-width: 100vw;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }}
+        .quickbib-header {{
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }}
+        .quickbib-header img {{
+            width: 48px;
+            height: 48px;
+        }}
+        .quickbib-header h1 {{
+            font-size: clamp(1.5rem, 7vw, 2rem);
+            line-height: 1.1;
+        }}
     }}
     </style>
     <div class='quickbib-header'>
