@@ -1,3 +1,9 @@
+quickbib (0.9.5-1) unstable; urgency=medium
+
+  * ship updated doi2bib3
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Sun, 26 Jul 2026 03:26:01 -0400
+
 quickbib (0.9.4-1) unstable; urgency=medium
 
   * Fix webapp URL
