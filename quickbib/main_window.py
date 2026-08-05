@@ -72,7 +72,7 @@ class QuickBibWindow(QMainWindow):
         copy_action = QAction(tr('📋 &Copy BibTeX'), self)
         copy_action.setFont(self._emoji_font)
         copy_action.setShortcut("Ctrl+C")
-        copy_action.triggered.connect(self.copy_bibtex_to_clipboard)
+        copy_action.triggered.connect(self.copy_selection_or_bibtex_to_clipboard)
         edit_menu.addAction(copy_action)
 
         help_menu = menubar.addMenu(tr('&Help'))
@@ -370,6 +370,21 @@ class QuickBibWindow(QMainWindow):
 
     def copy_bibtex_to_clipboard(self):
         self._copy_text_to_clipboard(self.textview.toPlainText())
+
+    def copy_selection_or_bibtex_to_clipboard(self):
+        """Copy a focused output selection, falling back to all BibTeX text."""
+        focused_widget = self.focusWidget()
+        if focused_widget in (self.textview, self.bibitem_view):
+            if focused_widget.textCursor().hasSelection():
+                # Use the widget's native copy implementation so selected text is
+                # copied exactly as it is when Copy is chosen from its context menu.
+                focused_widget.copy()
+                self.status.setText(
+                    self._format_status_with_emoji(tr('✅ Copied to clipboard!'))
+                )
+                return
+
+        self.copy_bibtex_to_clipboard()
 
     def copy_bibitem_to_clipboard(self):
         self._copy_text_to_clipboard(self.bibitem_view.toPlainText())
