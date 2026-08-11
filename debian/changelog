@@ -1,3 +1,9 @@
+quickbib (0.9.6-1) unstable; urgency=medium
+
+  * fix copying behavior and also add AIP publishing support via doi2bib3 update
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Tue, 11 Aug 2026 08:18:02 -0400
+
 quickbib (0.9.5-1) unstable; urgency=medium
 
   * ship updated doi2bib3

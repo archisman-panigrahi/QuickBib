@@ -59,6 +59,12 @@
     <display_length compare="ge">320</display_length>
   </requires>
   <releases>
+    <release version="0.9.6" date="2026-08-11">
+      <description>
+        <p>fix copying behavior and also add AIP publishing support via doi2bib3 update</p>
+      </description>
+      <url type="details">https://github.com/archisman-panigrahi/QuickBib/releases/tag/v0.9.6</url>
+    </release>
     <release version="0.9.5" date="2026-07-26">
       <description>
         <p>ship updated doi2bib3</p>

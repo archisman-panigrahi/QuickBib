@@ -1,5 +1,5 @@
 name: quickbib
-version: '0.9.5'
+version: '0.9.6'
 summary: "Quickly get BibTeX from a DOI"
 description: |
   QuickBib is a small cross-platform desktop app that retrieves the BibTeX
