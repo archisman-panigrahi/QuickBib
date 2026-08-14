@@ -2,6 +2,8 @@
 
 This is a cross platform app that enables you to get the bibtex entry from a DOI number, arXiv ID, article url (supports Nature journals, APS journals, ACS journals, AMS journals, Science, PNAS, ScienceDirect, IOP Science, SciPost and more) or article title. It uses [doi2bib3](https://github.com/archisman-panigrahi/doi2bib3) as its backend. Written in Python, QuickBib is licensed under GPLv3.
 
+*Metadata from Crossref and arXiv (no AI/ML). [Here](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree) is how it works.*
+
 <img src="assets/screenshots/quickbib-animated.gif" width="420" height="400"><br><br>
 
 ## Star History
