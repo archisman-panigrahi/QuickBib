@@ -15,12 +15,30 @@ This is a cross platform app that enables you to get the bibtex entry from a DOI
 ## How to install?
 
 ### GNU/Linux
-<a href="https://flathub.org/apps/details/io.github.archisman_panigrahi.QuickBib">
-    <img src="https://img.shields.io/flathub/v/io.github.archisman_panigrahi.QuickBib?color=67bed9" alt="Flathub version" align="right">
-</a>
-<a href="https://repology.org/project/quickbib/versions">
-    <img src="https://repology.org/badge/vertical-allrepos/quickbib.svg" alt="Packaging status" align="right">
-</a>
+<table align="right">
+  <tr>
+    <td align="right">
+      <img src="https://img.shields.io/github/v/release/archisman-panigrahi/QuickBib" alt="GitHub Release">
+    </td>
+    <td rowspan="3">
+      <a href="https://repology.org/project/quickbib/versions">
+        <img src="https://repology.org/badge/vertical-allrepos/quickbib.svg" alt="Packaging status">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <a href="https://flathub.org/apps/details/io.github.archisman_panigrahi.QuickBib">
+        <img src="https://img.shields.io/flathub/v/io.github.archisman_panigrahi.QuickBib?color=67bed9" alt="Flathub version">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <img src="https://img.shields.io/winget/v/archisman-panigrahi.QuickBib" alt="WinGet Package Version">
+    </td>
+  </tr>
+</table>
 
 
 
