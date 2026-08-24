@@ -129,7 +129,7 @@ st.markdown(
     Helpful? Star on GitHub &nbsp;
     <a href="https://github.com/archisman-panigrahi/QuickBib" target="_blank">
     <img src="https://img.shields.io/github/stars/archisman-panigrahi/QuickBib?style=social" alt="Star on GitHub">
-    </a> &nbsp; &bull; Try the [QuickBib desktop app](https://archisman-panigrahi.github.io/QuickBib/).
+    </a> &nbsp; &bull; [Desktop app](https://archisman-panigrahi.github.io/QuickBib/). &nbsp; &bull; [Omarchy plugin](https://omarchyplugins.com/plugin.html?id=archisman-panigrahi.quickbib)
     """,
     unsafe_allow_html=True,
 )
