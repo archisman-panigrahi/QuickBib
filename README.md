@@ -41,8 +41,6 @@ This is a cross platform app that enables you to get the bibtex entry from a DOI
 </table>
 
 
-
-
 #### Ubuntu/Mint
 You can use our [official PPA](https://code.launchpad.net/~apandada1/+archive/ubuntu/quickbib)
 ```
@@ -58,6 +56,15 @@ You can get it from the AUR
 ```
 yay -S quickbib
 ```
+
+#### Omarchy
+
+An <a href="https://omarchyplugins.com/plugin.html?id=archisman-panigrahi.quickbib">Omarchy plugin</a> is available in <a href="https://github.com/archisman-panigrahi/QuickBib-omarchy-plugin">here</a>:
+```
+omarchy plugin add https://github.com/archisman-panigrahi/QuickBib-omarchy-plugin.git --enable
+```
+<img src="https://raw.githubusercontent.com/archisman-panigrahi/QuickBib-omarchy-plugin/refs/heads/main/preview.png" alt="QuickBib Omarchy plugin preview" loading="lazy" width="600"/>
+
 
 #### Distro agnostic method 
 QuickBib is available on Flathub and Snap Store.
