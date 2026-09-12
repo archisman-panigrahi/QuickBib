@@ -1,4 +1,3 @@
 streamlit
-doi2bib3 >= 1.6.3
-bibtexparser == 1.4.4
+doi2bib3 >= 1.7.0
 st-copy-to-clipboard
