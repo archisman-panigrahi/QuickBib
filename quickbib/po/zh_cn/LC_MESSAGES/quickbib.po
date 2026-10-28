@@ -251,3 +251,11 @@ msgstr "复制"
 #: quickbib/about_dialog.py:87
 msgid "<b>Translations:</b> Want to help translate QuickBib? Improve an existing translation or add a new language on the <a href=\"{repo_url}\">project's GitHub page</a>. Not sure how to start? Open an issue on <a href=\"{issues_url}\">GitHub</a>!"
 msgstr "<b>翻译：</b>想帮助翻译 QuickBib 吗？请在<a href=\"{repo_url}\">项目的 GitHub 页面</a>改进现有翻译或添加新语言。不知道如何开始？请在 <a href=\"{issues_url}\">GitHub</a> 上创建 issue！"
+
+#: quickbib/main_window.py:177
+msgid "Prevent line breaks in author names"
+msgstr "防止作者姓名换行"
+
+#: quickbib/main_window.py:178
+msgid "Keep each author's surname on one line in LaTeX using \\mbox."
+msgstr "在 LaTeX 中使用 \\mbox 使每位作者的姓氏保持在同一行。"

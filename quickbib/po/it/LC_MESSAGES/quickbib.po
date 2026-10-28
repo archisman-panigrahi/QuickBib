@@ -251,3 +251,11 @@ msgstr "Copia"
 #: quickbib/about_dialog.py:87
 msgid "<b>Translations:</b> Want to help translate QuickBib? Improve an existing translation or add a new language on the <a href=\"{repo_url}\">project's GitHub page</a>. Not sure how to start? Open an issue on <a href=\"{issues_url}\">GitHub</a>!"
 msgstr "<b>Traduzioni:</b> Vuoi aiutare a tradurre QuickBib? Migliora una traduzione esistente o aggiungi una nuova lingua nella <a href=\"{repo_url}\">pagina GitHub del progetto</a>. Non sai da dove iniziare? Apri una issue su <a href=\"{issues_url}\">GitHub</a>!"
+
+#: quickbib/main_window.py:177
+msgid "Prevent line breaks in author names"
+msgstr "Evita interruzioni di riga nei nomi degli autori"
+
+#: quickbib/main_window.py:178
+msgid "Keep each author's surname on one line in LaTeX using \\mbox."
+msgstr "Mantiene il cognome di ogni autore su una sola riga in LaTeX usando \\mbox."

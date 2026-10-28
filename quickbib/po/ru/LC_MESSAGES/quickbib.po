@@ -251,3 +251,11 @@ msgstr "Копировать"
 #: quickbib/about_dialog.py:87
 msgid "<b>Translations:</b> Want to help translate QuickBib? Improve an existing translation or add a new language on the <a href=\"{repo_url}\">project's GitHub page</a>. Not sure how to start? Open an issue on <a href=\"{issues_url}\">GitHub</a>!"
 msgstr "<b>Переводы:</b> Хотите помочь перевести QuickBib? Улучшите существующий перевод или добавьте новый язык на <a href=\"{repo_url}\">странице проекта на GitHub</a>. Не знаете, с чего начать? Откройте issue на <a href=\"{issues_url}\">GitHub</a>!"
+
+#: quickbib/main_window.py:177
+msgid "Prevent line breaks in author names"
+msgstr "Запретить перенос строк в именах авторов"
+
+#: quickbib/main_window.py:178
+msgid "Keep each author's surname on one line in LaTeX using \\mbox."
+msgstr "Удерживает фамилию каждого автора на одной строке в LaTeX с помощью \\mbox."

@@ -1,3 +1,9 @@
+quickbib (0.9.8-1) unstable; urgency=medium
+
+  * Add option to prevent surnames breaking lines
+
+ -- Archisman Panigrahi <apandada1@gmail.com>  Wed, 28 Oct 2026 14:51:39 -0400
+
 quickbib (0.9.7-1) unstable; urgency=medium
 
   * update to accompany doi2bib3 update

@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (
     QLabel,
     QLineEdit,
     QPushButton,
+    QCheckBox,
     QToolButton,
     QMenu,
     QTextEdit,
@@ -21,7 +22,12 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QAction, QPixmap, QFont, QIcon, QDesktopServices
 from PyQt6.QtCore import QObject, pyqtSignal, Qt, QUrl
 
-from .helpers import get_aps_bibitem_for_bibtex, get_bibtex_for_doi, copy_to_clipboard
+from .helpers import (
+    get_aps_bibitem_for_bibtex,
+    get_bibtex_for_doi,
+    protect_bibtex_author_names,
+    copy_to_clipboard,
+)
 from .about_dialog import AboutDialog
 from .how_to_use_dialog import HowToUseDialog
 from .app_info import LICENSE_PATH, WEBAPP_URL, ISSUES_URL, ALGORITHM_VISUALS_URL
@@ -167,6 +173,12 @@ class QuickBibWindow(QMainWindow):
         self.fetch_btn.clicked.connect(self.fetch_bibtex)
         self.entry_box.addWidget(self.fetch_btn)
 
+        # Optionally wrap author surnames in \mbox{} to prevent line breaks
+        self.mbox_checkbox = QCheckBox(tr('Prevent line breaks in author names'))
+        self.mbox_checkbox.setToolTip(tr("Keep each author's surname on one line in LaTeX using \\mbox."))
+        self.mbox_checkbox.toggled.connect(lambda _checked: self._render_fetched_bibtex())
+        vbox.addWidget(self.mbox_checkbox)
+
         # Status label
         self.status = QLabel("")
         self.status.setAlignment(Qt.AlignmentFlag.AlignLeft)
@@ -214,6 +226,8 @@ class QuickBibWindow(QMainWindow):
 
         # Keep references to worker/thread so they don't get GC'd
         self._worker_thread = None
+        # Unmodified BibTeX from the last fetch, so toggling \mbox never nests
+        self._fetched_bibtex = ""
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
@@ -329,6 +343,7 @@ class QuickBibWindow(QMainWindow):
             return
 
         self.status.setText(tr('Fetching BibTeX...'))
+        self._fetched_bibtex = ""
         self.textview.clear()
         self.bibitem_view.clear()
 
@@ -346,19 +361,10 @@ class QuickBibWindow(QMainWindow):
 
     def on_fetch_finished(self, found: bool, bibtex: str, error: object):
         if found:
-            self.textview.setPlainText(bibtex)
-            bibitem_found, bibitem, bibitem_error = get_aps_bibitem_for_bibtex(bibtex)
-            if bibitem_found:
-                self.bibitem_view.setPlainText(bibitem)
-                self.status.setText(self._format_status_with_emoji(tr('✅ Fetched successfully.')))
-            else:
-                self.bibitem_view.clear()
-                self.status.setText(
-                    self._format_status_with_emoji(
-                        tr('✅ Fetched BibTeX. APS Bibitem unavailable: {error}', error=bibitem_error)
-                    )
-                )
+            self._fetched_bibtex = bibtex
+            self._render_fetched_bibtex()
         else:
+            self._fetched_bibtex = ""
             self.textview.clear()
             self.bibitem_view.clear()
             if error:
@@ -367,6 +373,32 @@ class QuickBibWindow(QMainWindow):
                 self.status.setText(self._format_status_with_emoji(tr('ℹ️ Error: DOI not found or CrossRef request failed.')))
 
         self._worker_thread = None
+
+    def _render_fetched_bibtex(self):
+        """Show the last fetched BibTeX and bibitem, honoring the \\mbox option."""
+        bibtex = self._fetched_bibtex
+        if not bibtex:
+            return
+
+        mbox = self.mbox_checkbox.isChecked()
+        if mbox:
+            try:
+                bibtex = protect_bibtex_author_names(bibtex)
+            except Exception:
+                pass
+
+        self.textview.setPlainText(bibtex)
+        bibitem_found, bibitem, bibitem_error = get_aps_bibitem_for_bibtex(self._fetched_bibtex, mbox=mbox)
+        if bibitem_found:
+            self.bibitem_view.setPlainText(bibitem)
+            self.status.setText(self._format_status_with_emoji(tr('✅ Fetched successfully.')))
+        else:
+            self.bibitem_view.clear()
+            self.status.setText(
+                self._format_status_with_emoji(
+                    tr('✅ Fetched BibTeX. APS Bibitem unavailable: {error}', error=bibitem_error)
+                )
+            )
 
     def copy_bibtex_to_clipboard(self):
         self._copy_text_to_clipboard(self.textview.toPlainText())
