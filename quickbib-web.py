@@ -1,11 +1,27 @@
 import streamlit as st
 from doi2bib3 import fetch_bibtex, format_bibtex_to_aps_bibitem
+from doi2bib3._bibtex import dump_entries, parse_entries
+from doi2bib3.normalize import protect_author_surnames
 from st_copy_to_clipboard import st_copy_to_clipboard
 
 # --- Your Custom Function ---
-def get_bibtex_for_doi(doi: str):
+def get_bibtex_for_doi(doi: str, mbox: bool = False):
     try:
-        bibtex = fetch_bibtex(doi)
+        cached = st.session_state.get("fetched_bibtex")
+        if cached is None or cached[0] != doi:
+            with st.spinner("Fetching data..."):
+                bibtex = fetch_bibtex(doi)
+            st.session_state["fetched_bibtex"] = (doi, bibtex)
+        else:
+            bibtex = cached[1]
+
+        # Always start from the original so toggling never nests author mboxes.
+        if mbox:
+            entries = parse_entries(bibtex)
+            for entry in entries:
+                if "author" in entry:
+                    entry["author"] = protect_author_surnames(entry["author"])
+            bibtex = dump_entries(entries)
         return True, bibtex, None
     except Exception as e:
         return False, "", str(e)
@@ -27,6 +43,12 @@ st.markdown(
         padding-right: 2rem;
         margin-left: auto;
         margin-right: auto;
+    }
+    .st-key-author_mbox [data-testid="stMarkdownContainer"] p {
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.6;
     }
     </style>
     """,
@@ -87,14 +109,24 @@ doi_input = st.text_input(
     placeholder="Paste a DOI, arXiv ID, or paper link here, e.g. https://journals.aps.org/prl/abstract/10.1103/v6r7-4ph9",
     label_visibility="collapsed",  # or "hidden"
 )
+results = st.container()
+examples_col, mbox_col = st.columns([0.35, 0.65], vertical_alignment="center")
+with examples_col:
+    st.markdown("View [examples](https://archisman-panigrahi.github.io/QuickBib/#examples).")
+with mbox_col:
+    mbox = st.checkbox(
+        r"Prevent line breaks in author names",
+        key="author_mbox",
+        help=r"Keep each author's surname on one line in LaTeX using \mbox.",
+    )
 # Logic Trigger
 if doi_input:
-    with st.spinner("Fetching data..."):
-        success, bibtex, error_msg = get_bibtex_for_doi(doi_input)
+    with results:
+        success, bibtex, error_msg = get_bibtex_for_doi(doi_input, mbox=mbox)
 
         if success:
             try:
-                aps_bibitem = format_bibtex_to_aps_bibitem(bibtex)
+                aps_bibitem = format_bibtex_to_aps_bibitem(bibtex, mbox=mbox)
                 aps_success = True
             except Exception as e:
                 aps_success = False
@@ -121,7 +153,6 @@ if doi_input:
             st.error("Could not resolve this input.")
             with st.expander("See error details"):
                 st.write(error_msg)
-st.markdown("View [examples](https://archisman-panigrahi.github.io/QuickBib/#examples).")
 st.markdown("**No AI/ML-generated citations**: metadata comes from Crossref and arXiv APIs. Here is [how it works](https://github.com/archisman-panigrahi/doi2bib3/blob/main/docs/ALGORITHM_VISUALS.md#2-identifier-resolution-decision-tree).")
 st.markdown(
     """
