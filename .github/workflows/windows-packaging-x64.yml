@@ -500,7 +500,7 @@ jobs:
 
       - name: Publish to WinGet
         if: github.event_name == 'release' && !github.event.release.prerelease
-        uses: vedantmgoyal9/winget-releaser@v2
+        uses: vedantmgoyal9/winget-releaser@v2.16.0
         with:
           identifier: archisman-panigrahi.QuickBib
           installers-regex: '-(x64|arm64)\.exe$'
