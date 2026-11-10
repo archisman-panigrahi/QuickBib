@@ -33,7 +33,7 @@
         <div class="container hero-inner">
           <div class="hero-copy">
             <h1>Get BibTeX from a DOI — fast.</h1>
-            <p class="lede">QuickBib is a cross-platform utility that uses <code><a href="https://github.com/archisman-panigrahi/doi2bib3" target="_blank" rel="noopener">doi2bib3</a></code> to fetch BibTeX for DOIs, arXiv identifiers as well as article titles. Works as a GUI app and also as a CLI. Perfect for research workflows.</p>
+            <p class="lede">QuickBib is a cross-platform utility that uses <code><a href="https://github.com/archisman-panigrahi/doi2bib3" target="_blank" rel="noopener">doi2bib3</a></code> to fetch BibTeX for DOIs, arXiv identifiers as well as article titles, one at a time or a <a href="#batch">whole list at once</a>. Works as a GUI app and also as a CLI. Perfect for research workflows.</p>
             <p class="cta-row">
               <a class="btn primary" href="#linux">Install on GNU/Linux</a>
               <a class="btn primary" href="https://apps.microsoft.com/detail/9pk4hvx04jdq?referrer=appbadge&mode=full" target="_blank" rel="noopener">Download for Windows</a>
@@ -66,6 +66,10 @@
           <article class="card">
             <h3>No AI/ML generated references</h3>
             <p>Metadata directly comes from crossref and arXiv. No AI/ML is used at runtime, so that the output is reproducible and trustworthy.</p>
+          </article>
+          <article class="card" style="grid-column: 1 / -1;">
+            <h3>Batch conversion</h3>
+            <p>Have a whole reference list? The <strong>Batch</strong> tab in the desktop app reads a text file with one identifier per line and saves every entry into a single <code>.bib</code> file. See the <a href="#batch">batch example</a>.</p>
           </article>
         </div>
           <div class="hero-star" style="margin-top:12px">
@@ -192,6 +196,16 @@
               <li>Journal link (works with APS journals, Nature journals, Science, PNAS, IOP Science, Sci-Post, ScienceDirect and more), e.g. <code>https://journals.aps.org/prl/abstract/10.1103/v6r7-4ph9</code></li>
               <li>Title of article, e.g. <code>Projected Topological Branes</code> (supports fuzzy search!)</li>
             </ul>
+          </div>
+          <div class="card" id="batch" style="grid-column: 1 / -1;">
+            <h3>Batch input/output</h3>
+            <p class="muted">In the desktop app, open the <strong>Batch</strong> tab, choose an input text file and an output <code>.bib</code> file, then press <strong>Start</strong>. Put one identifier per line; any of the input types above can be mixed. Blank lines and lines starting with <code>#</code> are ignored.</p>
+<pre><code># references.txt
+10.1038/nphys1170
+arXiv:2411.08091
+https://journals.aps.org/prl/abstract/10.1103/v6r7-4ph9
+"Projected Topological Branes"</code></pre>
+            <p class="muted">QuickBib fetches each entry and writes them all to the chosen <code>.bib</code> file, then reports how many were saved and how many failed. The <em>Prevent line breaks in author names</em> option also works in batch mode.</p>
           </div>
         </div>
 
