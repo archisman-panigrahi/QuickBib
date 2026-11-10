@@ -1,6 +1,6 @@
 quickbib (0.9.9-1) unstable; urgency=medium
 
-  * update to accompany doi2bib3 update
+  * Add batch mode and update doi2bib3 backend
 
  -- Archisman Panigrahi <apandada1@gmail.com>  Tue, 10 Nov 2026 09:08:01 -0500
 

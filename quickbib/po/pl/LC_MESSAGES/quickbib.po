@@ -16,115 +16,115 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: QuickBib migration script\n"
 
-#: quickbib/main_window.py:49
+#: quickbib/main_window.py:56
 msgid "QuickBib: DOI → BibTeX"
 msgstr "QuickBib: DOI → BibTeX"
 
-#: quickbib/main_window.py:65
+#: quickbib/main_window.py:72
 msgid "&File"
 msgstr "&Plik"
 
-#: quickbib/main_window.py:71
+#: quickbib/main_window.py:78
 msgid "&Edit"
 msgstr "&Edycja"
 
-#: quickbib/main_window.py:78
+#: quickbib/main_window.py:85
 msgid "&Help"
 msgstr "Pomo&c"
 
-#: quickbib/main_window.py:66
+#: quickbib/main_window.py:73
 msgid "🚪 &Quit"
 msgstr "🚪 &Zakończ"
 
-#: quickbib/main_window.py:72
+#: quickbib/main_window.py:79
 msgid "📋 &Copy BibTeX"
 msgstr "📋 &Kopiuj BibTeX"
 
-#: quickbib/main_window.py:79
+#: quickbib/main_window.py:86
 msgid "🤔 &About QuickBib"
 msgstr "🤔 &O QuickBib"
 
-#: quickbib/main_window.py:84
+#: quickbib/main_window.py:91
 msgid "📘 &Examples"
 msgstr "📘 &Przykłady"
 
-#: quickbib/main_window.py:91 quickbib/main_window.py:128
+#: quickbib/main_window.py:98 quickbib/main_window.py:135
 msgid "🌐 Web App"
 msgstr "🌐 Aplikacja WWW"
 
-#: quickbib/main_window.py:96 quickbib/main_window.py:138
+#: quickbib/main_window.py:103 quickbib/main_window.py:145
 msgid "💬 Send Feedback"
 msgstr "💬 Wyślij opinię"
 
-#: quickbib/main_window.py:133
+#: quickbib/main_window.py:140
 msgid "📘 Examples"
 msgstr "📘 Przykłady"
 
-#: quickbib/main_window.py:155
+#: quickbib/main_window.py:177
 msgid "DOI:"
 msgstr "DOI:"
 
-#: quickbib/main_window.py:161
+#: quickbib/main_window.py:182
 msgid "DOI or arXiv ID or arXiv URL or Journal URL or Article Title"
 msgstr "DOI lub identyfikator arXiv lub adres URL arXiv lub adres URL czasopisma lub tytuł artykułu"
 
-#: quickbib/main_window.py:166
+#: quickbib/main_window.py:187
 msgid "Fetch"
 msgstr "Pobierz"
 
-#: quickbib/main_window.py:190
+#: quickbib/main_window.py:217
 msgid "APS Style Bibitem:"
 msgstr "Bibitem w stylu APS:"
 
-#: quickbib/main_window.py:186
+#: quickbib/main_window.py:213
 msgid "📋 Copy BibTeX to Clipboard"
 msgstr "📋 Kopiuj BibTeX do schowka"
 
-#: quickbib/main_window.py:202
+#: quickbib/main_window.py:229
 msgid "📋 Copy Bibitem to Clipboard"
 msgstr "📋 Kopiuj Bibitem do schowka"
 
-#: quickbib/main_window.py:206
+#: quickbib/main_window.py:233
 msgid "Metadata from Crossref and arXiv (no AI/ML). <a href=\"{algorithm_url}\">Here is how it works.</a>"
 msgstr "Metadane z Crossref i arXiv (bez AI/ML). <a href=\"{algorithm_url}\">Oto jak to działa.</a>"
 
-#: quickbib/main_window.py:315
+#: quickbib/main_window.py:344
 msgid "ℹ️ Failed to open link."
 msgstr "ℹ️ Nie udało się otworzyć linku."
 
-#: quickbib/main_window.py:328
+#: quickbib/main_window.py:357
 msgid "ℹ️ Please enter a valid DOI. See \"Help → Examples\" for more info."
 msgstr "ℹ️ Wpisz poprawny DOI. Zobacz \"Pomoc → Przykłady\", aby dowiedzieć się więcej."
 
-#: quickbib/main_window.py:331
+#: quickbib/main_window.py:360
 msgid "Fetching BibTeX..."
 msgstr "Pobieranie BibTeX..."
 
-#: quickbib/main_window.py:353
+#: quickbib/main_window.py:409
 msgid "✅ Fetched successfully."
 msgstr "✅ Pobrano pomyślnie."
 
-#: quickbib/main_window.py:358
+#: quickbib/main_window.py:414
 msgid "✅ Fetched BibTeX. APS Bibitem unavailable: {error}"
 msgstr "✅ Pobrano BibTeX. APS Bibitem niedostępny: {error}"
 
-#: quickbib/main_window.py:365
+#: quickbib/main_window.py:386
 msgid "ℹ️ Error: {error}"
 msgstr "ℹ️ Błąd: {error}"
 
-#: quickbib/main_window.py:367
+#: quickbib/main_window.py:388
 msgid "ℹ️ Error: DOI not found or CrossRef request failed."
 msgstr "ℹ️ Błąd: nie znaleziono DOI lub żądanie do CrossRef nie powiodło się."
 
-#: quickbib/main_window.py:381
+#: quickbib/main_window.py:430 quickbib/main_window.py:443
 msgid "✅ Copied to clipboard!"
 msgstr "✅ Skopiowano do schowka!"
 
-#: quickbib/main_window.py:383
+#: quickbib/main_window.py:445
 msgid "ℹ️ Failed to copy to clipboard."
 msgstr "ℹ️ Nie udało się skopiować do schowka."
 
-#: quickbib/main_window.py:385
+#: quickbib/main_window.py:447
 msgid "ℹ️ Nothing to copy."
 msgstr "ℹ️ Nic do skopiowania."
 
@@ -140,15 +140,15 @@ msgstr "Wersja {version}"
 msgid "About"
 msgstr "O nas"
 
-#: quickbib/about_dialog.py:124 quickbib/about_dialog.py:110
+#: quickbib/about_dialog.py:125 quickbib/about_dialog.py:110
 msgid "Authors"
 msgstr "Autorzy"
 
-#: quickbib/about_dialog.py:135
+#: quickbib/about_dialog.py:136
 msgid "Translators"
 msgstr "Tłumacze"
 
-#: quickbib/about_dialog.py:147
+#: quickbib/about_dialog.py:148
 msgid "License"
 msgstr "Licencja"
 
@@ -176,11 +176,11 @@ msgstr "Znaczący współtwórcy"
 msgid "<a href=\"https://github.com/Kyuyrii/\">Kyuyrii</a>: Helped fix the snap package."
 msgstr "<a href=\"https://github.com/Kyuyrii/\">Kyuyrii</a>: Pomógł naprawić pakiet snap."
 
-#: quickbib/about_dialog.py:118
+#: quickbib/about_dialog.py:119
 msgid "This project was inspired by <a href=\"https://github.com/bibcure/doi2bib\">doi2bib</a>, whose development unfortunately stopped."
 msgstr "Projekt został zainspirowany <a href=\"https://github.com/bibcure/doi2bib\">doi2bib</a>, którego rozwój niestety został wstrzymany."
 
-#: quickbib/about_dialog.py:119
+#: quickbib/about_dialog.py:120
 msgid "This project would not have been possible without the help from GitHub Copilot."
 msgstr "Ten projekt nie powstałby bez pomocy GitHub Copilot."
 
@@ -188,19 +188,19 @@ msgstr "Ten projekt nie powstałby bez pomocy GitHub Copilot."
 msgid "Bug reports and pull requests are welcome on the <a href=\"{repo_url}\">project's GitHub page</a>."
 msgstr "Zgłoszenia błędów i pull requesty są mile widziane na <a href=\"{repo_url}\">stronie projektu na GitHubie</a>."
 
-#: quickbib/about_dialog.py:144
+#: quickbib/about_dialog.py:145
 msgid "<p>Unable to read LICENSE file.</p>"
 msgstr "<p>Nie można odczytać pliku LICENSE.</p>"
 
-#: quickbib/about_dialog.py:146
+#: quickbib/about_dialog.py:147
 msgid "<p>GPLv3 license text not found in repository. See the <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">Read it online</a>.</p>"
 msgstr "<p>Nie znaleziono w repozytorium tekstu licencji GPLv3. Możesz <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html#license-text\">przeczytać go online</a>.</p>"
 
-#: quickbib/about_dialog.py:152
+#: quickbib/about_dialog.py:153
 msgid "<em>Dedicated to all my friends 😊</em>"
 msgstr "<em>Dla wszystkich moich przyjaciół 😊</em>"
 
-#: quickbib/about_dialog.py:158 quickbib/how_to_use_dialog.py:83
+#: quickbib/about_dialog.py:159 quickbib/how_to_use_dialog.py:83
 msgid "✕ Close"
 msgstr "✕ Zamknij"
 
@@ -252,10 +252,54 @@ msgstr "Kopiuj"
 msgid "<b>Translations:</b> Want to help translate QuickBib? Improve an existing translation or add a new language on the <a href=\"{repo_url}\">project's GitHub page</a>. Not sure how to start? Open an issue on <a href=\"{issues_url}\">GitHub</a>!"
 msgstr "<b>Tłumaczenia:</b> Chcesz pomóc w tłumaczeniu QuickBib? Ulepsz istniejące tłumaczenie lub dodaj nowy język na <a href=\"{repo_url}\">stronie projektu w GitHubie</a>. Nie wiesz, od czego zacząć? Otwórz issue w <a href=\"{issues_url}\">GitHubie</a>!"
 
-#: quickbib/main_window.py:177
+#: quickbib/batch_tab.py:65 quickbib/main_window.py:192
 msgid "Prevent line breaks in author names"
 msgstr "Zapobiegaj łamaniu wierszy w nazwiskach autorów"
 
-#: quickbib/main_window.py:178
+#: quickbib/main_window.py:193
 msgid "Keep each author's surname on one line in LaTeX using \\mbox."
 msgstr "Utrzymuje nazwisko każdego autora w jednym wierszu w LaTeX-u za pomocą \\mbox."
+
+#: quickbib/about_dialog.py:117
+msgid "<a href=\"https://github.com/Qrytics/\">Mario Belmonte</a>: Helped with doi2bib3 development."
+msgstr "<a href=\"https://github.com/Qrytics/\">Mario Belmonte</a>: Pomoc przy rozwoju doi2bib3."
+
+#: quickbib/main_window.py:161
+msgid "Batch"
+msgstr "Wsadowo"
+
+#: quickbib/batch_tab.py:91
+msgid "Browse…"
+msgstr "Przeglądaj…"
+
+#: quickbib/batch_tab.py:129
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: quickbib/batch_tab.py:62 quickbib/batch_tab.py:99
+msgid "Input file:"
+msgstr "Plik wejściowy:"
+
+#: quickbib/batch_tab.py:63 quickbib/batch_tab.py:105
+msgid "Output .bib file:"
+msgstr "Wyjściowy plik .bib:"
+
+#: quickbib/batch_tab.py:116
+msgid "Please choose an input file and an output .bib file."
+msgstr "Wybierz plik wejściowy i wyjściowy plik .bib."
+
+#: quickbib/batch_tab.py:144
+msgid "Saved {saved} entries to {path}. {failed} failed."
+msgstr "Zapisano wpisy: {saved} w {path}. Nieudane: {failed}."
+
+#: quickbib/main_window.py:159
+msgid "Single"
+msgstr "Pojedynczo"
+
+#: quickbib/batch_tab.py:68 quickbib/batch_tab.py:142
+msgid "Start"
+msgstr "Rozpocznij"
+
+#: quickbib/batch_tab.py:58
+msgid "Text file with one DOI, arXiv ID, URL or title per line. Blank lines and lines starting with # are ignored."
+msgstr "Plik tekstowy z jednym DOI, identyfikatorem arXiv, adresem URL lub tytułem w każdym wierszu. Puste wiersze i wiersze zaczynające się od # są pomijane."

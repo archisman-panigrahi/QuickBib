@@ -61,7 +61,7 @@
   <releases>
     <release version="0.9.9" date="2026-11-10">
       <description>
-        <p>update to accompany doi2bib3 update</p>
+        <p>Add batch mode and update doi2bib3 backend</p>
       </description>
       <url type="details">https://github.com/archisman-panigrahi/QuickBib/releases/tag/v0.9.9</url>
     </release>

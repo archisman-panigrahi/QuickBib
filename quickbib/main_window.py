@@ -29,6 +29,7 @@ from .helpers import (
     copy_to_clipboard,
 )
 from .about_dialog import AboutDialog
+from .batch_tab import BatchTab
 from .how_to_use_dialog import HowToUseDialog
 from .app_info import LICENSE_PATH, WEBAPP_URL, ISSUES_URL, ALGORITHM_VISUALS_URL
 from .i18n import tr
@@ -148,9 +149,24 @@ class QuickBibWindow(QMainWindow):
 
         vbox.addSpacing(8)
 
+        # Tabs: single lookup and batch conversion
+        self.tabs = QTabWidget()
+        self.tabs.setDocumentMode(True)
+        vbox.addWidget(self.tabs, 1)
+
+        single_tab = QWidget()
+        single_vbox = QVBoxLayout(single_tab)
+        self.tabs.addTab(single_tab, tr('Single'))
+
+        self.tabs.addTab(BatchTab(), tr('Batch'))
+
+        # The compact-layout menu button sits beside the tabs so it is
+        # reachable from either tab.
+        self.tabs.setCornerWidget(self.mobile_menu_btn, Qt.Corner.TopRightCorner)
+
         # DOI entry
         self.entry_box = QHBoxLayout()
-        vbox.addLayout(self.entry_box)
+        single_vbox.addLayout(self.entry_box)
 
         self.doi_header_row = QWidget()
         self.doi_header_layout = QHBoxLayout()
@@ -161,7 +177,6 @@ class QuickBibWindow(QMainWindow):
         self.doi_label = QLabel(tr('DOI:'))
         self.doi_header_layout.addWidget(self.doi_label)
         self.doi_header_layout.addStretch(1)
-        self.doi_header_layout.addWidget(self.mobile_menu_btn)
 
         self.doi_entry = QLineEdit()
         self.doi_entry.setPlaceholderText(tr('DOI or arXiv ID or arXiv URL or Journal URL or Article Title'))
@@ -177,40 +192,40 @@ class QuickBibWindow(QMainWindow):
         self.mbox_checkbox = QCheckBox(tr('Prevent line breaks in author names'))
         self.mbox_checkbox.setToolTip(tr("Keep each author's surname on one line in LaTeX using \\mbox."))
         self.mbox_checkbox.toggled.connect(lambda _checked: self._render_fetched_bibtex())
-        vbox.addWidget(self.mbox_checkbox)
+        single_vbox.addWidget(self.mbox_checkbox)
 
         # Status label
         self.status = QLabel("")
         self.status.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.status.setTextFormat(Qt.TextFormat.RichText)
         self.status.setWordWrap(True)
-        vbox.addWidget(self.status)
+        single_vbox.addWidget(self.status)
 
         # Text view
         self.textview = QTextEdit()
         self.textview.setReadOnly(True)
         self.textview.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
         self.textview.setMinimumHeight(180)
-        vbox.addWidget(self.textview, 1)
+        single_vbox.addWidget(self.textview, 1)
 
         self.copy_bibtex_btn = self._add_copy_button_row(
-            vbox,
+            single_vbox,
             tr('📋 Copy BibTeX to Clipboard'),
             self.copy_bibtex_to_clipboard,
         )
 
         self.bibitem_label = QLabel(tr('APS Style Bibitem:'))
-        vbox.addWidget(self.bibitem_label)
+        single_vbox.addWidget(self.bibitem_label)
 
         self.bibitem_view = QPlainTextEdit()
         self.bibitem_view.setReadOnly(True)
         self.bibitem_view.setLineWrapMode(QPlainTextEdit.LineWrapMode.WidgetWidth)
         self.bibitem_view.setMinimumHeight(42)
         self.bibitem_view.setMaximumHeight(78)
-        vbox.addWidget(self.bibitem_view)
+        single_vbox.addWidget(self.bibitem_view)
 
         self.copy_bibitem_btn = self._add_copy_button_row(
-            vbox,
+            single_vbox,
             tr('📋 Copy Bibitem to Clipboard'),
             self.copy_bibitem_to_clipboard,
         )

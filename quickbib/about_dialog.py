@@ -114,6 +114,7 @@ class AboutDialog(QDialog):
         <h3>{tr(' Significant Contributors')}</h3>
         <ul>
           <li>{tr('<a href="https://github.com/Kyuyrii/">Kyuyrii</a>: Helped fix the snap package.')}</li>
+          <li>{tr('<a href="https://github.com/Qrytics/">Mario Belmonte</a>: Helped with doi2bib3 development.')}</li>
         </ul>
         <p>{tr('This project was inspired by <a href="https://github.com/bibcure/doi2bib">doi2bib</a>, whose development unfortunately stopped.')}</p>
         <p>{tr('This project would not have been possible without the help from GitHub Copilot.')}</p>
