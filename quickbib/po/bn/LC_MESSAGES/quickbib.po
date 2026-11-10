@@ -262,7 +262,7 @@ msgstr "LaTeX-এ \\mbox ব্যবহার করে প্রতিটি �
 
 #: quickbib/about_dialog.py:117
 msgid "<a href=\"https://github.com/Qrytics/\">Mario Belmonte</a>: Helped with doi2bib3 development."
-msgstr "<a href=\"https://github.com/Qrytics/\">Mario Belmonte</a>: doi2bib3-এর উন্নয়নে সাহায্য করেছেন।"
+msgstr "<a href=\"https://github.com/Qrytics/\">Mario Belmonte</a>: doi2bib3 তৈরিতে সাহায্য করেছেন।"
 
 #: quickbib/main_window.py:161
 msgid "Batch"
